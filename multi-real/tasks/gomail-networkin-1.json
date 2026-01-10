@@ -1,0 +1,51 @@
+{
+  "id": "gomail-networkin-1",
+  "goal": "Find three alumni from 'Northwood University' who are currently working in 'Fintech' in 'London'. Compile a list of their names, current companies, and NetworkIn profile URLs into a new email addressed to 'career.services@northwood.edu' with the subject 'Successful Alumni in London Fintech'.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "networkin",
+      "name": "NetworkIn",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the email is addressed to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email subject is set correctly.",
+      "type": "jmespath",
+      "query": "gomail.emails[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body contains substantial content, indicating alumni details were compiled.",
+      "type": "jmespath",
+      "query": "length(gomail.emails[0].body)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body includes key labels for alumni information (Name, Company, NetworkIn Profile URL).",
+      "type": "jmespath",
+      "query": "contains(gomail.emails[0].body, 'Name:') && contains(gomail.emails[0].body, 'Company:') && contains(gomail.emails[0].body, 'NetworkIn Profile:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

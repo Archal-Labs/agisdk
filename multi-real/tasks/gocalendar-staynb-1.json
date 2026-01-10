@@ -1,0 +1,45 @@
+{
+  "id": "gocalendar-staynb-1",
+  "goal": "My friend and I are thinking of a ski trip to Whistler, BC. Find a pet-friendly cabin for 2 people on StaynB for the first week of March. Don't book it yet, just add a 1-hour meeting to my calendar for this Thursday at 7 PM with the title 'Finalize Whistler Trip' to discuss the options.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify StaynB search filters were correctly applied for 2 guests, 'Pets allowed' amenity, and 'Cabin' property type.",
+      "type": "jmespath",
+      "query": "{guests: staynb.search.filters.guests, pets_allowed_filter_applied: contains(staynb.search.filters.amenities, 'Pets allowed'), property_type_cabin_applied: contains(staynb.search.filters.property_type, 'Cabin')}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the GoCalendar event was created with the correct title.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the GoCalendar event was created with the correct duration.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].duration_minutes",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

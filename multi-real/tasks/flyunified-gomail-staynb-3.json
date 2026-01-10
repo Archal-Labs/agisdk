@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gomail-staynb-3",
+  "goal": "I need to book my solo trip to Iceland. First, book the cheapest non-stop, one-way flight from New York (JFK) to Reykjavik (KEF) for October 25th. Based on the flight's arrival date, book a StaynB for 3 nights for one person in the 'Mi\u00f0borg' area with a kitchenette. Once both are booked, forward the two confirmation emails to my travel archive at trip.archive@gomail.com with the subject 'Iceland Logistics Confirmed'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a flight booking was successfully made on FlyUnified.",
+      "type": "jmespath",
+      "query": "flyunified.orders.added[0].order_details.destination",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that accommodation was successfully booked on StaynB in the correct area.",
+      "type": "jmespath",
+      "query": "staynb.bookings.added[0].stay_details.location.area",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that two emails were sent to the travel archive address.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='trip.archive@gomail.com'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that at least one of the forwarded emails has the correct subject line.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='trip.archive@gomail.com' && subject=='Iceland Logistics Confirmed'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

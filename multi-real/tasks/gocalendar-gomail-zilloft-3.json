@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-zilloft-3",
+  "goal": "I need to find a rental apartment in Boston, MA, but make sure you exclude anything in the 'Back Bay' neighborhood. From the valid results on Zilloft, find the one with the earliest possible move-in date. Email the details of this listing to move.coordinator@relocation.co and then schedule a 15-minute call with them in my calendar for tomorrow at 4 PM to discuss.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify an email was sent to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a calendar event was created with the correct invitee.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].attendees[0].email",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the calendar event has the correct title.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the calendar event is scheduled for tomorrow at 4 PM.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].start_time",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

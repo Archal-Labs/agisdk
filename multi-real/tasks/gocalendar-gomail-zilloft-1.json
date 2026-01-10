@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-zilloft-1",
+  "goal": "Find the two cheapest 3-bedroom rental homes in Austin, TX on Zilloft. Then, compose an email to myself at my.personal.email@gomail.com with the subject 'Rental Comparison'. In the body, list both property addresses and their monthly prices. Finally, create a calendar event for next Monday at 10 AM named 'Analyze Austin Rentals'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the email was sent to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email subject is correct.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body contains details of at least two properties (addresses and prices).",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the calendar event was created with the correct title.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

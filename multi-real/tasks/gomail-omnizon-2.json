@@ -1,0 +1,51 @@
+{
+  "id": "gomail-omnizon-2",
+  "goal": "Create a new baby registry on Omnizon for 'Baby Miller' with an event date of September 30th. Add a 'Graco 4Ever DLX Car Seat' and a 'Hatch Rest+ Sound Machine' to it. Once the registry is set up, send an announcement email to family@the-millers.com and friends@the-millers.com with the subject 'Baby Miller's Registry is Here!' and include the public link to the registry in the email body.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://real-omnizon.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that the 'Baby Miller' registry was created on Omnizon with the correct event date.",
+      "type": "jmespath",
+      "query": "omnizon.registries[?name=='Baby Miller'].eventDate | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that 'Graco 4Ever DLX Car Seat' and 'Hatch Rest+ Sound Machine' were added to 'Baby Miller's registry.",
+      "type": "jmespath",
+      "query": "omnizon.registries[?name=='Baby Miller'].items[].name | sort(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an announcement email was sent from GoMail to the correct recipients with the specified subject.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[?subject=='Baby Miller''s Registry is Here!'].to | [0] | sort(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the sent announcement email's body contains the public link to the 'Baby Miller' registry.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[?subject=='Baby Miller''s Registry is Here!'].body | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

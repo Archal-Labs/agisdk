@@ -1,0 +1,45 @@
+{
+  "id": "gocalendar-marrisuite-3",
+  "goal": "I want to get away to Scottsdale, Arizona for the last weekend in April. Find me a Marrisuite with a spa. Once you've found one, book a standard room for two adults from April 26th to the 28th. Then, block out 2 PM to 4 PM on Saturday, April 27th on my calendar for 'Spa Appointment'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "marrisuite",
+      "name": "Marrisuite",
+      "similarTo": "Marriott",
+      "previewImage": "/websitePreviews/marrisuite_preview.jpg",
+      "url": "https://real-marrisuite.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify a Marrisuite booking exists for Scottsdale, AZ from April 26th to April 28th.",
+      "type": "jmespath",
+      "query": "marrisuite.bookings[?destination=='Scottsdale, Arizona' && check_in_date=='2024-04-26' && check_out_date=='2024-04-28'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the Marrisuite booking is for two adults in a standard room.",
+      "type": "jmespath",
+      "query": "marrisuite.bookings[?num_adults==2 && room_type=='Standard Room'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a 'Spa Appointment' event is created in GoCalendar on April 27th from 2 PM to 4 PM.",
+      "type": "jmespath",
+      "query": "gocalendar.events[?title=='Spa Appointment' && date=='2024-04-27' && start_time=='14:00' && end_time=='16:00'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

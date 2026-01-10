@@ -1,0 +1,52 @@
+{
+  "id": "flyunified-gocalendar-udriver-3",
+  "goal": "My partner and I are flying with our cat. Book two seats on a pet-friendly FlyUnified flight from ATL to DEN for October 12th. Afterwards, schedule a UDriver Pet to the Atlanta airport, making sure we arrive three hours before departure. Then, add a reminder to my GoCalendar for October 10th to 'Call vet for Fido's travel certificate'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a FlyUnified flight booking was made for 2 passengers and 1 pet from ATL to DEN on October 12th.",
+      "type": "jmespath",
+      "query": "length(flyunified.bookings[?passengers==2 && pets==1 && origin=='ATL' && destination=='DEN' && date=='2024-10-12'])",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a UDriver Pet ride was scheduled with the Atlanta airport as the destination.",
+      "type": "jmespath",
+      "query": "udriver.bookings[0].destination",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a GoCalendar reminder was created for October 10th with the title 'Call vet for Fido's travel certificate'.",
+      "type": "jmespath",
+      "query": "length(gocalendar.events[?date=='2024-10-10' && title=='Call vet for Fido''s travel certificate'])",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

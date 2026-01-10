@@ -1,0 +1,51 @@
+{
+  "id": "flyunified-gocalendar-1",
+  "goal": "What's the last direct flight from Phoenix (PHX) to Salt Lake City (SLC) on November 22nd? After you find it, schedule an event on my GoCalendar for 8 AM the *next day* titled 'Breakfast meeting with SLC team'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the origin airport code for the flight search.",
+      "type": "jmespath",
+      "query": "flyunified.flights.searched.origin_airport_code",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the destination airport code for the flight search.",
+      "type": "jmespath",
+      "query": "flyunified.flights.searched.destination_airport_code",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the date of the created GoCalendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].date",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title of the created GoCalendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

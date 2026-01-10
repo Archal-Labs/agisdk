@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-networkin-2",
+  "goal": "I need to organize a book club for 'The Aligned Mind' by author Kenji Tanaka. First, find three people on NetworkIn who have liked or shared posts about 'mindfulness' in the last month. Create a recurring event in my calendar for the last Wednesday of every month at 7 PM called 'The Aligned Mind Book Club'. Finally, send an email to the three people you found, introducing the book club and including the calendar invitation.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "networkin",
+      "name": "NetworkIn",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a calendar event titled 'The Aligned Mind Book Club' was created.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='The Aligned Mind Book Club'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the created calendar event is recurring, set for 7 PM, and scheduled for the last Wednesday of the month.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='The Aligned Mind Book Club' && is_recurring==true && start_time=='19:00:00' && recurrence_details.day_of_week=='Wednesday' && recurrence_details.week_of_month=='last'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email was sent to three recipients.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].to | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body contains an introduction to 'The Aligned Mind Book Club' and includes an invitation to the calendar event.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

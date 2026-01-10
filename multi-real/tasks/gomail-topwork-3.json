@@ -1,0 +1,51 @@
+{
+  "id": "gomail-topwork-3",
+  "goal": "We've received a withdrawal notice from a candidate, Anjali Sharma, for the 'Data Analyst' role. Her reason is that the salary is too low. Go to TopWork and update her application status to 'Withdrawn'. Then, compose an email to our HR lead, helena.v@mycorp.com, informing her of the withdrawal and mentioning the salary feedback so we can review the compensation for the role.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "topwork",
+      "name": "TopWork",
+      "similarTo": "Indeed",
+      "previewImage": "/websitePreviews/topwork_preview.jpg",
+      "url": "https://real-topwork.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that Anjali Sharma's application for the 'Data Analyst' role in TopWork has been updated to 'Withdrawn'.",
+      "type": "jmespath",
+      "query": "topwork.applications[?candidate_name=='Anjali Sharma' && role=='Data Analyst'].status",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email was sent to 'helena.v@mycorp.com'.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email subject line mentions Anjali Sharma and indicates a withdrawal.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body mentions salary as the reason for withdrawal and suggests reviewing the compensation package.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

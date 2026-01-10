@@ -1,0 +1,57 @@
+{
+  "id": "gocalendar-udriver-3",
+  "goal": "Book a Udriver Comfort to take me from my current location to the 'Denver Art Museum'. My 'Museum Visit' event should be added to my calendar to start the moment my ride ends, and it should last for 2 hours.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify Udriver Comfort ride was booked to 'Denver Art Museum'.",
+      "type": "jmespath",
+      "query": "udriver.bookings[0].destination",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the Udriver ride service type was 'Comfort'.",
+      "type": "jmespath",
+      "query": "udriver.bookings[0].service_type",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify 'Museum Visit' event was created in GoCalendar with a 2-hour duration.",
+      "type": "jmespath",
+      "query": "gocalendar.events[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the GoCalendar event has the correct duration.",
+      "type": "jmespath",
+      "query": "gocalendar.events[0].duration_hours",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the GoCalendar event's start time was set, reflecting the Udriver ride's end time.",
+      "type": "jmespath",
+      "query": "gocalendar.events[0].start_time",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

@@ -1,0 +1,52 @@
+{
+  "id": "gocalendar-opendining-udriver-2",
+  "goal": "I have a 'Quarterly Strategy Session' on my calendar that ends at 5 PM on the 22nd of this month at 401 N Michigan Ave in Chicago. We'll need to arrange a dinner for the 6 attendees afterwards. Find a nearby steakhouse with a private dining option available for 5:30 PM and book it. Then, schedule a UDriverXL to get us from the meeting to the restaurant and create a new calendar event for the dinner.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a steakhouse reservation with private dining for 6 people was made through OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[0].private_dining && opendining.reservations.added[0].party_size == 6 && opendining.reservations.added[0].cuisine_type == 'Steakhouse'",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a UDriverXL was booked for 6 passengers with the correct pickup location and service type.",
+      "type": "jmespath",
+      "query": "udriver.bookings.added[0].service_type == 'XL' && udriver.bookings.added[0].num_passengers == 6 && udriver.bookings.added[0].pickup_location == '401 N Michigan Ave'",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a new calendar event titled 'Post-Strategy Dinner' was created in GoCalendar starting at 5:30 PM.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title == 'Post-Strategy Dinner' && gocalendar.events.added[0].start_time == '17:30'",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

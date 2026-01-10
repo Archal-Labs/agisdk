@@ -1,0 +1,58 @@
+{
+  "id": "gomail-networkin-topwork-2",
+  "goal": "I want to do some market research on the tech scene in Portland. Use TopWork's candidate database to figure out the number of applicants we've had from Portland, Oregon for 'Software Engineer' roles in the past 6 months. Then, find a tech recruiter in Portland on NetworkIn with over 10,000 followers and copy their profile URL. Finally, draft an email to the exec team at 'exec-team@mycompany.com' with the subject 'Portland Talent Pool Analysis', including the number of applicants you found and the link to the recruiter's profile.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "networkin",
+      "name": "NetworkIn",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin.vercel.app"
+    },
+    {
+      "id": "topwork",
+      "name": "TopWork",
+      "similarTo": "Indeed",
+      "previewImage": "/websitePreviews/topwork_preview.jpg",
+      "url": "https://real-topwork.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the email was sent to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email has the correct subject line.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body contains an applicant count (from TopWork).",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body contains the NetworkIn recruiter profile URL.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

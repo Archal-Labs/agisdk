@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-zilloft-2",
+  "goal": "Perform a search on Zilloft for new construction homes in Raleigh, NC under $600k. If you find any that offer a 'virtual tour', email the links for those specific listings to my builder contact at buildit@construction.com. Regardless of whether you found any with virtual tours, block out a 2-hour slot on my calendar for next Wednesday at 1 PM titled 'New Construction Research'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the calendar event 'New Construction Research' was created.",
+      "type": "jmespath",
+      "query": "gocalendar.orders.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the calendar event is scheduled for next Wednesday at 1 PM.",
+      "type": "jmespath",
+      "query": "gocalendar.orders.added[0].start_time",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify an email was sent to buildit@construction.com (if virtual tours were found).",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body contains links to virtual tour listings (if an email was sent).",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

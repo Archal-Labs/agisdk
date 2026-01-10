@@ -1,20 +1,20 @@
 {
   "id": "dashdish-gomail-2",
-  "goal": "Order a Large Supreme Pizza and a side of garlic knots from 'Luigi's Pizzeria'. After the order is placed, draft an email to leo@email.com and mikey@email.com, letting them know the total was $42.50 and their share is $14.17 each.",
+  "goal": "Figure out how much it would cost to get two 'Carne Asada Burritos' and one 'Chips & Guac' from 'Taco Temple' delivered. Then, draft an email to finance.dept@mycompany.co with the subject 'Lunch Expense Estimate' and state the total cost. Do not place the order.",
   "websites": [
     {
       "id": "dashdish",
       "name": "DashDish",
       "similarTo": "DoorDash",
       "previewImage": "/websitePreviews/dashdish_preview.jpg",
-      "url": "https://evals-dashdish.vercel.app"
+      "url": "https://real-dashdish.vercel.app"
     },
     {
       "id": "gomail",
       "name": "GoMail",
       "similarTo": "Gmail",
       "previewImage": "/websitePreviews/gomail_preview.jpg",
-      "url": "https://evals-gomail.vercel.app"
+      "url": "https://real-gomail.vercel.app"
     }
   ],
   "difficulty": "hard",
@@ -22,34 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Order was placed on DashDish from Luigi's Pizzeria",
+      "description": "Verify two 'Carne Asada Burritos' are present in the DashDish checkout summary with the correct quantity.",
       "type": "jmespath",
-      "query": "dashdish.foodOrders != null && length(dashdish.foodOrders.added) > `0`",
-      "expected_value": true
-    },
-    {
-      "description": "Correct restaurant",
-      "type": "jmespath",
-      "query": "dashdish.foodOrders.added[0].cartItems[0].restaurantName",
-      "expected_value": "Luigi's Pizzeria"
-    },
-    {
-      "description": "Correct items ordered",
-      "type": "jmespath",
-      "query": "dashdish.foodOrders.added[0].cartItems",
+      "query": "dashdish.checkout.summary.items[?name == 'Carne Asada Burrito' && quantity == `2`]",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Email was drafted or sent from GoMail",
+      "description": "Verify one 'Chips & Guac' is present in the DashDish checkout summary with the correct quantity.",
       "type": "jmespath",
-      "query": "gomail.draftEmails != null && length(gomail.draftEmails.added) > `0` || gomail.sentEmails != null && length(gomail.sentEmails.added) > `0`",
-      "expected_value": true
+      "query": "dashdish.checkout.summary.items[?name == 'Chips & Guac' && quantity == `1`]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Email mentions correct total amount",
-      "type": "llm_boolean",
-      "expected_value": true,
-      "rubric": "Does the email mention that the total was $42.50 and each person's share is $14.17?"
+      "description": "Verify the email is sent to the correct recipient and has the correct subject.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].[to, subject]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the GoMail body contains a sentence stating the total cost from DashDish.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],
   "points": 2,

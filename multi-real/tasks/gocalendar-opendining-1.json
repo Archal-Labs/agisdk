@@ -1,0 +1,45 @@
+{
+  "id": "gocalendar-opendining-1",
+  "goal": "I want to set up a monthly client dinner. Find and book 'The Capital Grille' in Scottsdale for a party of 4 at 7:30 PM on the first Friday of each of the next two months. Then, create a recurring event on my calendar for these dinners.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the restaurant name, location, party size, and time for the first reservation made in OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.reservations[0].{restaurant_name: restaurant_name, location: location, party_size: party_size, time: time}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the restaurant name, location, party size, and time for the second reservation made in OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.reservations[1].{restaurant_name: restaurant_name, location: location, party_size: party_size, time: time}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title, start time, and full recurrence details (type, interval, day of week, week of month, occurrences) for the created calendar event in GoCalendar.",
+      "type": "jmespath",
+      "query": "gocalendar.events[0].{title: title, start_time: start_time, recurrence_type: recurrence.type, recurrence_interval: recurrence.interval, recurrence_day_of_week: recurrence.day_of_week, recurrence_week_of_month: recurrence.week_of_month, recurrence_occurrences: recurrence.occurrences}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

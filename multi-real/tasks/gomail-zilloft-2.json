@@ -1,0 +1,51 @@
+{
+  "id": "gomail-zilloft-2",
+  "goal": "I need to plan my finances. Use Zilloft's mortgage calculator for a hypothetical $950,000 home in Seattle, WA. Assume a 15% down payment and use the current average 30-year fixed interest rate. Once you have the estimated monthly cost, compose an email to my financial advisor, 'sara.h@financepros.com', with the subject 'Future Home Budget' and include the principal & interest, and total monthly payment in the body.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that an email was sent to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email subject is 'Future Home Budget'.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body contains the 'Principal & Interest' amount obtained from the Zilloft calculator.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body contains the 'Total monthly payment' amount obtained from the Zilloft calculator.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

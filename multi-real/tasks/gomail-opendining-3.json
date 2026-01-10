@@ -1,0 +1,45 @@
+{
+  "id": "gomail-opendining-3",
+  "goal": "I need to plan a team dinner. Look on OpenDining for a vegan-friendly restaurant in downtown Austin for a party of 8 next Wednesday at 7 PM. Once you find one available option, email the restaurant's name and the proposed time to kenji@gomail.com and anita.r@gomail.com, asking them to confirm the time works.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that the email was addressed to both Kenji and Anita.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body clearly states the chosen restaurant name and the proposed dinner time (e.g., '7 PM').",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body contains a clear request for confirmation regarding the proposed time.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

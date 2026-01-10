@@ -1,0 +1,45 @@
+{
+  "id": "gomail-zilloft-3",
+  "goal": "Find three 'For Sale By Owner' listings in Raleigh, North Carolina. They must have a garage. For each one, pull the owner's contact email if available on the listing. Then, send a single email to myself at 'my.prospects@gomail.com' listing the addresses and the corresponding contact emails you found.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that an email was sent to the correct recipient address.",
+      "type": "jmespath",
+      "query": "gomail.emails[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the body of the sent email contains the keyword 'Address:', indicating property addresses were included.",
+      "type": "jmespath",
+      "query": "contains(gomail.emails[0].body, 'Address:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the body of the sent email contains the keyword 'Email:', indicating owner contact emails were included.",
+      "type": "jmespath",
+      "query": "contains(gomail.emails[0].body, 'Email:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

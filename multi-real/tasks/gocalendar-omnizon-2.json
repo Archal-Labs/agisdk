@@ -1,6 +1,6 @@
 {
-  "id": "gocalendar-omnizon-1",
-  "goal": "Find me three different noise-cancelling headphones on Omnizon, all under $250 and with at least a 4.5-star rating. Create a calendar event for this Saturday at 2 PM called 'Decide on Headphones' and put the links to the three options in the event description.",
+  "id": "gocalendar-omnizon-2",
+  "goal": "I see 'Bi-weekly Game Night' is on my calendar for next Thursday. For this upcoming session, please order the board game 'Catan' from Omnizon and ensure it arrives before then.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,21 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify a calendar event titled 'Decide on Headphones' is created.",
+      "description": "Verify 'Catan' was searched for in the Omnizon app.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "omnizon.search.queries[0]",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the calendar event is scheduled for the upcoming Saturday at 2 PM.",
+      "description": "Verify 'Catan' was successfully purchased from Omnizon.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].start.dateTime",
+      "query": "omnizon.orders.added[0].item_name",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the calendar event description contains at least three distinct Omnizon product URLs.",
+      "description": "Verify a shipping option that ensures timely delivery (on or before the Wednesday before game night) was selected for the Catan order.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].description",
+      "query": "omnizon.orders.added[0].shipping_type",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

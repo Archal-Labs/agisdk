@@ -1,0 +1,52 @@
+{
+  "id": "gomail-networkin-topwork-1",
+  "goal": "Our Senior Analyst, Leo Vargas, has just resigned. First, check his NetworkIn profile to see if he's announced his new company. Then, create a new *internal-only* job posting on TopWork for a 'Business Analyst' to backfill his position. Finally, send an email to helena.choi@stratacorp.net in HR, informing her of Leo's departure and linking her to the new internal job requisition.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "networkin",
+      "name": "NetworkIn",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin.vercel.app"
+    },
+    {
+      "id": "topwork",
+      "name": "TopWork",
+      "similarTo": "Indeed",
+      "previewImage": "/websitePreviews/topwork_preview.jpg",
+      "url": "https://real-topwork.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a new job posting for 'Business Analyst' was created on TopWork and marked as 'internal-only'.",
+      "type": "jmespath",
+      "query": "topwork.job_postings.added[?title=='Business Analyst' && internal_only==`true`]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email was sent to helena.choi@stratacorp.net with the subject 'Departure and Backfill for Leo Vargas'.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='helena.choi@stratacorp.net' && subject=='Departure and Backfill for Leo Vargas']",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body sent to Helena Choi contains the link to the newly created internal 'Business Analyst' job posting.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='helena.choi@stratacorp.net' && subject=='Departure and Backfill for Leo Vargas'].body | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

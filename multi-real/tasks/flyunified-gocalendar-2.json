@@ -1,0 +1,51 @@
+{
+  "id": "flyunified-gocalendar-2",
+  "goal": "Check my GoCalendar for an event called 'Dublin Tech Summit' next month. Find me a round-trip flight on FlyUnified from Boston (BOS) to Dublin (DUB) that arrives at least one day before the summit starts and leaves the day after it ends. Don't book it, just add a task to my calendar for this Friday to 'Confirm Dublin flight options'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a flight search was performed on FlyUnified with the correct origin and destination (Boston to Dublin).",
+      "type": "jmespath",
+      "query": "flyunified.flights.searched[?from=='BOS' && to=='DUB'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the departure date for the flight search is correctly set to one day before the 'Dublin Tech Summit' start date.",
+      "type": "jmespath",
+      "query": "flyunified.flights.searched[0].departureDate",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the return date for the flight search is correctly set to one day after the 'Dublin Tech Summit' end date.",
+      "type": "jmespath",
+      "query": "flyunified.flights.searched[0].returnDate",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a task titled 'Confirm Dublin flight options' was added to GoCalendar and is due this Friday.",
+      "type": "jmespath",
+      "query": "gocalendar.tasks.added[?title=='Confirm Dublin flight options'] | [0].dueDate",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

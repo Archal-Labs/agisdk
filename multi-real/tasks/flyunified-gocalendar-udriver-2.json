@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gocalendar-udriver-2",
+  "goal": "What's the next open weekend (Sat/Sun) on my calendar? For that weekend, book me a round-trip flight from Washington (DCA) to Boston (BOS). I'll also need two rides: one to DCA for my departure and one from Logan Airport to the Omni Parker House hotel when I land. Finally, block off that entire weekend on my calendar as 'Boston Getaway'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the origin and destination airports of the booked round-trip flight.",
+      "type": "jmespath",
+      "query": "[flyunified.orders.added[0].departure_airport_code, flyunified.orders.added[0].arrival_airport_code]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title of the multi-day 'Boston Getaway' event created on the calendar.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that exactly two UDriver rides were booked.",
+      "type": "jmespath",
+      "query": "length(udriver.rides.added)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the drop-off location for the UDriver ride from Logan Airport (BOS).",
+      "type": "jmespath",
+      "query": "udriver.rides.added[?pickup_location=='Logan International Airport (BOS)'].dropoff_location | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

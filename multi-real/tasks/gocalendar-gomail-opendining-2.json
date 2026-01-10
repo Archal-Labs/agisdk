@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-opendining-2",
+  "goal": "I need to organize a farewell dinner for a colleague. Find and reserve a table for 10 people at a seafood restaurant in Miami for the second Friday of next month. It must have outdoor seating. Once booked, create a calendar event for it and send an email to 'hr.events@gomail.com' with the subject 'Farewell Dinner for Mark' and include the reservation confirmation.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a booking was successfully made in OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.bookings.added | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a calendar event was created for the farewell dinner.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email for HR was sent to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email for HR has the correct subject.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

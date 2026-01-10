@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gocalendar-staynb-3",
+  "goal": "We are flying in a candidate, Kenji Tanaka, for an interview. Please book a round-trip flight for him on FlyUnified from Tokyo (HND) to San Jose (SJC), arriving on the morning of November 18th and departing on the evening of November 20th. Also, find and book him a StayNB with a 'dedicated workspace' and 'self check-in' near our office at 1 Infinite Loop, Cupertino for those two nights. Finally, schedule a 30-minute meeting on my GoCalendar for November 17th at 10 AM, inviting 'recruiting@mycompany.com', titled 'Finalize Kenji Tanaka Interview Logistics'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that the booked flight on FlyUnified is for Kenji Tanaka.",
+      "type": "jmespath",
+      "query": "flyunified.orders.added[0].passenger_name",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an accommodation was booked on StayNB and includes a 'dedicated workspace' amenity.",
+      "type": "jmespath",
+      "query": "staynb.bookings.added[0].amenities[?name=='dedicated workspace'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title of the GoCalendar event created for interview logistics.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that 'recruiting@mycompany.com' was invited to the GoCalendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].attendees[?email=='recruiting@mycompany.com'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

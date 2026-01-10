@@ -1,0 +1,45 @@
+{
+  "id": "opendining-udriver-2",
+  "goal": "Find a table for two at a quiet, romantic restaurant in Georgetown, Washington D.C. for this Saturday at 7:30 PM. Before you book it, get a fare estimate for a UDriver Lux from Dulles International Airport (IAD). If the ride is more than $80, cancel that and find a similar restaurant in Arlington, VA instead, then book that one.",
+  "websites": [
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a restaurant table was successfully booked for 2 people on Saturday at 7:30 PM.",
+      "type": "jmespath",
+      "query": "opendining.bookings.added[0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a UDriver Lux fare estimate was obtained from Dulles International Airport (IAD) to the initial Georgetown restaurant.",
+      "type": "jmespath",
+      "query": "udriver.fare_estimates.added[0].fare",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the city of the booked restaurant aligns with the UDriver fare estimate condition (Georgetown if <= $80, Arlington if > $80).",
+      "type": "jmespath",
+      "query": "opendining.bookings.added[0].restaurant.location.city",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

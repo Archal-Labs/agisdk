@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-opendining-2",
+  "goal": "Find a reservation for two at a highly-rated ramen shop in Portland for tomorrow evening. Book it, then create a calendar event for it. In the calendar event's notes, please add the restaurant's full address and the reservation confirmation ID.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a reservation was successfully made and a confirmation ID was received from OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[0].confirmation_id",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a calendar event was created in GoCalendar for the reservation.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the restaurant's address is included in the notes/description of the GoCalendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].description",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the reservation confirmation ID is included in the notes/description of the GoCalendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].description",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

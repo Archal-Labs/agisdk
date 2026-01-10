@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-udriver-2",
+  "goal": "My partner, Alex, has a 'Flight UA451 Landing' event on our shared calendar for 9:15 PM tomorrow at Austin-Bergstrom International Airport (AUS). Calculate the ideal time to leave my current location to arrive precisely at 9:15 PM, and pre-schedule a Udriver Green for that departure time. Also, add an event to my personal calendar titled 'Pick up Alex at AUS' for the calculated departure time.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a Udriver Green ride was scheduled with the correct destination.",
+      "type": "jmespath",
+      "query": "udriver.rides.scheduled[?type == 'Green' && destination == 'Austin-Bergstrom International Airport'].length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the departure time of the scheduled Udriver ride, confirming the time calculation.",
+      "type": "jmespath",
+      "query": "udriver.rides.scheduled[?type == 'Green' && destination == 'Austin-Bergstrom International Airport'].departure_time | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a new event titled 'Pick up Alex at AUS' was added to the personal calendar.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title == 'Pick up Alex at AUS' && calendar == 'personal'].length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the time of the new personal calendar event matches the calculated departure time.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title == 'Pick up Alex at AUS' && calendar == 'personal'].time | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

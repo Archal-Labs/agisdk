@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-udriver-1",
+  "goal": "I'm going to a client meeting at 'The Capital Grille' in Charlotte, NC. Book the cheapest Udriver option available right now to get me there. After the trip is completed, create a new event on my calendar for 1 PM today titled 'Client Lunch: ACME Corp' and put the final ride cost and total trip duration in the event's description for my expense report.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a Udriver ride was booked to 'The Capital Grille, Charlotte, NC' using the cheapest option.",
+      "type": "jmespath",
+      "query": "udriver.rides.booked[?destination=='The Capital Grille, Charlotte, NC' && service_type=='UdriverX Saver'].destination | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a new calendar event was created today at 1 PM with the title 'Client Lunch: ACME Corp'.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='Client Lunch: ACME Corp' && starts_at=='today 1:00 PM'].title | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the calendar event description contains the final Udriver ride cost.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='Client Lunch: ACME Corp'].description | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the calendar event description contains the total Udriver trip duration.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='Client Lunch: ACME Corp'].description | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

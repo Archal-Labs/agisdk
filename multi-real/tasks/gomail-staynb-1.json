@@ -1,0 +1,51 @@
+{
+  "id": "gomail-staynb-1",
+  "goal": "I need to find out if the 'Downtown Denver Loft' on StaynB is wheelchair accessible for a trip I'm planning for the last week of September. Please contact the host and ask if the entrance is step-free and if it has a roll-in shower. Sign the email as Beatrice.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that an email was sent from GoMail.",
+      "type": "jmespath",
+      "query": "gomail.sent_emails | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the recipient of the sent email is correct.",
+      "type": "jmespath",
+      "query": "gomail.sent_emails[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the subject line of the sent email is 'Question about accessibility'.",
+      "type": "jmespath",
+      "query": "gomail.sent_emails[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the body of the sent email contains the accessibility questions and the correct signature.",
+      "type": "jmespath",
+      "query": "gomail.sent_emails[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

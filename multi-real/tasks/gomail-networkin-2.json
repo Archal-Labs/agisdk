@@ -1,0 +1,45 @@
+{
+  "id": "gomail-networkin-2",
+  "goal": "I got an email from 'recruiter@swiftscale.co' about a Data Scientist role. Go on NetworkIn, look up the company 'SwiftScale', and find out who their Head of Talent is. Then reply to the original email and CC the Head of Talent, asking for more details about the team structure.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "networkin",
+      "name": "NetworkIn",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a reply email was sent to the original recruiter at 'recruiter@swiftscale.co'.",
+      "type": "jmespath",
+      "query": "gomail.sent_emails[?to=='recruiter@swiftscale.co'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email address was added to the CC field of the reply email to the recruiter. This should be the Head of Talent's email found on NetworkIn.",
+      "type": "jmespath",
+      "query": "gomail.sent_emails[?to=='recruiter@swiftscale.co'].cc | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the body of the reply email contains a question about the 'team structure'.",
+      "type": "jmespath",
+      "query": "contains(gomail.sent_emails[?to=='recruiter@swiftscale.co'].body | [0], 'team structure')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

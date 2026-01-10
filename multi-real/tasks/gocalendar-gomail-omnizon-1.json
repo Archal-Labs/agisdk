@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-omnizon-1",
+  "goal": "I'm starting a new health routine. Find 'Orgain Organic Protein Powder - Chocolate' on Omnizon and set up a 'Subscribe & Save' delivery for every 2 months. Then, create a recurring bi-monthly calendar event called \"Health & Fitness Goal Check-in\" for the 1st of the month at 8 AM. Finally, send an email to my accountability partner, samuel.b@fitness.net, with the link to the protein powder and the recurring calendar invitation.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://real-omnizon.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that 'Orgain Organic Protein Powder - Chocolate' is subscribed on Omnizon with the correct frequency.",
+      "type": "jmespath",
+      "query": "omnizon.subscriptions[?product_name=='Orgain Organic Protein Powder - Chocolate'].frequency | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the 'Health & Fitness Goal Check-in' event is created in GoCalendar with the correct recurrence frequency.",
+      "type": "jmespath",
+      "query": "gocalendar.events[?title=='Health & Fitness Goal Check-in'].recurrence.frequency | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email is sent to the correct accountability partner.",
+      "type": "jmespath",
+      "query": "gomail.emails[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the 'Health & Fitness Goal Check-in' calendar event is attached to the sent email.",
+      "type": "jmespath",
+      "query": "gomail.emails[0].attachments[?type=='calendar_event'].event_title | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

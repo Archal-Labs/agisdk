@@ -1,0 +1,45 @@
+{
+  "id": "opendining-udriver-3",
+  "goal": "I have a dinner reservation at 'Commander's Palace' in New Orleans for 4 people at 8pm. My guests are coming from two different locations. Please schedule a UDriver to pick up two people from the 'W New Orleans - French Quarter' hotel and a separate UDriver Green to pick up the other two from 'Louis Armstrong New Orleans International Airport' (MSY). Both rides should be timed to arrive at the restaurant by 7:55 PM.",
+  "websites": [
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the first UDriver booking from the 'W New Orleans - French Quarter' hotel to 'Commander's Palace' for 2 standard passengers was made.",
+      "type": "jmespath",
+      "query": "udriver.commands[?name=='schedule_ride' && args.pickup_location=='W New Orleans - French Quarter' && args.dropoff_location=='1403 Washington Ave, New Orleans, LA 70130' && args.num_passengers==2 && args.ride_type=='standard'] | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the second UDriver Green booking from 'Louis Armstrong New Orleans International Airport (MSY)' to 'Commander's Palace' for 2 passengers was made.",
+      "type": "jmespath",
+      "query": "udriver.commands[?name=='schedule_ride' && args.pickup_location=='Louis Armstrong New Orleans International Airport (MSY)' && args.dropoff_location=='1403 Washington Ave, New Orleans, LA 70130' && args.num_passengers==2 && args.ride_type=='green'] | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that exactly two UDriver rides were scheduled in total.",
+      "type": "jmespath",
+      "query": "length(udriver.commands[?name=='schedule_ride'])",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

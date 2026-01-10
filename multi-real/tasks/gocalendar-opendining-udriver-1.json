@@ -1,0 +1,52 @@
+{
+  "id": "gocalendar-opendining-udriver-1",
+  "goal": "I want to try and book a table for 2 at that highly-rated restaurant 'Pineapple & Pearls' in DC for next Friday at 8 PM. If there's no availability, find any other Michelin-starred restaurant in the city for the same time and book that instead. Once a reservation is secured, schedule a UDriver Black to get us there from the Watergate Hotel 30 minutes prior, and create a calendar event titled 'Anniversary Dinner'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a restaurant booking was successfully made for 2 people at 8 PM next Friday. This also captures the restaurant's name and address for cross-app verification.",
+      "type": "jmespath",
+      "query": "{restaurant_name: opendining.bookings[0].restaurant_name, restaurant_address: opendining.bookings[0].address, party_size: opendining.bookings[0].party_size, time: opendining.bookings[0].time}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a UDriver Black ride was scheduled from The Watergate Hotel, to the booked restaurant's address, for 7:30 PM next Friday.",
+      "type": "jmespath",
+      "query": "{service_type: udriver.rides[0].service_type, pickup_location: udriver.rides[0].pickup_location, dropoff_location: udriver.rides[0].dropoff_location, pickup_time: udriver.rides[0].pickup_time}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a calendar event titled 'Anniversary Dinner' was created for 8 PM next Friday, with the location set to the name of the booked restaurant.",
+      "type": "jmespath",
+      "query": "{title: gocalendar.events[0].title, start_time: gocalendar.events[0].start_time, location: gocalendar.events[0].location}",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

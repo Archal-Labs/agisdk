@@ -1,0 +1,51 @@
+{
+  "id": "opendining-udriver-1",
+  "goal": "I want to scope out a neighborhood for a client dinner. Please order me a UDriver to the Meatpacking District in NYC from my current location, departing in 15 minutes. While I'm en route, find and reserve a table for 3 at any steakhouse there with at least a 4.5-star rating for 8:00 PM tonight.",
+  "websites": [
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a UDriver ride was booked to the Meatpacking District.",
+      "type": "jmespath",
+      "query": "udriver.rides.added[0].destination",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an OpenDining reservation was made for 8:00 PM.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[0].time",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an OpenDining reservation was made for 3 people.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[0].party_size",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the reserved restaurant is a steakhouse in the Meatpacking District with at least a 4.5-star rating.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[0].restaurant",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gomail-staynb-1",
+  "goal": "My team is considering two locations for our offsite in September: London or Berlin. Find the cheapest round-trip flight from Denver (DEN) to London (LHR) for the first week of September (1st to 8th). Then, find the cheapest round-trip flight from DEN to Berlin (BER) for the same dates. For both cities, find a well-rated StaynB that can host 4 people for that week. Finally, email a summary to offsite-planning@mycompany.com with the subject 'Offsite Cost Comparison' and list the total cost (flight + 7 nights of lodging) for each city.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that flight searches were performed for both London and Berlin for the specified dates.",
+      "type": "jmespath",
+      "query": "flyunified.searches[?from_airport_code=='DEN' && (to_airport_code=='LHR' || to_airport_code=='BER') && departure_date=='2023-09-01' && return_date=='2023-09-08'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that accommodation searches were performed for both London and Berlin for 4 people for the specified dates.",
+      "type": "jmespath",
+      "query": "staynb.searches[?number_of_guests==4 && (location=='London' || location=='Berlin') && check_in_date=='2023-09-01' && check_out_date=='2023-09-08'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email was sent to the correct recipient with the correct subject.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='offsite-planning@mycompany.com' && subject=='Offsite Cost Comparison'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the sent email body contains the total cost for London and Berlin, indicating successful calculation and inclusion.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

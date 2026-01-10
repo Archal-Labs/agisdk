@@ -1,0 +1,52 @@
+{
+  "id": "gocalendar-gomail-networkin-1",
+  "goal": "Check my calendar for the 'AeroInnovate Symposium' next month. Find the keynote speaker, Dr. Aris Thorne, on NetworkIn. Draft an email to my manager, chloe.d@corp.com, summarizing Dr. Thorne's recent publications (find them on his profile) and requesting budget for a team-wide deep-dive session. Also, block out a 2-hour slot on my calendar for next Friday morning labeled 'Prep for AeroInnovate Deep-Dive'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "networkin",
+      "name": "NetworkIn",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the email to the manager was sent to the correct recipient and contains key information in the subject.",
+      "type": "jmespath",
+      "query": "[gomail.emails.added[0].to, gomail.emails.added[0].subject]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body summarizes Dr. Thorne's publications and requests budget for a deep-dive session.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a 2-hour calendar event titled 'Prep for AeroInnovate Deep-Dive' was added for next Friday morning.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='Prep for AeroInnovate Deep-Dive' && duration_minutes==`120` && day_of_week=='Friday' && time_of_day_category=='morning'].title | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

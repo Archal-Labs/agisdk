@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gocalendar-staynb-1",
+  "goal": "My GoCalendar is blocked for a mandatory conference from March 8th to 12th. I want to plan a week-long international trip immediately following it, departing from IAD. The total combined cost for the round-trip flight on FlyUnified and a StayNB with a kitchen must be under $1500. Pick any major European city. Once you find a suitable combination, block out my calendar for 'Europe Trip' and add the flight numbers and StayNB booking link to the event notes.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify 'Europe Trip' event is created in GoCalendar with the correct title.",
+      "type": "jmespath",
+      "query": "gocalendar.events[?title=='Europe Trip'] | [0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a flight booking is made on FlyUnified, checking for the presence of flight numbers.",
+      "type": "jmespath",
+      "query": "flyunified.orders[0].flight_numbers[0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify accommodation with a kitchen is booked on StayNB.",
+      "type": "jmespath",
+      "query": "staynb.bookings[0].has_kitchen",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify GoCalendar event notes contain the flight numbers and StayNB booking link.",
+      "type": "jmespath",
+      "query": "gocalendar.events[?title=='Europe Trip'] | [0].notes",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

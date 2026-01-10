@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-opendining-udriver-3",
+  "goal": "Plan a fun night out for me and 3 friends in Miami this Saturday. First, book a table at a rooftop bar in South Beach for drinks at 7 PM. Then, find a well-rated Cuban restaurant nearby for dinner at 9 PM and book that too. Arrange for a UDriverXL to pick us up from the Loews Miami Beach Hotel to get to the bar, and another one to get from the bar to the restaurant. Finally, put the whole itinerary in a single calendar event.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "udriver",
+      "name": "Udriver",
+      "similarTo": "Uber",
+      "previewImage": "/websitePreviews/udriver_preview.jpg",
+      "url": "https://real-udriver.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a rooftop bar reservation for 4 people is booked for 7 PM on OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[?party_size==`4` && time=='07:00 PM'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a Cuban restaurant reservation for 4 people is booked for 9 PM on OpenDining.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[?party_size==`4` && time=='09:00 PM'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that two UDriverXL rides are booked for the correct vehicle type.",
+      "type": "jmespath",
+      "query": "udriver.rides.added[?vehicle_type=='UDriverXL'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a GoCalendar event 'Miami Night Out' is created from 7 PM to 11 PM with a description.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='Miami Night Out' && start_time=='07:00 PM' && end_time=='11:00 PM'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

@@ -1,0 +1,45 @@
+{
+  "id": "flyunified-gocalendar-3",
+  "goal": "My colleague's flight, FlyUnified FU789 from Chicago (ORD) to San Diego (SAN), is scheduled for the 10th of next month. Can you find its scheduled arrival time and then create an event on my calendar to 'Leave for airport to pick up Maya' that is set for 90 minutes before the flight's arrival?",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the title of the created calendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the date of the created calendar event is on the 10th of next month.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].date",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the time of the created calendar event, which should be 90 minutes before the scheduled flight arrival.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].time",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

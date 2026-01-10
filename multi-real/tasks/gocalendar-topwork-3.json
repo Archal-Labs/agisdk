@@ -1,0 +1,45 @@
+{
+  "id": "gocalendar-topwork-3",
+  "goal": "I'm planning to apply for a 'Product Marketing Manager' role next quarter. Find 3 companies hiring for this role on TopWork. Then, set a monthly recurring reminder on my calendar for the first Monday of each month to check for new postings from these companies.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "topwork",
+      "name": "TopWork",
+      "similarTo": "Indeed",
+      "previewImage": "/websitePreviews/topwork_preview.jpg",
+      "url": "https://real-topwork.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a new recurring event was successfully created in Gocalendar.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title of the recurring event includes the three company names identified from TopWork and follows the specified format.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the recurrence rule for the event is correctly set to occur on the first Monday of every month.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].recurrence.rule",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

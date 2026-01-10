@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gocalendar-staynb-2",
+  "goal": "I want to see the cherry blossoms in Washington D.C. next year. Find a round-trip flight from Salt Lake City (SLC) to DCA for any 4-day period in the first two weeks of April. Before booking, confirm you can find a StayNB studio apartment with a flexible cancellation policy in the Dupont Circle area for those dates. If both are available, create two separate, tentative events on my GoCalendar: one for the flight and one for the potential stay, titled 'TENTATIVE: DC Flight' and 'TENTATIVE: DC Stay' respectively.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that the 'TENTATIVE: DC Flight' event was successfully created in GoCalendar and has a start date.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Flight' && start != null] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the 'TENTATIVE: DC Stay' event was successfully created in GoCalendar and has a start date.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Stay' && start != null] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the start date for the flight event matches the start date for the stay event, ensuring date consistency across bookings.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Flight'].start[0] == gocalendar.events.added[?title=='TENTATIVE: DC Stay'].start[0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the end date for the flight event matches the end date for the stay event, ensuring date consistency across bookings for the full duration.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Flight'].end[0] == gocalendar.events.added[?title=='TENTATIVE: DC Stay'].end[0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

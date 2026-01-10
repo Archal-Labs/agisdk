@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-omnizon-2",
+  "goal": "My parents' 40th wedding anniversary is on August 10th. Check my calendar for that day to see if I have any conflicts. If my schedule is clear, find and order a 'Nixplay 10.1 inch Smart Digital Photo Frame' from Omnizon. Once ordered, draft an email to my siblings (family@ourclan.net) with the subject 'Group Gift for Mom & Dad' and include the order confirmation. Do not send it yet. Also, create an event on August 9th at 6 PM to remind me to 'Set up photo frame slideshow'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://real-omnizon.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the 'Nixplay 10.1 inch Smart Digital Photo Frame' was ordered from Omnizon.",
+      "type": "jmespath",
+      "query": "omnizon.orders.added[?item_name=='Nixplay 10.1 inch Smart Digital Photo Frame'].item_name | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify an email draft was created for siblings with the correct subject and recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='family@ourclan.net' && subject=='Group Gift for Mom & Dad'] | [0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email draft body contains the order confirmation from Omnizon.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?contains(body, omnizon.orders.added[0].confirmation_details)] | [0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the reminder event 'Set up photo frame slideshow' was created on August 9th at 6 PM in GoCalendar.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[?title=='Set up photo frame slideshow' && date=='August 9th' && time=='6 PM'] | [0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

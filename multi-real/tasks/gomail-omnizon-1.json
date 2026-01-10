@@ -1,0 +1,51 @@
+{
+  "id": "gomail-omnizon-1",
+  "goal": "I'm setting up a home podcast studio. Please search Omnizon for three items: a 'Rode PodMic', a 'Focusrite Scarlett 2i2' audio interface, and 'XLR cables (2-pack)', ensuring all are currently in stock. Then, draft an email to my co-host at podcastpals@email.net with the subject 'Studio Gear List' containing the individual product links and the total estimated cost for all three items.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://real-omnizon.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the recipient of the drafted email.",
+      "type": "jmespath",
+      "query": "gomail.drafts[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the subject of the drafted email.",
+      "type": "jmespath",
+      "query": "gomail.drafts[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that all three product links (Rode PodMic, Focusrite Scarlett 2i2, XLR cables) are present in the email body.",
+      "type": "jmespath",
+      "query": "contains(gomail.drafts[0].body, 'rode-podmic') && contains(gomail.drafts[0].body, 'focusrite-scarlett-2i2') && contains(gomail.drafts[0].body, 'xlr-cables')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the presence of the total estimated cost in the email body.",
+      "type": "jmespath",
+      "query": "contains(gomail.drafts[0].body, 'Total estimated cost:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

@@ -1,0 +1,45 @@
+{
+  "id": "dashdish-gomail-3",
+  "goal": "My friend, Kenji Tanaka (kenji.t@gomail.com), just emailed me his lunch order. Find the email, see what he wants from 'Pho King Good', and add his item plus a 'Banh Mi' for myself to a new DashDish cart. Don't check out yet.",
+  "websites": [
+    {
+      "id": "dashdish",
+      "name": "DashDish",
+      "similarTo": "DoorDash",
+      "previewImage": "/websitePreviews/dashdish_preview.jpg",
+      "url": "https://real-dashdish.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify 'Banh Mi' was successfully added to the DashDish cart.",
+      "type": "jmespath",
+      "query": "contains(dashdish.cart.items[*].name, 'Banh Mi')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that exactly two items are present in the DashDish cart, indicating both Kenji's order and 'Banh Mi' were added.",
+      "type": "jmespath",
+      "query": "length(dashdish.cart.items)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that no order was placed, meaning checkout was not completed.",
+      "type": "jmespath",
+      "query": "length(dashdish.orders.placed)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

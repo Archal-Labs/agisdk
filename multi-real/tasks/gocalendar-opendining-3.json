@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-opendining-3",
+  "goal": "My plans for Saturday night just got cancelled. My evening is free from 7 PM onwards. Find me a table for one at any sushi restaurant in downtown Austin with at least 4.5 stars and book it. Then, block off a 90-minute slot on my calendar for 'Solo Sushi Night' starting at whatever time you booked.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a reservation was successfully added in OpenDining, checking for the restaurant name.",
+      "type": "jmespath",
+      "query": "opendining.reservations.added[0].restaurantName",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a new event was created in GoCalendar with the correct title.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the calendar event created in GoCalendar has the correct duration.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].durationMinutes",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the calendar event's start time matches the reservation time booked via OpenDining.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].startTime",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

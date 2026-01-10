@@ -1,20 +1,20 @@
 {
   "id": "dashdish-gomail-1",
-  "goal": "Order four Turkey Clubs and two Veggie Wraps from The Sandwich Shop for delivery. Once the order is complete, forward the receipt from my email to finance@corp.com for reimbursement.",
+  "goal": "I have an email from 'rewards@dashdish-corp.com' with the subject 'Your $25 Credit!'. Find that email, get the promo code, and then use it to order a large Pepperoni Pizza from 'Luigi's Pizzeria' for delivery ASAP.",
   "websites": [
     {
       "id": "dashdish",
       "name": "DashDish",
       "similarTo": "DoorDash",
       "previewImage": "/websitePreviews/dashdish_preview.jpg",
-      "url": "https://evals-dashdish.vercel.app"
+      "url": "https://real-dashdish.vercel.app"
     },
     {
       "id": "gomail",
       "name": "GoMail",
       "similarTo": "Gmail",
       "previewImage": "/websitePreviews/gomail_preview.jpg",
-      "url": "https://evals-gomail.vercel.app"
+      "url": "https://real-gomail.vercel.app"
     }
   ],
   "difficulty": "hard",
@@ -22,28 +22,22 @@
   "possible": true,
   "evals": [
     {
-      "description": "Order was placed on DashDish",
+      "description": "Verify that the promo code found in the GoMail email was successfully applied to the DashDish order.",
       "type": "jmespath",
-      "query": "dashdish.foodOrders != null && length(dashdish.foodOrders.added) > `0`",
-      "expected_value": true
-    },
-    {
-      "description": "Correct items in order (4 Turkey Clubs, 2 Veggie Wraps)",
-      "type": "jmespath",
-      "query": "dashdish.foodOrders.added[0].cartItems",
+      "query": "dashdish.orders.added[0].promo_code",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Email was forwarded from GoMail",
+      "description": "Verify that a large Pepperoni Pizza was ordered from Luigi's Pizzeria on DashDish.",
       "type": "jmespath",
-      "query": "gomail.forwardedEmails != null && length(gomail.forwardedEmails.added) > `0`",
-      "expected_value": true
+      "query": "dashdish.orders.added[?restaurant_name=='Luigi''s Pizzeria' && items[0].name=='Pepperoni Pizza' && items[0].size=='large'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Email forwarded to finance@corp.com",
+      "description": "Verify that the credit email from 'rewards@dashdish-corp.com' with the subject 'Your $25 Credit!' was accessed in GoMail.",
       "type": "jmespath",
-      "query": "gomail.forwardedEmails.added[0].to",
-      "expected_value": "finance@corp.com"
+      "query": "gomail.emails.opened[?from=='rewards@dashdish-corp.com' && subject=='Your $25 Credit!'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],
   "points": 2,

@@ -1,0 +1,51 @@
+{
+  "id": "gomail-opendining-1",
+  "goal": "Find my upcoming reservation at 'Pasta Fresca' in OpenDining and forward the details to my assistant at chloe.b@gomail.com so she can arrange my transport. The subject should be 'Dinner Reservation Details'.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that an email was sent from GoMail to the correct recipient.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the sent email has the correct subject line.",
+      "type": "jmespath",
+      "query": "gomail.emails.sent[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the sent email body contains the restaurant name 'Pasta Fresca', indicating reservation details were extracted and included.",
+      "type": "jmespath",
+      "query": "contains(gomail.emails.sent[0].body, 'Pasta Fresca')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the sent email body contains key reservation details like 'Date:' and 'Time:', indicating comprehensive details were included.",
+      "type": "jmespath",
+      "query": "contains(gomail.emails.sent[0].body, 'Date:') && contains(gomail.emails.sent[0].body, 'Time:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

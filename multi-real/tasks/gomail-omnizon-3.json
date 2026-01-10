@@ -1,0 +1,51 @@
+{
+  "id": "gomail-omnizon-3",
+  "goal": "Our clinic needs more supplies. Find a '50-pack of KN95 face masks' on Omnizon sold by a vendor with at least a 4.5-star rating. Then, compose a formal email to our procurement head at procurement@healthclinic.org, CCing my own email address, stating that you've identified a potential supplier. Mention the product and the seller's name and ask them to inquire about pricing for a bulk order of 1,000 units. Do not send the email, just save it in drafts.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://real-omnizon.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a new email was drafted and addressed to 'procurement@healthclinic.org'.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the user's email address was included in the CC field of the drafted email.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].cc",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the subject line of the drafted email is relevant to the supply inquiry.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].subject",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body mentions the '50-pack of KN95 face masks' product, the identified seller's name, and requests pricing for a bulk order of '1,000 units'.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

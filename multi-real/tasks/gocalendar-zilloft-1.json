@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-zilloft-1",
+  "goal": "I want to track a specific property at 1800 Pearl Street, Boulder, CO. On Zilloft, find its last sale date. Then, create an all-day event on my GoCalendar for that same date but for next year, titled 'Review Property Value: 1800 Pearl' to remind me to check its appreciation.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a new event was added to GoCalendar.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added | length",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title of the created GoCalendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the GoCalendar event is set as an all-day event.",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].allDay",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the start date of the GoCalendar event (month/day from Zilloft, year is next year).",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].startDate",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

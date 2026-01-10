@@ -1,0 +1,45 @@
+{
+  "id": "gomail-zilloft-1",
+  "goal": "Go to my inbox and find the email from 'anderson.realty@realestate.pro' with the subject 'Denver Options'. Inside, there are two addresses. Look up both on Zilloft, determine which one has a lower estimated property tax for the last year, and then reply to that email stating which address is cheaper tax-wise.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify a reply was sent to the original sender 'anderson.realty@realestate.pro'.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='anderson.realty@realestate.pro'].length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that property lookups were performed in Zilloft for at least two distinct addresses.",
+      "type": "jmespath",
+      "query": "length(zilloft.property_lookups)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the reply body contains the address that was determined to have lower property taxes.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[?to=='anderson.realty@realestate.pro'].body | [0]",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

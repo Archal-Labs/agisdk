@@ -1,0 +1,52 @@
+{
+  "id": "gomail-opendining-staynb-1",
+  "goal": "My colleagues and I are presenting at a conference in Portland, Oregon. We've already booked our flights. Find a large house on StaynB with at least 4 bedrooms available from September 22nd to September 25th. Also, find three different restaurants on OpenDining within walking distance of the house that have good reviews and can accommodate a party of 6. Email the links to the house and the three restaurant options to my team members 'ava.w@gomail.com' and 'brian.k@gomail.com' for them to vote on.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "opendining",
+      "name": "OpenDining",
+      "similarTo": "OpenTable",
+      "previewImage": "/websitePreviews/opendining_preview.jpg",
+      "url": "https://real-opendining.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that an email was sent to 'ava.w@gomail.com' and 'brian.k@gomail.com'.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body contains a link to a StaynB house.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the email body contains three distinct links to OpenDining restaurants.",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].body",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

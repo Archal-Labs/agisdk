@@ -1,0 +1,45 @@
+{
+  "id": "gomail-marrisuite-1",
+  "goal": "I'm thinking of booking the Marrisuite Denver Tech Center for a work trip from October 28th to 30th. Can you find their cancellation policy for a standard room and email a summary of the key deadlines and fees to my manager at isabelle.vance@corp-email.com?",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "marrisuite",
+      "name": "Marrisuite",
+      "similarTo": "Marriott",
+      "previewImage": "/websitePreviews/marrisuite_preview.jpg",
+      "url": "https://real-marrisuite.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify the email was addressed to the correct recipient (isabelle.vance@corp-email.com).",
+      "type": "jmespath",
+      "query": "gomail.emails.added[0].to",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email body contains keywords indicating a summary of the cancellation policy, deadlines, and/or fees.",
+      "type": "jmespath",
+      "query": "contains(gomail.emails.added[0].body, 'cancellation policy') && (contains(gomail.emails.added[0].body, 'deadline') || contains(gomail.emails.added[0].body, 'fee'))",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that exactly one email was composed and sent.",
+      "type": "jmespath",
+      "query": "length(gomail.emails.added)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}
