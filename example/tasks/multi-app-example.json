@@ -1,0 +1,52 @@
+{
+  "id": "multi-app-1",
+  "goal": "Find a job posting on Networkin for a Software Engineer position, then schedule an interview on GoCalendar for tomorrow at 2:00 PM with the title 'Interview at TechCorp'",
+  "websites": [
+    {
+      "id": "networkin",
+      "name": "Networkin",
+      "similarTo": "LinkedIn",
+      "previewImage": "/websitePreviews/networkin_preview.jpg",
+      "url": "https://real-networkin-ja5s2ugil-real-sites.vercel.app/"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app/"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Job application was submitted on Networkin",
+      "type": "jmespath",
+      "query": "networkin.jobApplications != null && length(networkin.jobApplications.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Calendar event was created on GoCalendar",
+      "type": "jmespath",
+      "query": "gocalendar.events != null && length(gocalendar.events.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Calendar event title is 'Interview at TechCorp'",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].title",
+      "expected_value": "Interview at TechCorp"
+    },
+    {
+      "description": "Calendar event time is 2:00 PM",
+      "type": "jmespath",
+      "query": "gocalendar.events.added[0].time",
+      "expected_value": "2:00 PM"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}
+

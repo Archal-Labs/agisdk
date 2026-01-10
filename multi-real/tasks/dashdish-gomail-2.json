@@ -1,0 +1,57 @@
+{
+  "id": "dashdish-gomail-2",
+  "goal": "Order a Large Supreme Pizza and a side of garlic knots from 'Luigi's Pizzeria'. After the order is placed, draft an email to leo@email.com and mikey@email.com, letting them know the total was $42.50 and their share is $14.17 each.",
+  "websites": [
+    {
+      "id": "dashdish",
+      "name": "DashDish",
+      "similarTo": "DoorDash",
+      "previewImage": "/websitePreviews/dashdish_preview.jpg",
+      "url": "https://evals-dashdish.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://evals-gomail.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Order was placed on DashDish from Luigi's Pizzeria",
+      "type": "jmespath",
+      "query": "dashdish.foodOrders != null && length(dashdish.foodOrders.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Correct restaurant",
+      "type": "jmespath",
+      "query": "dashdish.foodOrders.added[0].cartItems[0].restaurantName",
+      "expected_value": "Luigi's Pizzeria"
+    },
+    {
+      "description": "Correct items ordered",
+      "type": "jmespath",
+      "query": "dashdish.foodOrders.added[0].cartItems",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Email was drafted or sent from GoMail",
+      "type": "jmespath",
+      "query": "gomail.draftEmails != null && length(gomail.draftEmails.added) > `0` || gomail.sentEmails != null && length(gomail.sentEmails.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Email mentions correct total amount",
+      "type": "llm_boolean",
+      "expected_value": true,
+      "rubric": "Does the email mention that the total was $42.50 and each person's share is $14.17?"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-omnizon-1",
+  "goal": "Order two 12oz bags of 'Stumptown Holler Mountain' whole bean coffee on Omnizon. Then, add a reminder to my calendar for 3 weeks from today to 'Re-order coffee'.",
+  "websites": [
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://evals-omnizon.vercel.app"
+    },
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://evals-gocalendar.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Coffee was added to cart or order was placed on Omnizon",
+      "type": "jmespath",
+      "query": "omnizon.cart != null && length(omnizon.cartDiff.added) > `0` || omnizon.orders != null && length(omnizon.orders.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Correct product in cart/order",
+      "type": "jmespath",
+      "query": "omnizon.cartDiff.added[0].name || omnizon.orders.added[0].items[0].name",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Calendar event or reminder was created on GoCalendar",
+      "type": "jmespath",
+      "query": "gocalendar.events != null && length(gocalendar.eventsDiff.added) > `0` || gocalendar.reminders != null && length(gocalendar.remindersDiff.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Calendar event title contains 'Re-order coffee'",
+      "type": "jmespath",
+      "query": "gocalendar.eventsDiff.added[0].title || gocalendar.remindersDiff.added[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

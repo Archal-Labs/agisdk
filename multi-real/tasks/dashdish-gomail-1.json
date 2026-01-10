@@ -1,0 +1,51 @@
+{
+  "id": "dashdish-gomail-1",
+  "goal": "Order four Turkey Clubs and two Veggie Wraps from The Sandwich Shop for delivery. Once the order is complete, forward the receipt from my email to finance@corp.com for reimbursement.",
+  "websites": [
+    {
+      "id": "dashdish",
+      "name": "DashDish",
+      "similarTo": "DoorDash",
+      "previewImage": "/websitePreviews/dashdish_preview.jpg",
+      "url": "https://evals-dashdish.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://evals-gomail.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Order was placed on DashDish",
+      "type": "jmespath",
+      "query": "dashdish.foodOrders != null && length(dashdish.foodOrders.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Correct items in order (4 Turkey Clubs, 2 Veggie Wraps)",
+      "type": "jmespath",
+      "query": "dashdish.foodOrders.added[0].cartItems",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Email was forwarded from GoMail",
+      "type": "jmespath",
+      "query": "gomail.forwardedEmails != null && length(gomail.forwardedEmails.added) > `0`",
+      "expected_value": true
+    },
+    {
+      "description": "Email forwarded to finance@corp.com",
+      "type": "jmespath",
+      "query": "gomail.forwardedEmails.added[0].to",
+      "expected_value": "finance@corp.com"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

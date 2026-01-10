@@ -11,6 +11,7 @@ from agisdk.REAL.browsergym.webclones.evaluate import WebCloneEvaluator
 from agisdk.REAL.browsergym.webclones.task_config import (
     DEFAULT_VERSION,
     TaskConfig,
+    Website,
     split_task_reference,
 )
 from agisdk.REAL.logging import logger as rich_logger
@@ -160,6 +161,12 @@ class AbstractWebCloneTask(AbstractBrowserTask):
 
         self.evaluator = WebCloneEvaluator(task_config=self.task_config)
         self.goal = self.task_config.get_goal()
+
+        # Multi-app support: store all websites
+        self.websites: list[Website] = self.task_config.get_websites()
+        self.is_multi_app = self.task_config.is_multi_app()
+
+        # Primary URL for backward compatibility (first website)
         self.url = self.task_config.get_start_url()
         if not self.url:
             if "WEBCLONE_URL" in os.environ:
@@ -168,54 +175,146 @@ class AbstractWebCloneTask(AbstractBrowserTask):
                 raise ValueError(
                     "Provide a WebClones base URL or set it up as WEBCLONES_URL env var."
                 )
+
+        # Dict to store background pages for each website (populated in setup)
+        self._website_pages: dict[str, playwright.sync_api.Page] = {}
+
         rich_logger.info(f"⚙️ Initialized {self.canonical_task_id} task.")
+        if self.is_multi_app:
+            website_ids = [w.id for w in self.websites]
+            rich_logger.info(f"🌐 Multi-app task with websites: {website_ids}")
         rich_logger.info(f"🎯 Goal: {self.goal}")
 
     def setup(self, page: playwright.sync_api.Page) -> tuple[str, dict]:
+        """
+        Set up the task by configuring all websites.
+        For multi-app tasks, creates a background page for each website and visits /config.
+        """
         self.page = page
-        self.background_page = page.context.new_page()
+
         # Historical v1 leaderboard expects bare task ids (e.g., "dashdish-3") rather than "v1.dashdish-3".
         config_task_id = self.canonical_task_id
         if self.task_version == "v1" and getattr(self, "run_id", "0") != "0":
             config_task_id = self.task_name
-        config_url = self.url + (f"/config?run_id={self.run_id}&task_id={config_task_id}&latency=0")
-        self.background_page.goto(config_url)
-        self.background_page.wait_for_load_state("networkidle")
-        finish_url = self.url + "/finish"
-        self.background_page.goto(finish_url)
-        self.page.bring_to_front()  # Ensure main page stays focused
+
+        # Configure each website
+        for website in self.websites:
+            # Create a background page for this website
+            bg_page = page.context.new_page()
+            self._website_pages[website.id] = bg_page
+
+            # Visit config endpoint for this website
+            config_url = f"{website.url}/config?run_id={self.run_id}&task_id={config_task_id}&latency=0"
+            bg_page.goto(config_url)
+            bg_page.wait_for_load_state("networkidle")
+
+            # Pre-visit finish endpoint to initialize state tracking
+            finish_url = f"{website.url}/finish"
+            bg_page.goto(finish_url)
+
+            logger.debug(f"Configured website: {website.id} at {website.url}")
+
+        # Keep backward compatibility: self.background_page points to primary site
+        self.background_page = self._website_pages[self.websites[0].id]
+
+        # Navigate main page to primary website
+        self.page.bring_to_front()
         self.page.goto(self.url)
-        return self.goal, {}
+
+        return self.goal, {"websites": [w.id for w in self.websites]}
 
     def teardown(self) -> None:
-        self.background_page.close()
+        """Close all browser pages including background pages for all websites."""
+        # Close all website background pages
+        for website_id, bg_page in self._website_pages.items():
+            bg_page.close()
+            logger.debug(f"Closed background page for website: {website_id}")
+        self._website_pages.clear()
         self.page.close()
 
     def get_finish_json(self, timeout: int = 1000) -> dict:
-        logger.debug("Fetching finish JSON...")
+        """
+        Fetch final state JSON from all website /finish endpoints.
+
+        For single-app tasks: returns the raw state dict from that website.
+        For multi-app tasks: returns a dict keyed by website_id containing each site's state.
+            e.g., {"networkin": {...}, "gocalendar": {...}}
+
+        Args:
+            timeout: Timeout in ms for page navigation
+
+        Returns:
+            Environment state dict (nested by website_id for multi-app tasks)
+        """
+        logger.debug("Fetching finish JSON from all websites...")
+
+        if self.is_multi_app:
+            return self._get_multi_app_finish_json(timeout)
+        else:
+            return self._get_single_app_finish_json(timeout)
+
+    def _get_single_app_finish_json(self, timeout: int) -> dict:
+        """Fetch finish JSON for a single-app task (backward compatible)."""
         env_state_json = {}
         error_message = ""
+
+        bg_page = self._website_pages.get(self.websites[0].id, self.background_page)
+        website_url = self.websites[0].url
+
         try:
-            try:
-                logger.debug("Navigating to finish endpoint for env state")
-                self.background_page.goto(self.url + "/finish", timeout=timeout)
-                self.background_page.wait_for_load_state("networkidle", timeout=timeout)
-                pre_element = self.background_page.wait_for_selector("pre")
-                if pre_element:
-                    env_state = pre_element.inner_text()
-                    try:
-                        env_state_json = json.loads(env_state)
-                    except json.JSONDecodeError as e:
-                        error_message = f"Invalid JSON format: {str(e)}"
-                else:
-                    error_message = "No state data available"
-            except playwright.sync_api.TimeoutError:
-                error_message = "Validation endpoint not yet available"
+            logger.debug(f"Navigating to finish endpoint: {website_url}/finish")
+            bg_page.goto(f"{website_url}/finish", timeout=timeout)
+            bg_page.wait_for_load_state("networkidle", timeout=timeout)
+            pre_element = bg_page.wait_for_selector("pre")
+            if pre_element:
+                env_state = pre_element.inner_text()
+                env_state_json = json.loads(env_state)
+            else:
+                error_message = "No state data available"
+        except playwright.sync_api.TimeoutError:
+            error_message = "Validation endpoint not yet available"
+        except json.JSONDecodeError as e:
+            error_message = f"Invalid JSON format: {str(e)}"
         except Exception as e:
             error_message = f"Validation error: {str(e)}"
-        if error_message != "":
-            raise ValueError(error_message)
+
+        assert error_message == "", error_message
         return env_state_json
+
+    def _get_multi_app_finish_json(self, timeout: int) -> dict:
+        """
+        Fetch finish JSON from all websites for a multi-app task.
+        Returns a dict keyed by website_id.
+        """
+        merged_state: dict[str, dict] = {}
+        errors: list[str] = []
+
+        for website in self.websites:
+            bg_page = self._website_pages.get(website.id)
+            assert bg_page is not None, f"No background page for website: {website.id}"
+
+            try:
+                logger.debug(f"Navigating to finish endpoint: {website.url}/finish")
+                bg_page.goto(f"{website.url}/finish", timeout=timeout)
+                bg_page.wait_for_load_state("networkidle", timeout=timeout)
+                pre_element = bg_page.wait_for_selector("pre")
+
+                if pre_element:
+                    env_state = pre_element.inner_text()
+                    merged_state[website.id] = json.loads(env_state)
+                    logger.debug(f"Collected state from {website.id}")
+                else:
+                    errors.append(f"No state data available from {website.id}")
+
+            except playwright.sync_api.TimeoutError:
+                errors.append(f"Timeout fetching state from {website.id}")
+            except json.JSONDecodeError as e:
+                errors.append(f"Invalid JSON from {website.id}: {str(e)}")
+            except Exception as e:
+                errors.append(f"Error fetching state from {website.id}: {str(e)}")
+
+        assert len(errors) == 0, "; ".join(errors)
+        return merged_state
 
     def _has_script_eval(self) -> bool:
         """Return True if any evaluation uses a Python script."""

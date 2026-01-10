@@ -1,0 +1,37 @@
+{
+    "id": "multi-app-1",
+    "goal": "Find a job on Networkin and schedule an interview on GoCalendar",
+    "websites": [
+      {
+        "id": "networkin",
+        "name": "Networkin",
+        "similarTo": "LinkedIn",
+        "url": "https://real-networkin.vercel.app/"
+      },
+      {
+        "id": "gocalendar",
+        "name": "GoCalendar",
+        "similarTo": "Google Calendar",
+        "url": "https://real-gocalendar.vercel.app/"
+      }
+    ],
+    "difficulty": "hard",
+    "challengeType": "action",
+    "possible": true,
+    "evals": [
+      {
+        "description": "Job application submitted on Networkin",
+        "type": "jmespath",
+        "query": "networkin.jobApplications.added[0] != null",
+        "expected_value": true
+      },
+      {
+        "description": "Interview scheduled on GoCalendar",
+        "type": "jmespath",
+        "query": "gocalendar.events.added[0].title",
+        "expected_value": "Interview"
+      }
+    ],
+    "points": 2,
+    "config": {}
+  }

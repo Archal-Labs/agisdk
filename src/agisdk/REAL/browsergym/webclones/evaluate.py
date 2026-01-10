@@ -225,45 +225,67 @@ class WebCloneEvaluator:
                     rich_logger.warning(f"⚠️ Could not delete temp file {temp_path}: {e}")
 
     def evaluate(self, env_state: dict = None, model_response: str = None):
+        """
+        Evaluate task completion against the configured evals.
+
+        Args:
+            env_state: Environment state from website(s).
+                - For single-app tasks: raw state dict from the website's /finish endpoint
+                - For multi-app tasks: nested dict keyed by website_id
+                  e.g., {"networkin": {...}, "gocalendar": {...}}
+            model_response: The agent's final text response
+
+        Returns:
+            Tuple of (reward, done, message, info)
+        """
         results = []
+        is_multi_app = self.task_config.is_multi_app()
+
         # Display environment state using Rich logging
-        rich_logger.info("🌍 Environment State:")
+        if is_multi_app:
+            rich_logger.info("🌍 Multi-App Environment State (nested by website_id):")
+        else:
+            rich_logger.info("🌍 Environment State:")
         env_state_str = json.dumps(env_state, indent=4)
         rich_logger.print(f"[dim]{env_state_str}[/dim]")
 
-        for i, eval in enumerate(self.task_config.get_evals()):
-            if eval.type == "script":
+        for i, eval_item in enumerate(self.task_config.get_evals()):
+            if eval_item.type == "script":
                 # Execute Python script as subprocess
                 is_correct = self.execute_eval_script_subprocess(
-                    eval.script, env_state, model_response
+                    eval_item.script, env_state, model_response
                 )
                 results.append(is_correct)
                 eval_outcome = (
-                    f"script: {eval.script}, result: {is_correct[1].get('output', 'N/A')}"
+                    f"script: {eval_item.script}, result: {is_correct[1].get('output', 'N/A')}"
                 )
 
-            elif eval.type == "llm_boolean":
-                is_correct = self.evaluate_with_llm(model_response, eval.rubric)
+            elif eval_item.type == "llm_boolean":
+                is_correct = self.evaluate_with_llm(model_response, eval_item.rubric)
                 results.append(is_correct)
                 eval_outcome = f"llm eval, is_correct: {is_correct[0]}"
 
-            elif eval.type == "jmespath":
-                actual_value, error_message = self.jmespath_verify(env_state, eval.query)
+            elif eval_item.type == "jmespath":
+                # For multi-app tasks, queries should reference website_id prefix
+                # e.g., "networkin.feedPostsDiff.modified[0]"
+                # For single-app tasks, queries work directly on the state
+                # e.g., "feedPostsDiff.modified[0]"
+                actual_value, error_message = self.jmespath_verify(env_state, eval_item.query)
                 if error_message:
                     is_correct = (False, error_message)
                     actual_value = error_message
                 else:
-                    is_correct = self.exact_match(actual_value, eval.expected_value)
+                    is_correct = self.exact_match(actual_value, eval_item.expected_value)
                 results.append(is_correct)
                 eval_outcome = f"jmespath query, is_correct: {is_correct[0]}"
 
             else:
-                error_msg = f"Unknown evaluation type: {eval.type}"
+                error_msg = f"Unknown evaluation type: {eval_item.type}"
                 rich_logger.error(f"❌ {error_msg}")
                 raise ValueError(error_msg)
 
             # Display criterion evaluation using Rich logging
-            description = eval.description or f"Criterion {i + 1}"
+            description = eval_item.description or f"Criterion {i + 1}"
             if is_correct[0]:
                 rich_logger.success(f"✅ {description}: {eval_outcome}")
             else:
@@ -276,5 +298,5 @@ class WebCloneEvaluator:
         message = (
             "Task completed successfully!" if is_correct else "Task not completed successfully."
         )
-        info = {"results": results}
+        info = {"results": results, "is_multi_app": is_multi_app}
         return reward, done, message, info

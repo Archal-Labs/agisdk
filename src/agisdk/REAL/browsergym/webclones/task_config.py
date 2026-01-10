@@ -91,11 +91,37 @@ class Eval:
 
 
 @dataclass
+class Website:
+    """
+    A class to represent a website configuration for single or multi-app tasks.
+    :param id: Unique identifier for the website (e.g., "omnizon", "networkin")
+    :param url: Base URL of the website
+    :param name: Human-readable name of the website (optional)
+    :param similarTo: Real-world equivalent this site mimics (optional)
+    :param previewImage: Path to preview image (optional)
+    """
+
+    id: str
+    url: str
+    name: str = ""
+    similarTo: str = ""
+    previewImage: str = ""
+
+    def to_json(self) -> dict[str, Any]:
+        return asdict(self)
+
+
+@dataclass
 class Task:
+    """
+    A class to represent a task configuration.
+    Supports both single-app (legacy) and multi-app tasks.
+    """
+
     id: str
     version: str
     evals: list[Eval]
-    start_url: str
+    websites: list[Website]
     goal: str
     difficulty: str
     challengeType: str
@@ -103,6 +129,19 @@ class Task:
     config: dict[str, Any] | None = None
     possible: bool = True
     description: str = ""
+
+    @property
+    def start_url(self) -> str:
+        """
+        Returns the primary start URL for backward compatibility.
+        For multi-app tasks, returns the first website's URL.
+        """
+        assert len(self.websites) > 0, "Task must have at least one website"
+        return self.websites[0].url
+
+    def is_multi_app(self) -> bool:
+        """Returns True if this task involves multiple websites."""
+        return len(self.websites) > 1
 
     def to_json(self) -> dict[str, Any]:
         return asdict(self)
@@ -159,7 +198,7 @@ class TaskConfig:
 
         if not self.is_valid_config():
             raise ValueError(f"Invalid task configuration for task ID: {self.id}")
-        # Create Eval instance
+        # Create Eval instances
         eval_configs = self.config_json["evals"]
         eval_instances = []
         for eval_config in eval_configs:
@@ -170,16 +209,19 @@ class TaskConfig:
                     eval_config["type"] = "script"
             eval_instances.append(Eval(**eval_config))
 
-        start_url = self.config_json["website"]["url"]
+        # Parse websites - support both legacy "website" and new "websites" array
+        websites = self._parse_websites()
 
         trimmed_config = self.config_json.copy()
         trimmed_config.pop("evals")
-        trimmed_config.pop("website")
+        # Remove website/websites keys since we handle them separately
+        trimmed_config.pop("website", None)
+        trimmed_config.pop("websites", None)
         trimmed_config.setdefault("config", {})
 
         self.task = Task(
             evals=eval_instances,
-            start_url=start_url,
+            websites=websites,
             **trimmed_config,
         )
 
@@ -190,6 +232,38 @@ class TaskConfig:
         self.base_dir = VERSION_DIRS[version]
         self.tasks_dir = os.path.join(self.base_dir, "tasks")
         self.eval_scripts_dir = os.path.join(self.base_dir, "eval_scripts")
+
+    def _parse_websites(self) -> list[Website]:
+        """
+        Parse website configuration from task JSON.
+        Supports both legacy single 'website' field and new 'websites' array.
+        Returns a list of Website objects.
+        """
+        websites: list[Website] = []
+
+        if "websites" in self.config_json:
+            # Multi-app task with websites array
+            for website_data in self.config_json["websites"]:
+                websites.append(Website(
+                    id=website_data["id"],
+                    url=website_data["url"],
+                    name=website_data.get("name", ""),
+                    similarTo=website_data.get("similarTo", ""),
+                    previewImage=website_data.get("previewImage", ""),
+                ))
+        elif "website" in self.config_json:
+            # Legacy single-website task
+            website_data = self.config_json["website"]
+            websites.append(Website(
+                id=website_data["id"],
+                url=website_data["url"],
+                name=website_data.get("name", ""),
+                similarTo=website_data.get("similarTo", ""),
+                previewImage=website_data.get("previewImage", ""),
+            ))
+
+        assert len(websites) > 0, "Task must have at least one website configured"
+        return websites
 
     def from_json_file(self, file_path: str) -> dict[str, Any]:
         with open(file_path, encoding="utf-8") as file:
@@ -218,10 +292,19 @@ class TaskConfig:
             return False
 
     def is_valid_config(self) -> bool:
-        required_keys = ["id", "website", "goal", "evals"]
+        """
+        Validate task configuration.
+        Requires: id, goal, evals, and either 'website' or 'websites'.
+        """
+        required_keys = ["id", "goal", "evals"]
         for key in required_keys:
             if key not in self.config_json:
                 return False
+        # Must have either 'website' (legacy) or 'websites' (multi-app)
+        has_website = "website" in self.config_json
+        has_websites = "websites" in self.config_json
+        if not (has_website or has_websites):
+            return False
         return True
 
     def get_evaluation_type(self) -> str:
@@ -236,3 +319,11 @@ class TaskConfig:
         if not self.task.evals:
             return ""
         return getattr(self.task.evals[0], "expected_value", "")
+
+    def get_websites(self) -> list[Website]:
+        """Returns the list of websites for this task."""
+        return self.task.websites
+
+    def is_multi_app(self) -> bool:
+        """Returns True if this task involves multiple websites."""
+        return self.task.is_multi_app()
