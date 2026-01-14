@@ -43,62 +43,92 @@ WEBSITE_METADATA: dict[str, dict[str, str]] = {
         "name": "GoMail",
         "similarTo": "Gmail",
         "previewImage": "/websitePreviews/gomail_preview.jpg",
+        "url": "https://real-gomail.vercel.app",
     },
     "omnizon": {
         "name": "Omnizon",
         "similarTo": "Amazon",
         "previewImage": "/websitePreviews/omnizon_preview.jpg",
+        "url": "https://real-omnizon.vercel.app",
     },
     "zilloft": {
         "name": "Zilloft",
         "similarTo": "Zillow",
         "previewImage": "/websitePreviews/zilloft_preview.jpg",
+        "url": "https://real-zilloft.vercel.app",
     },
     "gocalendar": {
         "name": "GoCalendar",
         "similarTo": "Google Calendar",
         "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+        "url": "https://real-gocalendar.vercel.app",
     },
     "opendining": {
         "name": "OpenDining",
         "similarTo": "OpenTable",
         "previewImage": "/websitePreviews/opendining_preview.jpg",
+        "url": "https://real-opendining.vercel.app",
     },
     "udriver": {
         "name": "Udriver",
         "similarTo": "Uber",
         "previewImage": "/websitePreviews/udriver_preview.jpg",
+        "url": "https://real-udriver.vercel.app",
     },
     "dashdish": {
         "name": "DashDish",
         "similarTo": "DoorDash",
         "previewImage": "/websitePreviews/dashdish_preview.jpg",
+        "url": "https://real-dashdish.vercel.app",
     },
     "topwork": {
         "name": "TopWork",
         "similarTo": "Indeed",
         "previewImage": "/websitePreviews/topwork_preview.jpg",
+        "url": "https://real-topwork.vercel.app",
     },
     "staynb": {
         "name": "StaynB",
         "similarTo": "Airbnb",
         "previewImage": "/websitePreviews/staynb_preview.jpg",
+        "url": "https://real-staynb.vercel.app",
     },
     "networkin": {
         "name": "NetworkIn",
         "similarTo": "LinkedIn",
         "previewImage": "/websitePreviews/networkin_preview.jpg",
+        "url": "https://real-networkin.vercel.app",
     },
     "marrisuite": {
         "name": "Marrisuite",
         "similarTo": "Marriott",
         "previewImage": "/websitePreviews/marrisuite_preview.jpg",
+        "url": "https://real-marrisuite.vercel.app",
     },
     "flyunified": {
         "name": "FlyUnified",
         "similarTo": "United Airlines",
         "previewImage": "/websitePreviews/flyunified_preview.jpg",
+        "url": "https://real-flyunified.vercel.app",
     },
+}
+
+# Map CSV app names to JSON IDs
+APP_NAME_TO_ID = {
+    "DashDish": "dashdish",
+    "GoMail": "gomail",
+    "FlyUnified": "flyunified",
+    "GoCalendar": "gocalendar",
+    "StaynB": "staynb",
+    "StayNB": "staynb",
+    "OpenDining": "opendining",
+    "Zilloft": "zilloft",
+    "Marrisuite": "marrisuite",
+    "TopWork": "topwork",
+    "Omnizon": "omnizon",
+    "NetworkIn": "networkin",
+    "Udriver": "udriver",
+    "UDriver": "udriver",
 }
 
 
@@ -149,38 +179,37 @@ def normalize_url(url: str) -> str:
     return url.rstrip("/")
 
 
-def parse_assets_url(assets_url: str) -> list[dict[str, str]]:
+def parse_websites_from_names(websites_str: str) -> list[dict[str, str]]:
     """
-    Parse comma-separated assets_url field into list of website configurations.
+    Parse comma-separated website names into list of website configurations.
     
     Args:
-        assets_url: Comma-separated URL string from CSV
+        websites_str: Comma-separated website names from CSV (e.g., "DashDish, GoMail")
         
     Returns:
         List of website dicts with id, name, similarTo, previewImage, url
     """
     websites = []
-    urls = [u.strip() for u in assets_url.split(",") if u.strip()]
+    website_names = [w.strip() for w in websites_str.split(",") if w.strip()]
     
-    for url in urls:
-        website_id = extract_website_id_from_url(url)
+    for name in website_names:
+        website_id = APP_NAME_TO_ID.get(name)
         if not website_id:
-            logger.warning(f"Could not extract website ID from URL: {url}")
+            logger.warning(f"Unknown website name '{name}', skipping")
             continue
             
         if website_id not in WEBSITE_METADATA:
-            logger.warning(f"Unknown website ID: {website_id} from URL: {url}")
+            logger.warning(f"Website ID '{website_id}' not in metadata, skipping")
             continue
         
         metadata = WEBSITE_METADATA[website_id]
-        normalized_url = normalize_url(url)
         
         websites.append({
             "id": website_id,
             "name": metadata["name"],
             "similarTo": metadata["similarTo"],
             "previewImage": metadata["previewImage"],
-            "url": normalized_url,
+            "url": metadata["url"],
         })
     
     return websites
@@ -190,7 +219,7 @@ def parse_assets_url(assets_url: str) -> list[dict[str, str]]:
 # CSV Reading and Parsing
 # =============================================================================
 
-def read_tasks_csv(csv_path: Path) -> list[dict[str, str]]:
+def read_tasks_csv(csv_path: Path) -> list[dict[str, Any]]:
     """
     Read tasks from CSV file.
     
@@ -198,7 +227,7 @@ def read_tasks_csv(csv_path: Path) -> list[dict[str, str]]:
         csv_path: Path to tasks.csv
         
     Returns:
-        List of task dicts with keys: prompt, assets_url, workflow_guide, task_category
+        List of task dicts with keys: prompt, possible, websites
     """
     assert csv_path.exists(), f"CSV file not found: {csv_path}"
     
@@ -210,11 +239,14 @@ def read_tasks_csv(csv_path: Path) -> list[dict[str, str]]:
             if not prompt:
                 continue
             
+            possible_str = row.get("possible", "True").strip()
+            possible = possible_str.lower() == "true"
+            websites = row.get("websites", "").strip()
+            
             tasks.append({
                 "prompt": prompt,
-                "assets_url": row.get("assets_url", "").strip(),
-                "workflow_guide": row.get("workflow_guide", "").strip(),
-                "task_category": row.get("task_category", "").strip(),
+                "possible": possible,
+                "websites": websites,
             })
     
     logger.info(f"Read {len(tasks)} tasks from {csv_path}")
@@ -304,9 +336,101 @@ Websites: {', '.join(website_ids)}
 Generate placeholder evaluation criteria (evals) for this {'multi-app' if is_multi_app else 'single-app'} task.
 These will be manually refined using the actual /finish JSON structure.
 
-{"For multi-app tasks, JMESPath queries must be prefixed with website IDs like:" if is_multi_app else "JMESPath queries check the final state from the /finish endpoint. Examples:"}
-{f"- `{website_ids[0]}.orders.added[0]`" if is_multi_app else "- `orders.added[0]`"}
-{f"- `{website_ids[1]}.emails.added[0].to`" if is_multi_app and len(website_ids) > 1 else "- `emails.added[0].to`"}
+FINISH JSON STRUCTURE:
+Each app's finish JSON contains: actionhistory, initialstate, finalstate, state, initialfinaldiff (raw diff), and differences (semantic diff by entity type).
+{"For multi-app tasks, the finish JSON is structured as: {{appname1: {{...}}, appname2: {{...}}}}" if is_multi_app else "For single-app tasks, the finish JSON is the app's state directly."}
+
+GENERAL QUERY PATTERNS:
+- Checking for added items: appname.differences.entity_type.added[0]
+- Counting items: length(appname.differences.entity_type.added) >= `1` (use backticks around numbers, use >= `1` not > 0)
+- Field value checks: contains(appname.differences.entity_type.added[0].field, 'value')
+- Dict to list conversion: appname.differences.entity_type.added.values(@)[0] (for dicts, convert with values(@))
+
+APP-SPECIFIC PATTERNS:
+
+gomail (Email):
+Structure: differences.emails.added[], differences.emails.sent[], differences.emails.drafts[]
+Common queries:
+  - gomail.differences.emails.sent[0] (check email was sent)
+  - contains(gomail.differences.emails.sent[0].content, 'text') (check email contains text)
+  - contains(gomail.differences.emails.sent[0].subject, 'Subject Text') (check subject)
+  - contains(gomail.differences.emails.sent[0].recipient, 'email@example.com') (check recipient)
+  - length(gomail.differences.emails.sent) >= `1` (count sent emails)
+
+gocalendar (Calendar):
+Structure: differences.events.added{{}} (dict, use values()), differences.calendars{{}}, differences.joinedEvents{{}}
+Common queries:
+  - gocalendar.differences.events.added.values(@)[0] (get first event)
+  - contains(gocalendar.differences.events.added.values(@)[0].title, 'Meeting') (check event title)
+  - gocalendar.differences.events.added.values(@)[0].start.date (check event date)
+  - gocalendar.differences.events.added.values(@)[0].start.dateTime (check event time)
+  - length(gocalendar.differences.events.added) >= `1` (count events)
+
+opendining (Restaurant Booking):
+Structure: differences.bookings.added[], differences.reviews.added[], differences.savedRestaurants.added[]
+Common queries:
+  - opendining.differences.bookings.added[0] (check booking exists)
+  - contains(opendining.differences.bookings.added[0].restaurantName, 'Restaurant') (check restaurant name)
+  - opendining.differences.bookings.added[0].partySize >= `2` (check party size)
+  - opendining.differences.bookings.added[0].date (check date)
+
+udriver (Ride Booking):
+Structure: initialfinaldiff.added.ride.bookedTrips{{}}, finalstate.ride.bookedTrip, finalstate.ride.calculatedPrice
+Common queries:
+  - udriver.finalstate.ride.bookedTrip (check trip exists)
+  - contains(udriver.finalstate.ride.bookedTrip.pickup, 'Location') (check pickup location)
+  - contains(udriver.finalstate.ride.bookedTrip.destination, 'Location') (check destination)
+  - udriver.initialfinaldiff.added.ride.bookedTrips.values(@) (get all booked trips)
+
+flyunified (Flight Booking):
+Structure: differences.bookedFlights[], differences.selectedFlightCartIds[], differences.purchaseDetails{{}}
+Common queries:
+  - flyunified.differences.bookedFlights[0] (check flight booked)
+  - contains(flyunified.differences.bookedFlights[0].destination, 'City') (check destination)
+  - flyunified.differences.bookedFlights[0].departureDate (check departure date)
+  - length(flyunified.differences.bookedFlights) >= `1` (count flights)
+
+dashdish (Food Delivery):
+Structure: differences.foodOrders.added[], initialfinaldiff.added.cart{{}}
+Common queries:
+  - dashdish.differences.foodOrders.added[0] (check order exists)
+  - contains(dashdish.differences.foodOrders.added[0].restaurant, 'Name') (check restaurant)
+  - dashdish.initialfinaldiff.added.cart.values(@) (get cart items)
+
+staynb (Hotel Booking):
+Structure: differences.bookings.added[]
+Common queries:
+  - staynb.differences.bookings.added[0] (check booking exists)
+  - contains(staynb.differences.bookings.added[0].hotelName, 'Hotel') (check hotel name)
+  - staynb.differences.bookings.added[0].checkIn (check check-in date)
+  - staynb.differences.bookings.added[0].checkOut (check check-out date)
+
+topwork (Job Applications):
+Structure: initialfinaldiff.added.jobs{{}} (dict, use values())
+Common queries:
+  - topwork.initialfinaldiff.added.jobs.values(@) (get applied jobs)
+  - contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Position') (check job title)
+  - length(topwork.initialfinaldiff.added.jobs) >= `1` (count applications)
+
+COMMON MISTAKES TO AVOID:
+1. Wrong comparison operator: Use length(array) >= `1` NOT length(array) > 0 (backticks required around numbers)
+2. Dict vs list confusion: For dicts like events.added{{}}, use .values(@)[0] NOT [0] directly
+3. Wrong field names: Use .content NOT .body for emails, use .start.date NOT .date for events
+4. Missing app prefix (multi-app): Use gomail.differences.emails.sent[0] NOT differences.emails.sent[0]
+5. Wrong date/time access: Events use .start.date or .start.dateTime, NOT .date directly
+6. Invalid functions: Use contains() NOT intersection() (intersection is not valid JMESPath)
+7. String escaping: Escape apostrophes by doubling: 'can''t' NOT 'can't'
+8. Arithmetic operations: JMESPath does NOT support +, -, *, / operations
+9. Null safety: Check for null before accessing nested paths. Use: (path != null && path.field != null) for nested access
+10. Using untracked entities: Only query entities that are tracked by the app (see app-specific patterns above). If a path doesn't exist, check if similar paths exist (e.g., differences.emails vs initialfinaldiff.added.email)
+
+QUERY RELIABILITY GUIDELINES:
+- Prefer using 'differences' paths over 'initialfinaldiff' when both exist (differences is semantic, initialfinaldiff is raw)
+- If a query path might not exist, consider checking for existence first: (appname.differences.entity != null && appname.differences.entity.added[0])
+- Common failure modes: query bugs (syntax errors), data incomplete (path missing but similar paths exist), schema missing (entity not tracked)
+- Always use tracked entities from the app-specific patterns above - don't invent new paths
+
+{"For multi-app tasks, all queries must be prefixed with the website ID (e.g., gomail.differences.emails.sent[0])." if is_multi_app else ""}
 
 Return ONLY a valid JSON array of evals with this structure (no markdown, no explanation):
 [
@@ -322,6 +446,7 @@ IMPORTANT:
 - These queries are placeholders. Use "TODO: Add expected value after checking /finish JSON" for all expected_value fields.
 - Generate 2-4 evals that cover the key success criteria for this task.
 - Focus on verifying: actions completed, data created/modified, cross-app data flow.
+- Follow the patterns above for correct query syntax.
 - Return ONLY the JSON array, no other text.
 """
 
@@ -429,8 +554,8 @@ def main() -> None:
     for i, task in enumerate(tasks):
         logger.info(f"Processing task {i + 1}/{len(tasks)}...")
         
-        # Parse websites from assets_url
-        websites = parse_assets_url(task["assets_url"])
+        # Parse websites from comma-separated names
+        websites = parse_websites_from_names(task["websites"])
         if not websites:
             logger.error(f"No valid websites found for task: {task['prompt'][:50]}...")
             error_count += 1
@@ -444,7 +569,7 @@ def main() -> None:
         evals = generate_placeholder_evals(
             model=model,
             goal=task["prompt"],
-            workflow_guide=task["workflow_guide"],
+            workflow_guide="",  # Not available in current CSV format
             website_ids=website_ids,
         )
         
@@ -454,8 +579,9 @@ def main() -> None:
             goal=task["prompt"],
             websites=websites,
             evals=evals,
-            task_category=task["task_category"],
+            task_category="",  # Not available in current CSV format
         )
+        task_json["possible"] = task["possible"]
         output_path = output_dir / f"{task_id}.json"
         with open(output_path, "w", encoding="utf-8") as f:
             json.dump(task_json, f, indent=2)

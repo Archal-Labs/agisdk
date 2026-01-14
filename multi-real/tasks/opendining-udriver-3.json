@@ -1,6 +1,6 @@
 {
   "id": "opendining-udriver-3",
-  "goal": "I have a dinner reservation at 'Commander's Palace' in New Orleans for 4 people at 8pm. My guests are coming from two different locations. Please schedule a UDriver to pick up two people from the 'W New Orleans - French Quarter' hotel and a separate UDriver Green to pick up the other two from 'Louis Armstrong New Orleans International Airport' (MSY). Both rides should be timed to arrive at the restaurant by 7:55 PM.",
+  "goal": "My meeting might run late. Can you check on OpenDining if 'The Royal Dine' has any tables for 2 available after 9:30 PM tonight? If they do, book one, and then immediately order a UDriver to take me from 100 Van Ness Ave to 1000 Chestnut Street Apartments. If not, don't do anything.",
   "websites": [
     {
       "id": "opendining",
@@ -22,22 +22,16 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the first UDriver booking from the 'W New Orleans - French Quarter' hotel to 'Commander's Palace' for 2 standard passengers was made.",
+      "description": "Verify that a table for 2 was booked at 'The Royal Dine' via OpenDining after 9:30 PM.",
       "type": "jmespath",
-      "query": "udriver.commands[?name=='schedule_ride' && args.pickup_location=='W New Orleans - French Quarter' && args.dropoff_location=='1403 Washington Ave, New Orleans, LA 70130' && args.num_passengers==2 && args.ride_type=='standard'] | [0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "opendining.differences.bookings.added[?contains(restaurantName, 'The Royal Dine') && partySize == `2` && time >= '21:30:00'] | [0]",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
     },
     {
-      "description": "Verify the second UDriver Green booking from 'Louis Armstrong New Orleans International Airport (MSY)' to 'Commander's Palace' for 2 passengers was made.",
+      "description": "Verify that a UDriver was ordered from 100 Van Ness Ave to 1000 Chestnut Street Apartments.",
       "type": "jmespath",
-      "query": "udriver.commands[?name=='schedule_ride' && args.pickup_location=='Louis Armstrong New Orleans International Airport (MSY)' && args.dropoff_location=='1403 Washington Ave, New Orleans, LA 70130' && args.num_passengers==2 && args.ride_type=='green'] | [0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify that exactly two UDriver rides were scheduled in total.",
-      "type": "jmespath",
-      "query": "length(udriver.commands[?name=='schedule_ride'])",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "udriver.finalstate.ride.bookedTrip | [?contains(pickup.address, '100 Van Ness Ave') && contains(destination.address, '1000 Chestnut Street Apartments')] | [0]",
+      "expected_value": false
     }
   ],
   "points": 2,

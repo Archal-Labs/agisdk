@@ -1,6 +1,6 @@
 {
   "id": "gomail-staynb-1",
-  "goal": "I need to find out if the 'Downtown Denver Loft' on StaynB is wheelchair accessible for a trip I'm planning for the last week of September. Please contact the host and ask if the entrance is step-free and if it has a roll-in shower. Sign the email as Beatrice.",
+  "goal": "I have a work trip booked at 'The Pearl District Condo' in Portland. I need to find the cancellation policy for this booking on StaynB and email my findings to the finance department at finance.dept@corporate.com, specifically stating the last day for a full refund.",
   "websites": [
     {
       "id": "gomail",
@@ -22,27 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that an email was sent from GoMail.",
+      "description": "Verify that an email was sent to the finance department.",
       "type": "jmespath",
-      "query": "gomail.sent_emails | length(@)",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'finance.dept@corporate.com')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the recipient of the sent email is correct.",
+      "description": "Verify that the subject of the sent email is relevant to the task (cancellation policy and property name).",
       "type": "jmespath",
-      "query": "gomail.sent_emails[0].to",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Cancellation Policy') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'The Pearl District Condo')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the subject line of the sent email is 'Question about accessibility'.",
+      "description": "Verify that the email body explicitly states the last day for a full refund.",
       "type": "jmespath",
-      "query": "gomail.sent_emails[0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify the body of the sent email contains the accessibility questions and the correct signature.",
-      "type": "jmespath",
-      "query": "gomail.sent_emails[0].body",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'last day for a full refund')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

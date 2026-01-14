@@ -1,6 +1,6 @@
 {
   "id": "gomail-zilloft-1",
-  "goal": "Go to my inbox and find the email from 'anderson.realty@realestate.pro' with the subject 'Denver Options'. Inside, there are two addresses. Look up both on Zilloft, determine which one has a lower estimated property tax for the last year, and then reply to that email stating which address is cheaper tax-wise.",
+  "goal": "Find three 'Showcase' listings in Raleigh, North Carolina. They must be houses less than a million dollars. They must have a garage. For each one, pull the owner's contact email if available on the listing and favorite the listing. Then, send a single email to myself at 'my.prospects@gomail.com' listing the addresses and the corresponding costs you found.",
   "websites": [
     {
       "id": "gomail",
@@ -22,22 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify a reply was sent to the original sender 'anderson.realty@realestate.pro'.",
+      "description": "Verify that three listings were favorited in Zilloft.",
       "type": "jmespath",
-      "query": "gomail.emails.added[?to=='anderson.realty@realestate.pro'].length(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(zilloft.differences.favoritedListings.added)",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
     },
     {
-      "description": "Verify that property lookups were performed in Zilloft for at least two distinct addresses.",
+      "description": "Verify that a single email was sent from gomail.",
       "type": "jmespath",
-      "query": "length(zilloft.property_lookups)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true`])",
+      "expected_value": true
     },
     {
-      "description": "Verify the reply body contains the address that was determined to have lower property taxes.",
+      "description": "Verify the recipient of the sent email is 'my.prospects@gomail.com'.",
       "type": "jmespath",
-      "query": "gomail.emails.added[?to=='anderson.realty@realestate.pro'].body | [0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.prospects@gomail.com')",
+      "expected_value": false
+    },
+    {
+      "description": "Verify the content of the sent email includes addresses and costs of listings found in Raleigh.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`][0].content) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Raleigh') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Cost')",
+      "expected_value": false
     }
   ],
   "points": 2,

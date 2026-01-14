@@ -1,0 +1,58 @@
+{
+  "id": "gocalendar-gomail-omnizon-4",
+  "goal": "My book club is meeting soon and it's my turn to bring snacks. Please find a bag of dark roast coffee under $20 and a set of at least 4 coffee mugs under $40 on Omnizon. Email the links to the reading circle at reading.circle@my-groups.com with the subject 'Coffee for next meeting' to let them know what I'm getting. Lastly, set a reminder for me on Saturday at 9 AM to 'Buy coffee and mugs for book club'.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "omnizon",
+      "name": "Omnizon",
+      "similarTo": "Amazon",
+      "previewImage": "/websitePreviews/omnizon_preview.jpg",
+      "url": "https://real-omnizon.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify an email was sent to the reading circle with the correct subject.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'reading.circle@my-groups.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Coffee for next meeting')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the sent email contains content referring to dark roast coffee.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'dark roast coffee') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '$')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the sent email contains content referring to coffee mugs and implies a set of at least 4.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'coffee mugs') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'set') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '4') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '$')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a reminder was set on the calendar for Saturday at 9 AM with the correct title.",
+      "type": "jmespath",
+      "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Buy coffee and mugs for book club') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '09:00:00') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'Sat')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

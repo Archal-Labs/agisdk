@@ -18,6 +18,7 @@ DEFAULT_VERSION = "v1"
 VERSION_DIRS: dict[str, str] = {
     "v1": os.path.join(CURRENT_DIR, "v1"),
     "v2": os.path.join(CURRENT_DIR, "v2"),
+    "multi": os.path.join(CURRENT_DIR, "multi"),  # Multi-app benchmark tasks
 }
 
 for version, path in VERSION_DIRS.items():

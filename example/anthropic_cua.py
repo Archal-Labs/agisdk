@@ -23,7 +23,9 @@ from agisdk.REAL.tasks import all_tasks as tasks
 def run_task(task: dict, run_id: str, model: Anthropic, timeout_ms: int = 420000) -> dict:
     t0 = time.time()
     tid = task["id"]
-    base = task["website"]["url"]
+    task_version = task.get("version", DEFAULT_VERSION)
+    task_config = TaskConfig(tid, task_version)
+    base = task_config.task.start_url  # Primary URL (first website)
     goal = task["goal"]
     cfg = f"{base}/config?run_id={run_id}&task_id={tid}&removePopup=true"
 
@@ -57,9 +59,17 @@ def run_task(task: dict, run_id: str, model: Anthropic, timeout_ms: int = 420000
         print(f"✅ [{tid}] Browser started successfully")
 
         print(f"🤖 [{tid}] Sending task to Claude...")
-        print(
-            f"    Prompt: First navigate to {cfg} to configure the task, then complete this goal: {goal}"
-        )
+        is_multi = task_config.is_multi_app()
+        
+        # Build prompt with instructions for collecting finish state
+        if is_multi:
+            websites_info = ", ".join([f"{w.id} at {w.url}" for w in task_config.get_websites()])
+            finish_instruction = f"When the task is complete, navigate to the /finish endpoint on each website ({websites_info}) and extract the JSON from the <pre> element on each page. Combine them into a single JSON object with website IDs as keys: {{'{task_config.get_websites()[0].id}': {{...}}, '{task_config.get_websites()[1].id}': {{...}}}}. Return only the combined JSON."
+        else:
+            finish_instruction = f"When the task is complete, immediately navigate to {base}/finish and extract the JSON from the <pre> element on that page. Return only the JSON content from the finish page."
+        
+        print(f"    Prompt: First navigate to {cfg} to configure the task, then complete this goal: {goal}")
+        print(f"    Finish instruction: {finish_instruction[:100]}...")
 
         task_timeout = 420  # 7 minutes in seconds
         start_time = time.time()
@@ -67,7 +77,7 @@ def run_task(task: dict, run_id: str, model: Anthropic, timeout_ms: int = 420000
             model=model,
             tools=[ComputerTool(inst)],
             system=BROWSER_SYSTEM_PROMPT,
-            prompt=f"First navigate to {cfg} to configure the task, then complete this goal: {goal}. When the task is complete, immediately navigate to {base}/finish and extract the JSON from the <pre> element on that page. Return only the JSON content from the finish page.",
+            prompt=f"First navigate to {cfg} to configure the task, then complete this goal: {goal}. {finish_instruction}",
         )
         if time.time() - start_time > task_timeout:
             raise TimeoutError(f"Task {tid} exceeded 7-minute timeout")

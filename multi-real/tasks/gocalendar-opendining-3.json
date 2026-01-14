@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a reservation was successfully added in OpenDining, checking for the restaurant name.",
+      "description": "Verify that a restaurant booking for one person has been made in OpenDining.",
       "type": "jmespath",
-      "query": "opendining.reservations.added[0].restaurantName",
+      "query": "opendining.differences.bookings.added[0].partySize",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a new event was created in GoCalendar with the correct title.",
+      "description": "Verify that a calendar event titled 'Solo Sushi Night' has been created in GoCalendar.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Solo Sushi Night')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the calendar event created in GoCalendar has the correct duration.",
+      "description": "Verify that the calendar event is exactly 90 minutes long (1 hour and 30 minutes).",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].durationMinutes",
+      "query": "gocalendar.differences.events.added.values(@)[0].end.dateTime",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the calendar event's start time matches the reservation time booked via OpenDining.",
+      "description": "Verify that the restaurant booked is a sushi restaurant (by checking its name).",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].startTime",
+      "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'Sushi') || contains(opendining.differences.bookings.added[0].restaurantName, 'sushi')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

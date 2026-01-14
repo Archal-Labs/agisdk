@@ -22,21 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the restaurant name, location, party size, and time for the first reservation made in OpenDining.",
+      "description": "Verify two restaurant bookings were successfully created.",
       "type": "jmespath",
-      "query": "opendining.reservations[0].{restaurant_name: restaurant_name, location: location, party_size: party_size, time: time}",
+      "query": "length(opendining.differences.bookings.added) >= `2`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the restaurant name, location, party size, and time for the second reservation made in OpenDining.",
+      "description": "Verify the first restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the next month.",
       "type": "jmespath",
-      "query": "opendining.reservations[1].{restaurant_name: restaurant_name, location: location, party_size: party_size, time: time}",
+      "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[0].partySize == `4` && contains(opendining.differences.bookings.added[0].date, 'T19:30:00')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the title, start time, and full recurrence details (type, interval, day of week, week of month, occurrences) for the created calendar event in GoCalendar.",
+      "description": "Verify the second restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the month after next.",
       "type": "jmespath",
-      "query": "gocalendar.events[0].{title: title, start_time: start_time, recurrence_type: recurrence.type, recurrence_interval: recurrence.interval, recurrence_day_of_week: recurrence.day_of_week, recurrence_week_of_month: recurrence.week_of_month, recurrence_occurrences: recurrence.occurrences}",
+      "query": "contains(opendining.differences.bookings.added[1].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[1].partySize == `4` && contains(opendining.differences.bookings.added[1].date, 'T19:30:00')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a recurring calendar event was created for the 'Client Dinner' at 7:30 PM on the first Friday of the next month.",
+      "type": "jmespath",
+      "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Client Dinner') && contains(gocalendar.differences.events.added.values(@)[0].title, 'The Capital Grille') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T19:30:00')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

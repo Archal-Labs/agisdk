@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-topwork-1",
-  "goal": "I have a weekly 'Recruiting Pipeline Review' on my calendar every Wednesday at 9 AM. For the upcoming meeting, find the TopWork profile for a candidate named Priya Sharma who applied for the 'Cloud Architect' role and attach it as a note to this week's event.",
+  "goal": "I have a weekly 'Recruiting Pipeline Review' on my calendar every Wednesday at 9 AM. For the upcoming meeting, find the TopWork profile for a candidate who was shortlisted who applied for the 'Modern React E-Commerce Website' contractor role and attach it as a note to this week's event.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,21 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that the 'Recruiting Pipeline Review' event on gocalendar was successfully modified.",
+      "description": "Verify that the 'Recruiting Pipeline Review' event exists in the final state and has updated notes.",
       "type": "jmespath",
-      "query": "gocalendar.events.modified[?summary == 'Recruiting Pipeline Review'] | length(@)",
+      "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && notes != null && notes != '']) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the correct TopWork profile for 'Priya Sharma' for the 'Cloud Architect' position was found.",
+      "description": "Verify that the note attached to the 'Recruiting Pipeline Review' event contains a reference to 'TopWork'.",
       "type": "jmespath",
-      "query": "topwork.candidate_profiles[?name == 'Priya Sharma' && position == 'Cloud Architect'] | length(@)",
+      "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'TopWork')]) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the Gocalendar event's description now contains the specific TopWork profile URL for Priya Sharma.",
+      "description": "Verify that the note mentions the specific job role 'Modern React E-Commerce Website' for which the candidate applied.",
       "type": "jmespath",
-      "query": "contains(gocalendar.events.modified[?summary == 'Recruiting Pipeline Review'].description | [0], topwork.candidate_profiles[?name == 'Priya Sharma' && position == 'Cloud Architect'].profile_url | [0])",
+      "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'Modern React E-Commerce Website')]) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

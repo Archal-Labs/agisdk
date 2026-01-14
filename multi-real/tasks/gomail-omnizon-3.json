@@ -1,6 +1,6 @@
 {
   "id": "gomail-omnizon-3",
-  "goal": "Our clinic needs more supplies. Find a '50-pack of KN95 face masks' on Omnizon sold by a vendor with at least a 4.5-star rating. Then, compose a formal email to our procurement head at procurement@healthclinic.org, CCing my own email address, stating that you've identified a potential supplier. Mention the product and the seller's name and ask them to inquire about pricing for a bulk order of 1,000 units. Do not send the email, just save it in drafts.",
+  "goal": "I need a new coffee maker. Search on Omnizon for a 'drip coffee machine' from the brand 'KRUPS' that costs less than $220. If you find one that matches, email my partner at sam.jones@gomail.com with the subject 'Coffee emergency solved!' and include the product link. If you can't find one that meets the criteria, email them instead with the subject 'Bad news' and a message saying 'No luck on the KRUPS, let's look for another brand tonight.'",
   "websites": [
     {
       "id": "gomail",
@@ -22,28 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a new email was drafted and addressed to 'procurement@healthclinic.org'.",
+      "description": "Verify that an email was sent to the correct recipient.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
+      "expected_value": true
     },
     {
-      "description": "Verify that the user's email address was included in the CC field of the drafted email.",
+      "description": "Verify that the subject of the sent email is 'Coffee emergency solved!' (if a matching product was found).",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].cc",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
+      "expected_value": true
     },
     {
-      "description": "Verify that the subject line of the drafted email is relevant to the supply inquiry.",
+      "description": "Verify that the content of the sent email includes a product link (if a matching product was found).",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http')",
+      "expected_value": false
     },
     {
-      "description": "Verify that the email body mentions the '50-pack of KN95 face masks' product, the identified seller's name, and requests pricing for a bulk order of '1,000 units'.",
+      "description": "Verify that the subject of the sent email is 'Bad news' (if no matching product was found).",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
+      "expected_value": true
     }
   ],
   "points": 2,

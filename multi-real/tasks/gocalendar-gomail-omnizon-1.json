@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-gomail-omnizon-1",
-  "goal": "I'm starting a new health routine. Find 'Orgain Organic Protein Powder - Chocolate' on Omnizon and set up a 'Subscribe & Save' delivery for every 2 months. Then, create a recurring bi-monthly calendar event called \"Health & Fitness Goal Check-in\" for the 1st of the month at 8 AM. Finally, send an email to my accountability partner, samuel.b@fitness.net, with the link to the protein powder and the recurring calendar invitation.",
+  "goal": "I need to upgrade my home office. Find three different ergonomic office chairs on Omnizon, all under $350 and with good lumbar support. Compile the names and product links of these three chairs into an email to my financial advisor (f.advisor@consult.com) for review. Also, block out one hour on my calendar next Tuesday afternoon to 'Make final office chair purchase decision'.",
   "websites": [
     {
       "id": "gocalendar",
@@ -29,27 +29,33 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that 'Orgain Organic Protein Powder - Chocolate' is subscribed on Omnizon with the correct frequency.",
+      "description": "Verify that an email was sent to the financial advisor.",
       "type": "jmespath",
-      "query": "omnizon.subscriptions[?product_name=='Orgain Organic Protein Powder - Chocolate'].frequency | [0]",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'f.advisor@consult.com')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the 'Health & Fitness Goal Check-in' event is created in GoCalendar with the correct recurrence frequency.",
+      "description": "Verify that the sent email's subject indicates an office chair review.",
       "type": "jmespath",
-      "query": "gocalendar.events[?title=='Health & Fitness Goal Check-in'].recurrence.frequency | [0]",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Office Chair Options for Review')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that an email is sent to the correct accountability partner.",
+      "description": "Verify that the email content includes at least three product links, indicating chairs were found.",
       "type": "jmespath",
-      "query": "gomail.emails[0].to",
+      "query": "length(split(gomail.differences.emails.added[?sent == `true`][0].content, 'http')) >= `4`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the 'Health & Fitness Goal Check-in' calendar event is attached to the sent email.",
+      "description": "Verify that a calendar event was added with the correct title.",
       "type": "jmespath",
-      "query": "gomail.emails[0].attachments[?type=='calendar_event'].event_title | [0]",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Make final office chair purchase decision')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the calendar event is scheduled for next Tuesday afternoon and is 1 hour long.",
+      "type": "jmespath",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime && gocalendar.differences.events.added.values(@)[0].end.dateTime && (gocalendar.differences.events.added.values(@)[0].end.dateTime - gocalendar.differences.events.added.values(@)[0].start.dateTime) == `3600000`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

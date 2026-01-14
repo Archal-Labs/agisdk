@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gocalendar-udriver-1",
-  "goal": "Find a one-way FlyUnified flight from Las Vegas (LAS) to Nashville (BNA) on September 25th. If a main cabin ticket is available for less than $250, book it. Then, schedule a UDriver Green to take me from BNA to the Grand Hyatt Nashville upon arrival and put a 'Quarterly Review Prep' meeting on my work calendar for 10 AM the following day.",
+  "goal": "I'm flying from Seattle (SEA) to San Francisco (SFO) on November 12th. Find any flight on FlyUnified that gets in before 3 PM. Once you have the arrival time, book a UDriver for me, picking me up from 1 Hotel San Francisco exactly 45 minutes after my flight lands, and dropping me off at 1001 Castro Street. Then, create an event on my calendar for the ride titled 'Ride to Castro' with the exact pickup time.",
   "websites": [
     {
       "id": "flyunified",
@@ -29,21 +29,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify a FlyUnified main cabin flight from LAS to BNA was successfully booked for September 25th within the price limit.",
+      "description": "Verify a flight was booked on FlyUnified to SFO.",
       "type": "jmespath",
-      "query": "flyunified.orders.added[?origin=='LAS' && destination=='BNA' && date=='2024-09-25' && cabinClass=='Main Cabin' && totalPrice < 250] | length(@)",
+      "query": "contains(flyunified.differences.bookedFlights.added[0].destination, 'SFO')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify a UDriver Green ride was booked from BNA to the Grand Hyatt Nashville.",
+      "description": "Verify the UDriver pickup location is '1 Hotel San Francisco'.",
       "type": "jmespath",
-      "query": "udriver.orders.added[?pickupLocation=='Nashville International Airport (BNA)' && dropoffLocation=='Grand Hyatt Nashville' && serviceType=='Green'] | length(@)",
+      "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1 Hotel San Francisco')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the 'Quarterly Review Prep' meeting was added to the calendar for September 26th at 10 AM.",
+      "description": "Verify the UDriver dropoff location is '1001 Castro Street'.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='Quarterly Review Prep' && date=='2024-09-26' && time=='10:00 AM'] | length(@)",
+      "query": "contains(udriver.finalstate.ride.bookedTrip.destination.address, '1001 Castro Street')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify a calendar event titled 'Ride to Castro' was created.",
+      "type": "jmespath",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Ride to Castro')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

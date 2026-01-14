@@ -29,27 +29,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the email was sent to the correct recipient.",
+      "description": "Verify an email was sent to the correct recipient ('my.personal.email@gomail.com') with the subject 'Rental Comparison'.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.personal.email@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Rental Comparison')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email subject is correct.",
+      "description": "Verify the email body contains text indicating at least two rental properties (e.g., 'Address:' and 'Price:'), implying the Zilloft data was included.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].subject",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Address:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Price:')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email body contains details of at least two properties (addresses and prices).",
+      "description": "Verify a calendar event named 'Analyze Austin Rentals' was created and scheduled for 10 AM.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify the calendar event was created with the correct title.",
-      "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Analyze Austin Rentals') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '10:00:00')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

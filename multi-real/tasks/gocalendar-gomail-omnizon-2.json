@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-gomail-omnizon-2",
-  "goal": "My parents' 40th wedding anniversary is on August 10th. Check my calendar for that day to see if I have any conflicts. If my schedule is clear, find and order a 'Nixplay 10.1 inch Smart Digital Photo Frame' from Omnizon. Once ordered, draft an email to my siblings (family@ourclan.net) with the subject 'Group Gift for Mom & Dad' and include the order confirmation. Do not send it yet. Also, create an event on August 9th at 6 PM to remind me to 'Set up photo frame slideshow'.",
+  "goal": "We're setting up a new breakroom. Find an air fryer under $150, a set of kitchen knives under $50, and one large water bottle (at least 32oz) under $30 on Omnizon. Email the links for all three items to facilities@corp-email.com for them to purchase. Then, put a 15-minute reminder on my calendar for next Wednesday at 10 AM to 'Follow up on breakroom supplies'.",
   "websites": [
     {
       "id": "gocalendar",
@@ -29,27 +29,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the 'Nixplay 10.1 inch Smart Digital Photo Frame' was ordered from Omnizon.",
+      "description": "Verify that an email was sent to the correct recipient.",
       "type": "jmespath",
-      "query": "omnizon.orders.added[?item_name=='Nixplay 10.1 inch Smart Digital Photo Frame'].item_name | [0]",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify an email draft was created for siblings with the correct subject and recipient.",
+      "description": "Verify that the sent email's subject line is relevant to breakroom supplies.",
       "type": "jmespath",
-      "query": "gomail.emails.added[?to=='family@ourclan.net' && subject=='Group Gift for Mom & Dad'] | [0].subject",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'breakroom supplies')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email draft body contains the order confirmation from Omnizon.",
+      "description": "Verify that the email content mentions all three requested items and includes at least one link.",
       "type": "jmespath",
-      "query": "gomail.emails.added[?contains(body, omnizon.orders.added[0].confirmation_details)] | [0].body",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'air fryer') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'knives') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'water bottle') && (contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'https'))",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the reminder event 'Set up photo frame slideshow' was created on August 9th at 6 PM in GoCalendar.",
+      "description": "Verify that a calendar event was created with the correct title and the specified start date/time.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='Set up photo frame slideshow' && date=='August 9th' && time=='6 PM'] | [0].title",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Follow up on breakroom supplies') && gocalendar.differences.events.added.values(@)[0].start.dateTime",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

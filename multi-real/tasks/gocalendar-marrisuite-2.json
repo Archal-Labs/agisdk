@@ -22,15 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that an Executive Suite at Marrisuite in London was booked for July 22nd to July 26th.",
+      "description": "Verify that a booking for Marrisuite was successfully added.",
       "type": "jmespath",
-      "query": "marrisuite.bookings.added[?location=='London' && check_in_date=='2024-07-22' && check_out_date=='2024-07-26' && room_type=='Executive Suite'] | length(@)",
+      "query": "length(marrisuite.differences.bookings.added) >= `1` && contains(marrisuite.differences.bookings.added[0].hotelName, 'Marrisuite')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a task titled 'Submit London Trip Expense Report' was added to the GoCalendar for July 29th.",
+      "description": "Verify the details of the Marrisuite booking, including check-in/out dates and room type.",
       "type": "jmespath",
-      "query": "gocalendar.tasks.added[?date=='2024-07-29' && title=='Submit London Trip Expense Report'] | length(@)",
+      "query": "marrisuite.differences.bookings.added[0].checkIn == '2024-07-22' && marrisuite.differences.bookings.added[0].checkOut == '2024-07-26' && contains(marrisuite.differences.bookings.added[0].roomType, 'Executive Suite')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a calendar event titled 'Submit London Trip Expense Report' was added for July 29th.",
+      "type": "jmespath",
+      "query": "length(gocalendar.differences.events.added.values(@)) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Submit London Trip Expense Report') && gocalendar.differences.events.added.values(@)[0].start.date == '2024-07-29'",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

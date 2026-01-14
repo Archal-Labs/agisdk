@@ -1,6 +1,6 @@
 {
   "id": "gomail-networkin-1",
-  "goal": "Find three alumni from 'Northwood University' who are currently working in 'Fintech' in 'London'. Compile a list of their names, current companies, and NetworkIn profile URLs into a new email addressed to 'career.services@northwood.edu' with the subject 'Successful Alumni in London Fintech'.",
+  "goal": "On NetworkIn, find the 'Agile Project Masters' group. Look for the most recent post by the group admin, 'Anya Petrova'. Copy the text of her post and send it in an email to my team's mailing list, 'project-team@agilecorp.io', and ask for their thoughts.",
   "websites": [
     {
       "id": "gomail",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the email is addressed to the correct recipient.",
+      "description": "Verify that an email was sent.",
       "type": "jmespath",
-      "query": "gomail.emails[0].to",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email subject is set correctly.",
+      "description": "Verify the email was sent to 'project-team@agilecorp.io'.",
       "type": "jmespath",
-      "query": "gomail.emails[0].subject",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'project-team@agilecorp.io')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email body contains substantial content, indicating alumni details were compiled.",
+      "description": "Verify the email subject is relevant to the post and the group.",
       "type": "jmespath",
-      "query": "length(gomail.emails[0].body)",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Agile Project Masters') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'post')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email body includes key labels for alumni information (Name, Company, NetworkIn Profile URL).",
+      "description": "Verify the email body contains the request for thoughts and a non-empty copied post.",
       "type": "jmespath",
-      "query": "contains(gomail.emails[0].body, 'Name:') && contains(gomail.emails[0].body, 'Company:') && contains(gomail.emails[0].body, 'NetworkIn Profile:')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'thoughts') && length(gomail.differences.emails.added[?sent == `true`][0].content) > `50`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

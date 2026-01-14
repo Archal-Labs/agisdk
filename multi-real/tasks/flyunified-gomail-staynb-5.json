@@ -1,0 +1,58 @@
+{
+  "id": "flyunified-gomail-staynb-5",
+  "goal": "I'm planning a surprise birthday trip for my sister. Book a round-trip flight on FlyUnified from Portland (PDX) to New Orleans (MSY) for her, departing May 3rd and returning May 7th. Then book a StaynB in the 'Garden District' for those 4 nights that's an 'Entire place' and has a rating of 4.8 stars or higher. After booking, send a fun 'You're going to New Orleans!' email to my sister, Chloe, at 'chloe.s@gomail.com' with the flight and stay details. Separately, forward just the booking confirmation numbers to my private address 'surprise.logistics@gomail.com' with the subject 'NOLA Bday Booked'.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a round-trip flight from PDX to MSY departing May 3rd and returning May 7th was booked on FlyUnified.",
+      "type": "jmespath",
+      "query": "flyunified.differences.bookedFlights.added[?origin=='PDX' && destination=='MSY' && departureDate=='2024-05-03' && returnDate=='2024-05-07'] | length(@) >= `1`",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a StaynB was booked for 4 nights (May 3rd to May 7th) for an 'Entire place' in the 'Garden District' with a rating of 4.8 or higher.",
+      "type": "jmespath",
+      "query": "staynb.differences.bookings.added[?checkIn=='2024-05-03' && checkOut=='2024-05-07' && contains(propertyDetails.type, 'Entire place') && contains(propertyDetails.location, 'Garden District') && propertyDetails.rating >= `4.8`] | length(@) >= `1`",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a fun email was sent to Chloe at 'chloe.s@gomail.com' with the correct subject and mentioning flight and stay details.",
+      "type": "jmespath",
+      "query": "gomail.differences.emails.added[?sent == `true` && recipient=='chloe.s@gomail.com' && contains(subject, 'You''re going to New Orleans!') && contains(content, 'flight') && contains(content, 'stay')] | length(@) >= `1`",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email containing booking confirmation numbers was sent to 'surprise.logistics@gomail.com' with the subject 'NOLA Bday Booked'.",
+      "type": "jmespath",
+      "query": "gomail.differences.emails.added[?sent == `true` && recipient=='surprise.logistics@gomail.com' && contains(subject, 'NOLA Bday Booked') && (contains(content, 'confirmation') || contains(content, 'booking'))] | length(@) >= `1`",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

@@ -1,0 +1,52 @@
+{
+  "id": "flyunified-gomail-staynb-4",
+  "goal": "My friend and I want to meet in Montreal for a vacation. I'll be flying from Miami (MIA) and they will be flying from Vancouver (YVR). We both want to arrive on July 10th. Find the cheapest one-way flight for me and the cheapest one-way for them. Then, find a StaynB for 2 guests with at least two beds that is available for 5 nights, starting July 10th. Once you have all three costs (my flight, their flight, 5 nights lodging), send an email to 'montreal.meetup.planning@gomail.com' with the subject 'Montreal Plan'. The email should detail each cost component and the final total.",
+  "websites": [
+    {
+      "id": "flyunified",
+      "name": "FlyUnified",
+      "similarTo": "United Airlines",
+      "previewImage": "/websitePreviews/flyunified_preview.jpg",
+      "url": "https://real-flyunified.vercel.app"
+    },
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "staynb",
+      "name": "StaynB",
+      "similarTo": "Airbnb",
+      "previewImage": "/websitePreviews/staynb_preview.jpg",
+      "url": "https://real-staynb.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that two flights are booked, originating from MIA and YVR, both departing on July 10th to Montreal (YUL).",
+      "type": "jmespath",
+      "query": "length(flyunified.differences.bookedFlights.added) >= `2` && contains(flyunified.differences.bookedFlights[*].origin, 'MIA') && contains(flyunified.differences.bookedFlights[*].origin, 'YVR') && contains(flyunified.differences.bookedFlights[*].destination, 'YUL') && flyunified.differences.bookedFlights.added[?departureDate=='2024-07-10'] | length(@) >= `2`",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a StaynB booking is made for 5 nights, starting on July 10th (check-out July 15th).",
+      "type": "jmespath",
+      "query": "length(staynb.differences.bookings.added) >= `1` && staynb.differences.bookings.added[0].checkIn == '2024-07-10' && staynb.differences.bookings.added[0].checkOut == '2024-07-15'",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify an email is sent to 'montreal.meetup.planning@gomail.com' with the subject 'Montreal Plan' and detailing flight and lodging costs.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'montreal.meetup.planning@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Montreal Plan') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'My flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Their flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Lodging cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

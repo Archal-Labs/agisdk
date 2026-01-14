@@ -5,6 +5,8 @@ import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
+from pathlib import Path
+from typing import Any
 
 from browser_use import Agent
 
@@ -15,11 +17,71 @@ from agisdk.REAL.browsergym.webclones.task_config import DEFAULT_VERSION, TaskCo
 worker_browsers = {}
 
 
+def sync_tasks_to_package(
+    source_dir: Path = Path("multi-real/tasks"),
+    target_dir: Path = Path("src/agisdk/REAL/browsergym/webclones/v1/tasks")
+) -> None:
+    """Sync tasks from source to package directory (handles filename/ID mismatches)."""
+    if not source_dir.exists() or not target_dir.exists():
+        return
+    for source_file in source_dir.glob("*.json"):
+        try:
+            with open(source_file) as f:
+                task = json.load(f)
+            task_id = task.get("id", source_file.stem)
+            target_file = target_dir / f"{task_id}.json"
+            with open(target_file, "w") as f:
+                json.dump(task, f, indent=2)
+        except Exception:
+            pass
+
+
+def load_tasks_from_directory(tasks_dir: Path = Path("multi-real/tasks")) -> list[dict[str, Any]]:
+    """Load tasks dynamically from directory."""
+    if not tasks_dir.exists():
+        print(f"Warning: Tasks directory not found: {tasks_dir}")
+        return []
+
+    tasks = []
+    for task_file in sorted(tasks_dir.glob("*.json")):
+        try:
+            with open(task_file) as f:
+                task = json.load(f)
+                if "id" not in task:
+                    task["id"] = task_file.stem
+                tasks.append(task)
+        except Exception as e:
+            print(f"Warning: Failed to load {task_file}: {e}")
+
+    return tasks
+
+
+class ModelWrapper:
+    """Wrapper to add provider attribute to langchain models for browser-use compatibility."""
+    def __init__(self, model, provider: str, model_name: str):
+        self._model = model
+        self.provider = provider
+        self.model = model_name
+
+    def __getattr__(self, name):
+        # Map 'model' to the underlying model's model_name if needed
+        if name == "model":
+            return getattr(self._model, "model_name", self.model)
+        return getattr(self._model, name)
+
+    def __call__(self, *args, **kwargs):
+        return self._model(*args, **kwargs)
+
+
 async def run_task(task: dict, run_id: str, llm_model) -> dict:
     """____________________________________________ Core Logic ____________________________________________"""
 
     t0 = time.time()
-    tid, goal, base = task["id"], task["goal"], task["website"]["url"]
+    tid = task["id"]
+    goal = task["goal"]
+    task_version = task.get("version", DEFAULT_VERSION)
+    task_config = TaskConfig(tid, task_version)
+    base = task_config.task.start_url  # Primary URL (first website)
     cfg = f"{base}/config?run_id={run_id}&task_id={tid}&removePopup=true"
 
     result = {
@@ -97,28 +159,53 @@ async def run_task(task: dict, run_id: str, llm_model) -> dict:
 
         """____________________________________________ Finish & Evaluation ____________________________________________"""
 
-        # Get the current page from browser session to navigate to finish
-        if agent.browser and hasattr(agent.browser, "page"):
+        # Collect finish JSON from all websites (handles both single-app and multi-app)
+        is_multi = task_config.is_multi_app()
+        env_state_json = {}
+
+        # Access browser session from agent (browser-use 0.11+)
+        browser_session = getattr(agent, 'browser_session', None)
+        page = None
+        if browser_session and hasattr(browser_session, 'page'):
+            page = browser_session.page
+        elif hasattr(agent, 'browser') and agent.browser and hasattr(agent.browser, 'page'):
             page = agent.browser.page
 
-            # Navigate to finish page
-            finish_url = f"{base}/finish"
-            print(f"Navigating to finish page: {finish_url}")
-            await page.goto(finish_url, timeout=30000)
-
-            # Wait for and get the pre element content for evaluation
+        if page:
             try:
-                await page.wait_for_selector("pre", timeout=10000)
-                pre_element = await page.query_selector("pre")
+                if is_multi:
+                    # Multi-app: collect from each website and structure as {website_id: {...}}
+                    print(f"Collecting finish state from {len(task_config.get_websites())} websites...")
+                    for website in task_config.get_websites():
+                        finish_url = f"{website.url}/finish"
+                        print(f"  Navigating to {website.id}: {finish_url}")
+                        await page.goto(finish_url, timeout=30000)
+                        await page.wait_for_selector("pre", timeout=10000)
+                        pre_element = await page.query_selector("pre")
 
-                if not pre_element:
-                    raise ValueError("Pre element not found on finish page")
+                        if pre_element:
+                            website_state_text = await pre_element.inner_text()
+                            website_state = json.loads(website_state_text)
+                            env_state_json[website.id] = website_state
+                            print(f"  ✅ Collected state from {website.id}")
+                        else:
+                            print(f"  ❌ No <pre> element found at {website.id}/finish")
+                            env_state_json[website.id] = {}
+                    print("✅ Successfully collected env_state from all websites")
+                else:
+                    # Single-app: collect from primary website
+                    finish_url = f"{base}/finish"
+                    print(f"Navigating to finish page: {finish_url}")
+                    await page.goto(finish_url, timeout=30000)
+                    await page.wait_for_selector("pre", timeout=10000)
+                    pre_element = await page.query_selector("pre")
 
-                env_state = await pre_element.inner_text()
-                env_state_json = json.loads(env_state)
+                    if not pre_element:
+                        raise ValueError("Pre element not found on finish page")
 
-                task_version = task.get("version", DEFAULT_VERSION)
-                task_config = TaskConfig(tid, task_version)
+                    env_state_text = await pre_element.inner_text()
+                    env_state_json = json.loads(env_state_text)
+
                 evaluator = WebCloneEvaluator(task_config=task_config)
                 reward, done, message, info = evaluator.evaluate(
                     env_state=env_state_json, model_response=result["response"]
@@ -140,9 +227,13 @@ async def run_task(task: dict, run_id: str, llm_model) -> dict:
             except Exception as e:
                 print(f"Unexpected evaluation error: {e}")
                 result["error"] = f"Evaluation error: {str(e)}"
+        else:
+            print(f"⚠️  Warning: Could not access browser page to collect finish state")
+            result["error"] = "Browser page not accessible for state collection"
+            result["env_state"] = {}
 
         result["ok"] = True
-        result["success"] = True
+        result["success"] = result.get("reward", 0) > 0 if "reward" in result else False
 
     except Exception as exc:
         result["error"] = str(exc)
@@ -176,10 +267,11 @@ def main() -> None:
     p.add_argument("--run-name", default=run_name)
     p.add_argument("--workers", type=int, default=1)  # Working only with 1 worker for now.
     p.add_argument(
-        "--filter", default="all"
-    )  # Default to just one task, use --filter all to run all tasks
+        "--filter", default="all", help="task id filter (substring match, or 'all' for all tasks)"
+    )
     p.add_argument("--no-headless", action="store_false")  # store_false means no browser mode.
     p.add_argument("--run-id", default=run_id)
+    p.add_argument("--tasks-dir", type=Path, default=Path("multi-real/tasks"), help="directory containing task JSON files")
 
     # New arguments for browser-use specific configuration
     p.add_argument(
@@ -190,31 +282,60 @@ def main() -> None:
     )
     p.add_argument("--max-retries", type=int, default=1, help="Number of retries for failed tasks")
     p.add_argument("--timeout", type=int, default=300, help="Timeout per task in seconds")
+    p.add_argument("--dry-run", action="store_true", help="Test infrastructure without running tasks (no API key needed)")
 
     args = p.parse_args()
 
     # Setup LLM model
-    print(f"Setting up {args.model_type} model...")
-    try:
-        from langchain_openai import ChatOpenAI
+    llm_model = None
+    if not args.dry_run:
+        print(f"Setting up {args.model_type} model...")
+        try:
+            if args.model_type == "openai":
+                from langchain_openai import ChatOpenAI
+                base_model = ChatOpenAI(model="gpt-4o", temperature=0.1)
+                llm_model = ModelWrapper(base_model, "openai", "gpt-4o")
+            elif args.model_type == "claude":
+                from langchain_anthropic import ChatAnthropic
+                base_model = ChatAnthropic(model="claude-sonnet-4-20250514", temperature=0.1)
+                llm_model = ModelWrapper(base_model, "anthropic", "claude-sonnet-4-20250514")
+            elif args.model_type == "gemini":
+                from langchain_google_genai import ChatGoogleGenerativeAI
+                base_model = ChatGoogleGenerativeAI(model="gemini-2.0-flash-exp", temperature=0.1)
+                llm_model = ModelWrapper(base_model, "google", "gemini-2.0-flash-exp")
+            elif args.model_type == "deepseek":
+                from langchain_openai import ChatOpenAI
+                base_model = ChatOpenAI(model="deepseek-chat", base_url="https://api.deepseek.com", temperature=0.1)
+                llm_model = ModelWrapper(base_model, "deepseek", "deepseek-chat")
+            else:
+                print(f"✗ Unknown model type: {args.model_type}")
+                return
 
-        llm_model = ChatOpenAI(model="gpt-4o-mini", temperature=0.1)
-        print(f"✓ {args.model_type} model configured successfully")
-    except Exception as e:
-        print(f"✗ Error setting up {args.model_type} model: {e}")
-        return
+            print(f"✓ {args.model_type} model configured successfully")
+        except Exception as e:
+            print(f"✗ Error setting up {args.model_type} model: {e}")
+            import traceback
+            traceback.print_exc()
+            return
+    else:
+        print("🔧 DRY RUN MODE - Testing infrastructure only")
 
-    # Load and filter tasks
+    # Sync and load tasks
     try:
-        from agisdk.REAL.tasks import all_tasks as tasks
+        # Sync tasks to package directory (handles filename/ID mismatches)
+        sync_tasks_to_package(args.tasks_dir)
+
+        # Load tasks dynamically from directory
+        tasks = load_tasks_from_directory(args.tasks_dir)
+        print(f"📋 Loaded {len(tasks)} tasks from {args.tasks_dir}")
 
         # Select tasks based on filter
         if args.filter == "all":
             selected = tasks
         else:
-            selected = [t for t in tasks if t["id"] == args.filter]
+            selected = [t for t in tasks if args.filter in t["id"]]
 
-        print(f"{len(selected)} tasks selected → {args.workers} workers")
+        print(f"🚀 {len(selected)} tasks selected → {args.workers} workers")
 
         if not selected:
             print(f"No tasks found matching filter: {args.filter}")
@@ -222,6 +343,8 @@ def main() -> None:
 
     except Exception as e:
         print(f"Error loading tasks: {e}")
+        import traceback
+        traceback.print_exc()
         return
 
     # Prepare for execution
@@ -235,7 +358,19 @@ def main() -> None:
     print(f"- Workers: {args.workers}")
     print(f"- Headless: {headless}")
     print(f"- Run ID: {run_id}")
+    print(f"- Dry run: {args.dry_run}")
     print("-" * 50)
+
+    if args.dry_run:
+        print("\n✅ DRY RUN COMPLETE")
+        print(f"✓ Loaded {len(tasks)} tasks successfully")
+        print(f"✓ Selected {len(selected)} tasks matching filter '{args.filter}'")
+        print(f"✓ Task syncing works")
+        print(f"✓ All infrastructure ready")
+        print("\nTo run for real, remove --dry-run and set API key:")
+        print(f"  export OPENAI_API_KEY=your_key")
+        print(f"  uv run python example/browser-use.py --filter {args.filter} --workers {args.workers} --model-type {args.model_type}")
+        return
 
     # Execute tasks with progress tracking
     with ThreadPoolExecutor(max_workers=args.workers) as pool:

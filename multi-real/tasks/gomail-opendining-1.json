@@ -1,6 +1,6 @@
 {
   "id": "gomail-opendining-1",
-  "goal": "Find my upcoming reservation at 'Pasta Fresca' in OpenDining and forward the details to my assistant at chloe.b@gomail.com so she can arrange my transport. The subject should be 'Dinner Reservation Details'.",
+  "goal": "Find my upcoming reservation at 'La Trattoria' in OpenDining and forward the details to my assistant at chloe.b@gomail.com so she can arrange my transport. The subject should be 'Dinner Reservation Details'.",
   "websites": [
     {
       "id": "gomail",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that an email was sent from GoMail to the correct recipient.",
+      "description": "Verify an email was sent.",
       "type": "jmespath",
-      "query": "gomail.emails.sent[0].to",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the sent email has the correct subject line.",
+      "description": "Verify the sent email's recipient is chloe.b@gomail.com.",
       "type": "jmespath",
-      "query": "gomail.emails.sent[0].subject",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'chloe.b@gomail.com')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the sent email body contains the restaurant name 'Pasta Fresca', indicating reservation details were extracted and included.",
+      "description": "Verify the sent email's subject is 'Dinner Reservation Details'.",
       "type": "jmespath",
-      "query": "contains(gomail.emails.sent[0].body, 'Pasta Fresca')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Dinner Reservation Details')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the sent email body contains key reservation details like 'Date:' and 'Time:', indicating comprehensive details were included.",
+      "description": "Verify the sent email's content includes 'La Trattoria' (indicating reservation details were forwarded).",
       "type": "jmespath",
-      "query": "contains(gomail.emails.sent[0].body, 'Date:') && contains(gomail.emails.sent[0].body, 'Time:')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'La Trattoria')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

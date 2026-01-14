@@ -22,15 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify a search was performed on StaynB for 'Miami, Florida' with '10+ guests' and 'Pool' amenity.",
+      "description": "Verify that a booking was added in StaynB for the team retreat.",
       "type": "jmespath",
-      "query": "staynb.searches.performed[?location=='Miami, Florida' && guests>=`10` && contains(amenities, 'Pool')]",
+      "query": "length(staynb.differences.bookings.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify an event titled 'Tentative: Team Retreat' was added to GoCalendar from Jan 22nd to Jan 26th.",
+      "description": "Verify that the booked property in StaynB is located in Miami (checking name for keyword).",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='Tentative: Team Retreat' && start_date=='2024-01-22' && end_date=='2024-01-26']",
+      "query": "contains(staynb.differences.bookings.added[0].hotelName, 'Miami') || contains(staynb.differences.bookings.added[0].location, 'Miami')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that a calendar event titled 'Tentative: Team Retreat' was added to GoCalendar.",
+      "type": "jmespath",
+      "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Tentative: Team Retreat')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the GoCalendar event for the retreat is scheduled from January 22nd to January 26th.",
+      "type": "jmespath",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.date == '2025-01-22' && gocalendar.differences.events.added.values(@)[0].end.date == '2025-01-26'",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

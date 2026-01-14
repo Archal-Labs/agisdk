@@ -1,6 +1,6 @@
 {
   "id": "opendining-udriver-2",
-  "goal": "Find a table for two at a quiet, romantic restaurant in Georgetown, Washington D.C. for this Saturday at 7:30 PM. Before you book it, get a fare estimate for a UDriver Lux from Dulles International Airport (IAD). If the ride is more than $80, cancel that and find a similar restaurant in Arlington, VA instead, then book that one.",
+  "goal": "I'm meeting a friend before we head out for dinner. Please find any available table for 4 at a French restaurant on OpenDining for 9 PM this Friday. After you've secured a reservation, schedule a UDriver to pick me up from 1001 Castro Street and drop me off at 1 Hotel San Francisco at 7:30 PM the same evening.",
   "websites": [
     {
       "id": "opendining",
@@ -22,22 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a restaurant table was successfully booked for 2 people on Saturday at 7:30 PM.",
+      "description": "Verify a restaurant reservation was successfully made on OpenDining.",
       "type": "jmespath",
-      "query": "opendining.bookings.added[0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "opendining.differences.bookings.added[0] != null",
+      "expected_value": true
     },
     {
-      "description": "Verify that a UDriver Lux fare estimate was obtained from Dulles International Airport (IAD) to the initial Georgetown restaurant.",
+      "description": "Verify the OpenDining reservation is for 4 people at 9 PM.",
       "type": "jmespath",
-      "query": "udriver.fare_estimates.added[0].fare",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "opendining.differences.bookings.added[?partySize == `4` && contains(time, '09:00 PM')]",
+      "expected_value": true
     },
     {
-      "description": "Verify the city of the booked restaurant aligns with the UDriver fare estimate condition (Georgetown if <= $80, Arlington if > $80).",
+      "description": "Verify a ride was successfully booked on UDriver.",
       "type": "jmespath",
-      "query": "opendining.bookings.added[0].restaurant.location.city",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "udriver.finalstate.ride.bookedTrip != null",
+      "expected_value": true
+    },
+    {
+      "description": "Verify the UDriver ride details: pickup, destination, and pickup time.",
+      "type": "jmespath",
+      "query": "udriver.finalstate.ride.bookedTrip | contains(pickup.address, '1001 Castro Street') && contains(destination.address, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: {'"
     }
   ],
   "points": 2,

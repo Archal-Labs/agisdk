@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gomail-staynb-2",
-  "goal": "Please arrange travel for our client, Dr. Anya Sharma. Find a business class flight on FlyUnified from San Francisco (SFO) to Tokyo (NRT) arriving on or before March 10th next year and returning March 17th. Then, identify three different 5-star StaynB \"Luxe\" properties in the Shinjuku district available for March 10-17. Draft an email to 'anya.sharma@clientcorp.com' with the subject 'Travel Proposal: Tokyo Meeting', presenting the flight details and providing the links and nightly rates for the three lodging options for her review.",
+  "goal": "Please arrange travel for our client, Dr. Anya Sharma. Find a business class flight on FlyUnified from San Francisco (SFO) to Tokyo (NRT) arriving on or before March 10th next year and returning March 17th. Then, identify a different 5-star StaynB \"Luxe\" properties in the Osaka district available for March 10-17. Draft an email to 'anya.sharma@clientcorp.com' with the subject 'Travel Proposal: Tokyo Meeting', presenting the flight details and providing the links and nightly rates for the three lodging options for her review.",
   "websites": [
     {
       "id": "flyunified",
@@ -29,27 +29,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the recipient email address of the composed email.",
+      "description": "Verify a business class flight from SFO to NRT arriving on or before March 10th and returning March 17th next year was identified/booked on FlyUnified.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
+      "query": "length(flyunified.differences.bookedFlights.added) >= `1` && contains(flyunified.differences.bookedFlights.added[0].origin, 'SFO') && contains(flyunified.differences.bookedFlights.added[0].destination, 'NRT') && contains(flyunified.differences.bookedFlights.added[0].cabinClass, 'Business') && contains(flyunified.differences.bookedFlights.added[0].departureDate, '2025-03-17') && contains(flyunified.differences.bookedFlights.added[0].arrivalDate, '2025-03')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the subject line of the composed email.",
+      "description": "Verify an email was sent to anita.sharma@clientcorp.com with the subject 'Travel Proposal: Tokyo Meeting'.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].subject",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'anya.sharma@clientcorp.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Travel Proposal: Tokyo Meeting')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the email body contains details about the FlyUnified business class flight (SFO to NRT, arriving by March 10, returning March 17).",
+      "description": "Verify the email content includes details of the SFO to NRT business class flight.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'SFO to NRT') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Business Class') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'March 10') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'March 17')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the email body lists three distinct 5-star StaynB Luxe properties in Shinjuku, including their links and nightly rates for March 10-17.",
+      "description": "Verify the email content includes details for multiple 5-star StaynB 'Luxe' properties in the Osaka district with nightly rates.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Osaka') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '5-star') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Luxe') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'nightly rates')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

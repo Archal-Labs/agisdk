@@ -1,0 +1,543 @@
+{
+  "generated_at": "2026-01-13T16:48:56.812701+00:00",
+  "ground_truth_dir": "final_states/manual",
+  "dry_run": true,
+  "tasks_processed": 84,
+  "tasks_with_gt": 23,
+  "tasks_without_gt": 61,
+  "total_evals_updated": 3,
+  "total_evals_flagged": 28,
+  "total_evals_skipped": 38,
+  "details": [
+    {
+      "task_id": "dashdish-gomail-1",
+      "task_file": "tasks/dashdish-gomail-1.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/dashdish-gomail-1.json"
+    },
+    {
+      "task_id": "flyunified-gocalendar-staynb-1",
+      "task_file": "tasks/flyunified-gocalendar-staynb-1.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
+    },
+    {
+      "task_id": "flyunified-gocalendar-staynb-2",
+      "task_file": "tasks/flyunified-gocalendar-staynb-2.json",
+      "evals": [
+        {
+          "index": 2,
+          "description": "Verify that exactly two events were added to the calendar.",
+          "query": "length(gocalendar.differences.events.added)",
+          "query_type": "unknown",
+          "old_expected_value": "TODO: Review - query returns int",
+          "new_expected_value": "TODO: Review - query returns int",
+          "derivation_method": "field_extraction_flagged",
+          "actual_query_result": "1"
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 1,
+      "skipped_count": 2,
+      "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
+    },
+    {
+      "task_id": "flyunified-gocalendar-staynb-3",
+      "task_file": "tasks/flyunified-gocalendar-staynb-3.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify a round-trip flight from HND to SJC was booked on FlyUnified.",
+          "query": "length(flyunified.differences.bookedFlights.added) >= `1` && contains(flyunified.differences.bookedFlights.added[0].departureAirport, 'HND') && contains(flyunified.differences.bookedFlights.added[0].arrivalAirport, 'SJC') && contains(flyunified.differences.bookedFlights.added[0].departureDate, '2023-11-18') && contains(flyunified.differences.bookedFlights.added[0].returnDate, '2023-11-20')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
+          "query": "length(staynb.differences.bookings.added) >= `1` && contains(staynb.differences.bookings.added[0].checkIn, '2023-11-18') && contains(staynb.differences.bookings.added[0].checkOut, '2023-11-20') && contains(staynb.differences.bookings.added[0].features, 'dedicated workspace') && contains(staynb.differences.bookings.added[0].features, 'self check-in')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 2,
+      "skipped_count": 1,
+      "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-1",
+      "task_file": "tasks/gomail-omnizon-1.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that a search for 'KN95 face masks' was performed on Omnizon.",
+          "query": "length(omnizon.initialfinaldiff.added.searches) >= `1` && contains(omnizon.initialfinaldiff.added.searches.values(@)[0].query, 'KN95 face masks')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 1,
+      "skipped_count": 3,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-2",
+      "task_file": "tasks/gomail-omnizon-2.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 3,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-3",
+      "task_file": "tasks/gomail-omnizon-3.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-4",
+      "task_file": "tasks/gomail-omnizon-4.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-5",
+      "task_file": "tasks/gomail-omnizon-5.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
+    },
+    {
+      "task_id": "gomail-topwork-1",
+      "task_file": "tasks/gomail-topwork-1.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that at least one email was sent.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify the recipient of the sent email is 'tom.h@mycorp.com'.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'tom.h@mycorp.com')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify the subject of the sent email is 'Denver Backend - Interview Slate'.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Denver Backend - Interview Slate')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 3,
+          "description": "Verify the email content lists applicant names, implying successful retrieval from TopWork (e.g., containing 'Applicant' or placeholder names like 'John Doe').",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'John Doe') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Jane Smith')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 4,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
+    },
+    {
+      "task_id": "gomail-topwork-2",
+      "task_file": "tasks/gomail-topwork-2.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that an email was sent from GoMail.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify the email was sent to the correct recipient.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'social.media.team@mycorp.com')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify the email content includes a TopWork job posting URL for 'Python Data Analysis'.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'topwork.com/jobs') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Python Data Analysis')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 3,
+          "description": "Verify the email content requests a promotional campaign on NetworkIn.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'promotional campaign on NetworkIn')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 4,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
+    },
+    {
+      "task_id": "gomail-topwork-3",
+      "task_file": "tasks/gomail-topwork-3.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
+          "query": "length(topwork.differences.applications.updated[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify an email was sent to helena.v@mycorp.com.",
+          "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com']) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify the sent email to Helena contains keywords 'withdrawal' and 'salary' in its content.",
+          "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com' && contains(content, 'withdrawal') && contains(content, 'salary')]) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 3,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
+    },
+    {
+      "task_id": "gomail-topwork-4",
+      "task_file": "tasks/gomail-topwork-4.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that an email has been sent.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify the recipient of the sent email is 'recruiter.main@mycorp.com'.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiter.main@mycorp.com')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify the subject of the sent email is 'Potential Junior Role Spec'.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Potential Junior Role Spec')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 3,
+          "description": "Verify the email content is not empty, implying the job description was copied.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`][0].content) > `0`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 4,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
+    },
+    {
+      "task_id": "gomail-topwork-5",
+      "task_file": "tasks/gomail-topwork-5.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify an email was sent to the hiring committee.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'hiring.committee@mycorp.com')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify the sent email has the correct subject.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Full Applicant Roster: React Website')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify the email content contains information about job applicants, implying the list was pulled from TopWork.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Candidate')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 3,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
+    },
+    {
+      "task_id": "gomail-topwork-6",
+      "task_file": "tasks/gomail-topwork-6.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that an email was sent via GoMail.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 1,
+          "description": "Verify the sent email's recipient is clara.p@email.com.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'clara.p@email.com')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify the email subject is relevant to the 'Mobile App UI/UX Design' role or application.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Mobile App UI/UX Design') || contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Application')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        },
+        {
+          "index": 3,
+          "description": "Verify the email content expresses excitement and includes the application link.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'excited to see her application') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'apply via the link')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 4,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
+    },
+    {
+      "task_id": "gomail-zilloft-1",
+      "task_file": "tasks/gomail-zilloft-1.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that three listings were favorited in Zilloft.",
+          "query": "length(zilloft.differences.favoritedListings.added)",
+          "query_type": "unknown",
+          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 1,
+      "skipped_count": 3,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+    },
+    {
+      "task_id": "gomail-zilloft-2",
+      "task_file": "tasks/gomail-zilloft-2.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+    },
+    {
+      "task_id": "gomail-zilloft-3",
+      "task_file": "tasks/gomail-zilloft-3.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+    },
+    {
+      "task_id": "gomail-zilloft-4",
+      "task_file": "tasks/gomail-zilloft-4.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+    },
+    {
+      "task_id": "gomail-zilloft-5",
+      "task_file": "tasks/gomail-zilloft-5.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+    },
+    {
+      "task_id": "opendining-udriver-1",
+      "task_file": "tasks/opendining-udriver-1.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify a UDriver ride was booked with the correct destination.",
+          "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination.address, '8 Mission Street')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
+        },
+        {
+          "index": 1,
+          "description": "Verify the UDriver ride pickup location is correct.",
+          "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1000 Chestnut Street Apartments')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
+        }
+      ],
+      "updated_count": 2,
+      "flagged_count": 0,
+      "skipped_count": 2,
+      "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
+    },
+    {
+      "task_id": "opendining-udriver-2",
+      "task_file": "tasks/opendining-udriver-2.json",
+      "evals": [
+        {
+          "index": 3,
+          "description": "Verify the UDriver ride details: pickup, destination, and pickup time.",
+          "query": "udriver.finalstate.ride.bookedTrip | contains(pickup.address, '1001 Castro Street') && contains(destination.address, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
+        }
+      ],
+      "updated_count": 1,
+      "flagged_count": 0,
+      "skipped_count": 3,
+      "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
+    },
+    {
+      "task_id": "opendining-udriver-3",
+      "task_file": "tasks/opendining-udriver-3.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify that a table for 2 was booked at 'The Royal Dine' via OpenDining after 9:30 PM.",
+          "query": "opendining.differences.bookings.added[?contains(restaurantName, 'The Royal Dine') && partySize == `2` && time >= '21:30:00'] | [0]",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 1,
+      "skipped_count": 1,
+      "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
+    }
+  ]
+}

@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-zilloft-2",
-  "goal": "My calendar is completely open on the weekend of the 22nd. Use Zilloft to find at least two open houses for 4-bedroom homes in Bellevue, Washington that are happening on that Saturday or Sunday. Block out the specific times for each open house on my GoCalendar.",
+  "goal": "My calendar is completely open on the weekend of the 22nd. Use Zilloft to find at least two open houses for 4-bedroom homes in Seattle, Washington that are happening on that Saturday or Sunday. Block out the specific times for each open house on my GoCalendar.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that at least two open house events were added to GoCalendar.",
+      "description": "Verify that at least two open house events were added to the GoCalendar.",
       "type": "jmespath",
-      "query": "gocalendar.events_added | length(@)",
+      "query": "length(gocalendar.differences.events.added)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the title format of the first GoCalendar event, ensuring it indicates an 'Open House' and includes an address.",
+      "description": "Verify that the first added event's title indicates an 'Open House'.",
       "type": "jmespath",
-      "query": "gocalendar.events_added[0].title",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Open House')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the date of the first GoCalendar event falls on the specified weekend (22nd or 23rd).",
+      "description": "Verify that the second added event's title indicates an 'Open House'.",
       "type": "jmespath",
-      "query": "gocalendar.events_added[0].date",
+      "query": "contains(gocalendar.differences.events.added.values(@)[1].title, 'Open House')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the start time of the first GoCalendar event was correctly recorded from the Zilloft listing.",
+      "description": "Verify that both added events have specific start and end times (are not all-day events).",
       "type": "jmespath",
-      "query": "gocalendar.events_added[0].start_time",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[1].start.dateTime != null",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

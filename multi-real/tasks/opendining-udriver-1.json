@@ -1,6 +1,6 @@
 {
   "id": "opendining-udriver-1",
-  "goal": "I want to scope out a neighborhood for a client dinner. Please order me a UDriver to the Meatpacking District in NYC from my current location, departing in 15 minutes. While I'm en route, find and reserve a table for 3 at any steakhouse there with at least a 4.5-star rating for 8:00 PM tonight.",
+  "goal": "I want to scope out a neighborhood for a client dinner. Please order me a UDriver to 8 Mission Street from 1000 Chestnut Street Apartments, departing as soon as possible. While I'm en route, find and reserve a table for 3 at any steakhouse there with at least a 4.5-star rating for 8:30 PM tonight.",
   "websites": [
     {
       "id": "opendining",
@@ -22,28 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a UDriver ride was booked to the Meatpacking District.",
+      "description": "Verify a UDriver ride was booked with the correct destination.",
       "type": "jmespath",
-      "query": "udriver.rides.added[0].destination",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination.address, '8 Mission Street')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: {'"
     },
     {
-      "description": "Verify that an OpenDining reservation was made for 8:00 PM.",
+      "description": "Verify the UDriver ride pickup location is correct.",
       "type": "jmespath",
-      "query": "opendining.reservations.added[0].time",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1000 Chestnut Street Apartments')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: {'"
     },
     {
-      "description": "Verify that an OpenDining reservation was made for 3 people.",
+      "description": "Verify a table reservation was made on OpenDining.",
       "type": "jmespath",
-      "query": "opendining.reservations.added[0].party_size",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(opendining.differences.bookings.added) >= `1`",
+      "expected_value": true
     },
     {
-      "description": "Verify that the reserved restaurant is a steakhouse in the Meatpacking District with at least a 4.5-star rating.",
+      "description": "Verify the OpenDining reservation has the correct party size and time.",
       "type": "jmespath",
-      "query": "opendining.reservations.added[0].restaurant",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "opendining.differences.bookings.added[0].partySize == `3` && contains(opendining.differences.bookings.added[0].date, '20:30')",
+      "expected_value": false
     }
   ],
   "points": 2,

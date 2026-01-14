@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-udriver-2",
-  "goal": "My partner, Alex, has a 'Flight UA451 Landing' event on our shared calendar for 9:15 PM tomorrow at Austin-Bergstrom International Airport (AUS). Calculate the ideal time to leave my current location to arrive precisely at 9:15 PM, and pre-schedule a Udriver Green for that departure time. Also, add an event to my personal calendar titled 'Pick up Alex at AUS' for the calculated departure time.",
+  "goal": "I need to schedule a meeting with a client, Ben Carter, at 1000 Chestnut Street Apartments for this Friday. I'll be coming from 1 Hotel San Francisco. First, find out the estimated travel time for a UDriver ride between those locations. Then, schedule a 1-hour meeting on my GoCalendar that starts exactly 20 minutes after my estimated arrival time. The meeting should be sometime after 2 PM. Invite ben.carter@example.com.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a Udriver Green ride was scheduled with the correct destination.",
+      "description": "Verify UDriver was used to estimate travel time, indicated by a calculated price or booked trip.",
       "type": "jmespath",
-      "query": "udriver.rides.scheduled[?type == 'Green' && destination == 'Austin-Bergstrom International Airport'].length(@)",
+      "query": "udriver.finalstate.ride.calculatedPrice != null || udriver.finalstate.ride.bookedTrip != null",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the departure time of the scheduled Udriver ride, confirming the time calculation.",
+      "description": "Verify a new meeting event was created in GoCalendar.",
       "type": "jmespath",
-      "query": "udriver.rides.scheduled[?type == 'Green' && destination == 'Austin-Bergstrom International Airport'].departure_time | [0]",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a new event titled 'Pick up Alex at AUS' was added to the personal calendar.",
+      "description": "Verify the meeting title includes 'Meeting' and Ben Carter is invited.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title == 'Pick up Alex at AUS' && calendar == 'personal'].length(@)",
+      "query": "gocalendar.differences.events.added.values(@)[?contains(title, 'Meeting')] | [?attendees[?email=='ben.carter@example.com']] | length(@) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the time of the new personal calendar event matches the calculated departure time.",
+      "description": "Verify the meeting event has defined start and end times, indicating a planned duration and adherence to after 2 PM constraint.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title == 'Pick up Alex at AUS' && calendar == 'personal'].time | [0]",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[0].end.dateTime != null",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

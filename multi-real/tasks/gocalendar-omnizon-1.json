@@ -22,21 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify a calendar event titled 'Decide on Headphones' is created.",
+      "description": "Verify that a new calendar event was created.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the calendar event is scheduled for the upcoming Saturday at 2 PM.",
+      "description": "Verify the title of the created calendar event.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].start.dateTime",
+      "query": "gocalendar.differences.events.added.values(@)[0].title",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the calendar event description contains at least three distinct Omnizon product URLs.",
+      "description": "Verify the start date and time of the calendar event. (This Saturday at 2 PM)",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].description",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the calendar event description contains links, indicating the headphone options were added.",
+      "type": "jmespath",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'http')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

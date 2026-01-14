@@ -1,6 +1,6 @@
 {
   "id": "gomail-opendining-3",
-  "goal": "I need to plan a team dinner. Look on OpenDining for a vegan-friendly restaurant in downtown Austin for a party of 8 next Wednesday at 7 PM. Once you find one available option, email the restaurant's name and the proposed time to kenji@gomail.com and anita.r@gomail.com, asking them to confirm the time works.",
+  "goal": "I need to plan a team dinner. Look on OpenDining for a vegan-friendly restaurant for a party of 8 next Wednesday at 7 PM. Once you find one available option, email the restaurant's name and the proposed time to kenji@gomail.com and anita.r@gomail.com, asking them to confirm the time works.",
   "websites": [
     {
       "id": "gomail",
@@ -22,21 +22,33 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that the email was addressed to both Kenji and Anita.",
+      "description": "Verify that a restaurant booking or identification was made in OpenDining for a party of 8 people.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
+      "query": "opendining.differences.bookings.added[0].partySize",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the email body clearly states the chosen restaurant name and the proposed dinner time (e.g., '7 PM').",
+      "description": "Verify that at least one email was sent from gomail.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
+      "query": "length(gomail.differences.emails.added[?sent == `true`])",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the email body contains a clear request for confirmation regarding the proposed time.",
+      "description": "Verify that an email was sent to kenji@gomail.com.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'kenji@gomail.com')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that an email was sent to anita.r@gomail.com.",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'anita.r@gomail.com')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the email content includes 'Wednesday', '7 PM', and asks for confirmation (e.g., 'confirm' or 'works').",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Wednesday') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '7 PM') && (contains(gomail.differences.emails.added[?sent == `true`][0].content, 'confirm') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'works'))",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

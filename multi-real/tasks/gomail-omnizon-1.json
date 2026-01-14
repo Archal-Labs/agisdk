@@ -1,6 +1,6 @@
 {
   "id": "gomail-omnizon-1",
-  "goal": "I'm setting up a home podcast studio. Please search Omnizon for three items: a 'Rode PodMic', a 'Focusrite Scarlett 2i2' audio interface, and 'XLR cables (2-pack)', ensuring all are currently in stock. Then, draft an email to my co-host at podcastpals@email.net with the subject 'Studio Gear List' containing the individual product links and the total estimated cost for all three items.",
+  "goal": "Our clinic needs more supplies. Find a '50-pack of KN95 face masks' on Omnizon sold by a vendor with at least a 4.5-star rating. Then, compose a formal email to our procurement head at procurement@healthclinic.org, CCing my own email address, stating that you've identified a potential supplier. Mention the product and the seller's name and ask them to inquire about pricing for a bulk order of 1,000 units. Do not send the email, just save it in drafts.",
   "websites": [
     {
       "id": "gomail",
@@ -19,31 +19,31 @@
   ],
   "difficulty": "hard",
   "challengeType": "action",
-  "possible": true,
+  "possible": false,
   "evals": [
     {
-      "description": "Verify the recipient of the drafted email.",
+      "description": "Verify that a search for 'KN95 face masks' was performed on Omnizon.",
       "type": "jmespath",
-      "query": "gomail.drafts[0].to",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(omnizon.initialfinaldiff.added.searches) >= `1` && contains(omnizon.initialfinaldiff.added.searches.values(@)[0].query, 'KN95 face masks')",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
     },
     {
-      "description": "Verify the subject of the drafted email.",
+      "description": "Verify that an email has been drafted and saved in Gomail.",
       "type": "jmespath",
-      "query": "gomail.drafts[0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1`",
+      "expected_value": true
     },
     {
-      "description": "Verify that all three product links (Rode PodMic, Focusrite Scarlett 2i2, XLR cables) are present in the email body.",
+      "description": "Verify the drafted email's recipient and CC address are correctly set.",
       "type": "jmespath",
-      "query": "contains(gomail.drafts[0].body, 'rode-podmic') && contains(gomail.drafts[0].body, 'focusrite-scarlett-2i2') && contains(gomail.drafts[0].body, 'xlr-cables')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?draft == `true`][0].to[0], 'procurement@healthclinic.org') && contains(gomail.differences.emails.added[?draft == `true`][0].cc[0], 'my_email_address')",
+      "expected_value": false
     },
     {
-      "description": "Verify the presence of the total estimated cost in the email body.",
+      "description": "Verify the drafted email's content mentions the product, seller, and request for a bulk order of 1,000 units.",
       "type": "jmespath",
-      "query": "contains(gomail.drafts[0].body, 'Total estimated cost:')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?draft == `true`][0].content, '50-pack of KN95 face masks') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'seller') && contains(gomail.differences.emails.added[?draft == `true`][0].content, '1,000 units')",
+      "expected_value": false
     }
   ],
   "points": 2,

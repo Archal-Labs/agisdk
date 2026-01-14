@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-opendining-2",
-  "goal": "Find a reservation for two at a highly-rated ramen shop in Portland for tomorrow evening. Book it, then create a calendar event for it. In the calendar event's notes, please add the restaurant's full address and the reservation confirmation ID.",
+  "goal": "Find a reservation for two at a highly-rated sushi shop for tomorrow evening. Book it, then create a calendar event for it. In the calendar event's notes, please add the restaurant's full address and the reservation confirmation ID.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a reservation was successfully made and a confirmation ID was received from OpenDining.",
+      "description": "Verify that a reservation was successfully made for two people at a restaurant.",
       "type": "jmespath",
-      "query": "opendining.reservations.added[0].confirmation_id",
+      "query": "opendining.differences.bookings.added[0] != null && opendining.differences.bookings.added[0].partySize == `2`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a calendar event was created in GoCalendar for the reservation.",
+      "description": "Verify that a calendar event was created for the reservation.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the restaurant's address is included in the notes/description of the GoCalendar event.",
+      "description": "Verify the calendar event's notes contain the restaurant's full address.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].description",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].restaurantAddress)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the reservation confirmation ID is included in the notes/description of the GoCalendar event.",
+      "description": "Verify the calendar event's notes contain the reservation confirmation ID.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].description",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].confirmationId)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

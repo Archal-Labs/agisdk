@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-udriver-1",
-  "goal": "I'm going to a client meeting at 'The Capital Grille' in Charlotte, NC. Book the cheapest Udriver option available right now to get me there. After the trip is completed, create a new event on my calendar for 1 PM today titled 'Client Lunch: ACME Corp' and put the final ride cost and total trip duration in the event's description for my expense report.",
+  "goal": "I have a new physiotherapy appointment every other Tuesday at 3 PM, starting next week. Please create this recurring event in my GoCalendar. For each occurrence, also add a task that's due 90 minutes before the event begins, reminding me to 'Check UDriver surge pricing for trip to physio'. If my balance is lower than 50 dollars, please top it off",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a Udriver ride was booked to 'The Capital Grille, Charlotte, NC' using the cheapest option.",
+      "description": "Verify that at least one recurring physiotherapy appointment event was added to GoCalendar.",
       "type": "jmespath",
-      "query": "udriver.rides.booked[?destination=='The Capital Grille, Charlotte, NC' && service_type=='UdriverX Saver'].destination | [0]",
+      "query": "length(gocalendar.differences.events.added)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a new calendar event was created today at 1 PM with the title 'Client Lunch: ACME Corp'.",
+      "description": "Verify the title of the added physiotherapy appointment event.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='Client Lunch: ACME Corp' && starts_at=='today 1:00 PM'].title | [0]",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'physiotherapy appointment')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the calendar event description contains the final Udriver ride cost.",
+      "description": "Verify that at least one task was added to GoCalendar.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='Client Lunch: ACME Corp'].description | [0]",
+      "query": "length(gocalendar.differences.tasks.added)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the calendar event description contains the total Udriver trip duration.",
+      "description": "Verify the title of the added task reminding to check UDriver surge pricing.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='Client Lunch: ACME Corp'].description | [0]",
+      "query": "contains(gocalendar.differences.tasks.added.values(@)[0].title, 'Check UDriver surge pricing for trip to physio')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

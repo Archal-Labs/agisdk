@@ -1,0 +1,45 @@
+{
+  "id": "gomail-topwork-5",
+  "goal": "We have a hiring meeting this afternoon. Please go to TopWork, pull a complete list of every single candidate who has applied for the 'Build Modern React E-commerce Website' position (regardless of their current stage), and email it to hiring.committee@mycorp.com. Title the email 'Full Applicant Roster: React Website'.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "topwork",
+      "name": "TopWork",
+      "similarTo": "Indeed",
+      "previewImage": "/websitePreviews/topwork_preview.jpg",
+      "url": "https://real-topwork.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify an email was sent to the hiring committee.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'hiring.committee@mycorp.com')",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+    },
+    {
+      "description": "Verify the sent email has the correct subject.",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Full Applicant Roster: React Website')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+    },
+    {
+      "description": "Verify the email content contains information about job applicants, implying the list was pulled from TopWork.",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Candidate')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

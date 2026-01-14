@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-topwork-3",
-  "goal": "I'm planning to apply for a 'Product Marketing Manager' role next quarter. Find 3 companies hiring for this role on TopWork. Then, set a monthly recurring reminder on my calendar for the first Monday of each month to check for new postings from these companies.",
+  "goal": "I need to hire a Python expert. Can you go to TopWork and post a new job for the 'Python Data Scientist' role? After you've done that, put a reminder on my calendar for one week from today at 10 AM to 'Check Python role applicants'.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,21 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a new recurring event was successfully created in Gocalendar.",
+      "description": "Verify that a new job posting for 'Python Data Scientist' was created on TopWork.",
       "type": "jmespath",
-      "query": "gocalendar.events.added | length(@)",
+      "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the title of the recurring event includes the three company names identified from TopWork and follows the specified format.",
+      "description": "Verify that a new reminder event was added to gocalendar.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the recurrence rule for the event is correctly set to occur on the first Monday of every month.",
+      "description": "Verify the calendar reminder's title is 'Check Python role applicants' and it is scheduled for 10 AM.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].recurrence.rule",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Check Python role applicants') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T10:00:00')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

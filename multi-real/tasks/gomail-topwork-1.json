@@ -1,6 +1,6 @@
 {
   "id": "gomail-topwork-1",
-  "goal": "I need a status update for the 'Backend Developer' position in our Denver office. Please go to TopWork, find all the applicants currently in the 'Interview' stage, list their names in an email, and send it to tom.h@mycorp.com with the subject 'Denver Backend - Interview Slate'.",
+  "goal": "I need a status update for the 'WordPress Blog Website' position in our Denver office. Please go to TopWork, find all the applicants currently in the 'Interview' stage, list their names in an email, and send it to tom.h@mycorp.com with the subject 'Denver Backend - Interview Slate'.",
   "websites": [
     {
       "id": "gomail",
@@ -22,22 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the email was sent to the correct recipient.",
+      "description": "Verify that at least one email was sent.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
     },
     {
-      "description": "Verify the email subject is correct.",
+      "description": "Verify the recipient of the sent email is 'tom.h@mycorp.com'.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'tom.h@mycorp.com')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
     },
     {
-      "description": "Verify the email body contains the names of the applicants in the 'Interview' stage. (Cross-app data flow)",
+      "description": "Verify the subject of the sent email is 'Denver Backend - Interview Slate'.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Denver Backend - Interview Slate')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+    },
+    {
+      "description": "Verify the email content lists applicant names, implying successful retrieval from TopWork (e.g., containing 'Applicant' or placeholder names like 'John Doe').",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'John Doe') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Jane Smith')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
     }
   ],
   "points": 2,

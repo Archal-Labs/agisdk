@@ -11,6 +11,7 @@ import requests  # pip install requests
 from nova_act import NovaAct
 
 from agisdk.REAL.browsergym.webclones.evaluate import WebCloneEvaluator
+from agisdk.REAL.browsergym.webclones.task_config import DEFAULT_VERSION, TaskConfig
 from agisdk.REAL.tasks import all_tasks as tasks
 
 ###############################################################################
@@ -79,7 +80,11 @@ def get_run_results(api_key: str, display_name: str) -> dict:
 def run_task(task: dict, run_id: str, headless: bool) -> dict:
     """Execute *task* with NovaAct and submit the answer."""
     t0 = time.time()
-    tid, goal, base = task["id"], task["goal"], task["website"]["url"]
+    tid = task["id"]
+    goal = task["goal"]
+    task_version = task.get("version", DEFAULT_VERSION)
+    task_config = TaskConfig(tid, task_version)
+    base = task_config.task.start_url  # Primary URL (first website)
     cfg = f"{base}/config?run_id={run_id}&task_id={tid}&removePopup=true"
 
     result = {
@@ -111,20 +116,50 @@ def run_task(task: dict, run_id: str, headless: bool) -> dict:
             #     f"{base}/submit?retrieved_answer={urllib.parse.quote(answer)}"
             # )
 
-            # Finish the task
-            bot.go_to_url(f"{base}/finish")
+            # Collect finish JSON from all websites (handles both single-app and multi-app)
+            is_multi = task_config.is_multi_app()
+            env_state_json = {}
+            
+            try:
+                if is_multi:
+                    # Multi-app: collect from each website and structure as {website_id: {...}}
+                    print(f"Collecting finish state from {len(task_config.get_websites())} websites...")
+                    for website in task_config.get_websites():
+                        finish_url = f"{website.url}/finish"
+                        print(f"  Navigating to {website.id}: {finish_url}")
+                        bot.go_to_url(finish_url)
+                        
+                        pre_element = bot.page.wait_for_selector("pre", timeout=10000)
+                        if pre_element:
+                            website_state_text = pre_element.inner_text()
+                            website_state = json.loads(website_state_text)
+                            env_state_json[website.id] = website_state
+                            print(f"  ✅ Collected state from {website.id}")
+                        else:
+                            print(f"  ❌ No <pre> element found at {website.id}/finish")
+                            env_state_json[website.id] = {}
+                    print("✅ Successfully collected env_state from all websites")
+                else:
+                    # Single-app: collect from primary website
+                    finish_url = f"{base}/finish"
+                    print(f"Navigating to finish page: {finish_url}")
+                    bot.go_to_url(finish_url)
+                    
+                    pre_element = bot.page.wait_for_selector("pre", timeout=10000)
+                    if pre_element:
+                        env_state_text = pre_element.inner_text()
+                        try:
+                            env_state_json = json.loads(env_state_text)
+                        except json.JSONDecodeError as e:
+                            print(f"Invalid JSON format: {str(e)}")
+                            env_state_json = {}
+                    else:
+                        print("No <pre> element found at /finish endpoint")
+                        env_state_json = {}
+            except Exception as e:
+                print(f"Error collecting finish state: {e}")
+                env_state_json = {}
 
-            # Get visible text
-            pre_element = bot.page.wait_for_selector("pre")
-            if pre_element:
-                env_state = pre_element.inner_text()
-                try:
-                    env_state_json = json.loads(env_state)
-                except json.JSONDecodeError as e:
-                    f"Invalid JSON format: {str(e)}"
-
-            task_version = task.get("version", DEFAULT_VERSION)
-            task_config = TaskConfig(tid, task_version)
             # Create evaluator with the TaskConfig
             evaluator = WebCloneEvaluator(task_config=task_config)
             reward, done, message, info = evaluator.evaluate(

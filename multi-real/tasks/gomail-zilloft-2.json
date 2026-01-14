@@ -1,6 +1,6 @@
 {
   "id": "gomail-zilloft-2",
-  "goal": "I need to plan my finances. Use Zilloft's mortgage calculator for a hypothetical $950,000 home in Seattle, WA. Assume a 15% down payment and use the current average 30-year fixed interest rate. Once you have the estimated monthly cost, compose an email to my financial advisor, 'sara.h@financepros.com', with the subject 'Future Home Budget' and include the principal & interest, and total monthly payment in the body.",
+  "goal": "My friend mentioned a house sold recently in Denver, Colorado. Find a property on Zilloft in Denver that was sold within the last 90 days for between $600,000 and $650,000. Once you find one, draft an email to 'market.analysis@gomail.com' with the subject 'Denver Comp'. In the email, list the property's full address, its final sale price, and its sale date.",
   "websites": [
     {
       "id": "gomail",
@@ -22,28 +22,28 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that an email was sent to the correct recipient.",
+      "description": "Verify an email was sent.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+      "expected_value": true
     },
     {
-      "description": "Verify that the email subject is 'Future Home Budget'.",
+      "description": "Verify the email was sent to the correct recipient.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
+      "expected_value": true
     },
     {
-      "description": "Verify that the email body contains the 'Principal & Interest' amount obtained from the Zilloft calculator.",
+      "description": "Verify the email has the correct subject.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
+      "expected_value": true
     },
     {
-      "description": "Verify that the email body contains the 'Total monthly payment' amount obtained from the Zilloft calculator.",
+      "description": "Verify the email content includes the property's address, sale price, and sale date.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Address:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Sale Price:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Sale Date:')",
+      "expected_value": false
     }
   ],
   "points": 2,

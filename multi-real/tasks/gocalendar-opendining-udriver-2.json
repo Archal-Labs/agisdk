@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-opendining-udriver-2",
-  "goal": "I have a 'Quarterly Strategy Session' on my calendar that ends at 5 PM on the 22nd of this month at 401 N Michigan Ave in Chicago. We'll need to arrange a dinner for the 6 attendees afterwards. Find a nearby steakhouse with a private dining option available for 5:30 PM and book it. Then, schedule a UDriverXL to get us from the meeting to the restaurant and create a new calendar event for the dinner.",
+  "goal": "I have an existing event on my GoCalendar called 'Quarterly Review with Ahmed' on October 5th at 12:00 PM. I want to take him to lunch right after. Book a table for two at 'Foreign Cinema' for 1:30 PM on that day. Then, schedule a UDriver to pick us up from 1 Hotel San Francisco at 1:15 PM to get to the restaurant. Also, schedule a return UDriver trip for us back to 1 Hotel San Francisco for 3:30 PM on the same day.",
   "websites": [
     {
       "id": "gocalendar",
@@ -29,21 +29,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a steakhouse reservation with private dining for 6 people was made through OpenDining.",
+      "description": "Verify a table was booked at Foreign Cinema for two people.",
       "type": "jmespath",
-      "query": "opendining.reservations.added[0].private_dining && opendining.reservations.added[0].party_size == 6 && opendining.reservations.added[0].cuisine_type == 'Steakhouse'",
+      "query": "opendining.differences.bookings.added[?contains(restaurantName, 'Foreign Cinema') && partySize == `2` && date == '2024-10-05' && time == '13:30:00'].restaurantName | length(@)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a UDriverXL was booked for 6 passengers with the correct pickup location and service type.",
+      "description": "Verify the first UDriver trip was booked from 1 Hotel San Francisco to Foreign Cinema at 1:15 PM.",
       "type": "jmespath",
-      "query": "udriver.bookings.added[0].service_type == 'XL' && udriver.bookings.added[0].num_passengers == 6 && udriver.bookings.added[0].pickup_location == '401 N Michigan Ave'",
+      "query": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, '1 Hotel San Francisco') && contains(destination.address, 'Foreign Cinema') && time == '13:15:00'] | length(@)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that a new calendar event titled 'Post-Strategy Dinner' was created in GoCalendar starting at 5:30 PM.",
+      "description": "Verify the second UDriver trip was booked from Foreign Cinema to 1 Hotel San Francisco at 3:30 PM.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title == 'Post-Strategy Dinner' && gocalendar.events.added[0].start_time == '17:30'",
+      "query": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, 'Foreign Cinema') && contains(destination.address, '1 Hotel San Francisco') && time == '15:30:00'] | length(@)",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify exactly two UDriver trips were booked.",
+      "type": "jmespath",
+      "query": "length(udriver.initialfinaldiff.added.ride.bookedTrips)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

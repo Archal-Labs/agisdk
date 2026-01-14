@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gocalendar-1",
-  "goal": "What's the last direct flight from Phoenix (PHX) to Salt Lake City (SLC) on November 22nd? After you find it, schedule an event on my GoCalendar for 8 AM the *next day* titled 'Breakfast meeting with SLC team'.",
+  "goal": "Find me a round-trip flight on FlyUnified from Boston (BOS) to Dublin (DUB) that arrives at least one day before a tech summit that starts on August 10th and leaves the day after it ends on August 13th. Don't book it, just add a task to my calendar for this Friday to 'Confirm Dublin flight options'.",
   "websites": [
     {
       "id": "flyunified",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the origin airport code for the flight search.",
+      "description": "Verify that a calendar event was added.",
       "type": "jmespath",
-      "query": "flyunified.flights.searched.origin_airport_code",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the destination airport code for the flight search.",
+      "description": "Verify the title of the added calendar event contains 'Confirm Dublin flight options'.",
       "type": "jmespath",
-      "query": "flyunified.flights.searched.destination_airport_code",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Confirm Dublin flight options')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the date of the created GoCalendar event.",
+      "description": "Verify the calendar event is scheduled for a Friday (representing 'this Friday').",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].date",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.date",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the title of the created GoCalendar event.",
+      "description": "Verify that no flight was booked on FlyUnified.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(flyunified.differences.bookedFlights.added)",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

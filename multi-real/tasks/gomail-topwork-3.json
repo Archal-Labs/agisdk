@@ -1,6 +1,6 @@
 {
   "id": "gomail-topwork-3",
-  "goal": "We've received a withdrawal notice from a candidate, Anjali Sharma, for the 'Data Analyst' role. Her reason is that the salary is too low. Go to TopWork and update her application status to 'Withdrawn'. Then, compose an email to our HR lead, helena.v@mycorp.com, informing her of the withdrawal and mentioning the salary feedback so we can review the compensation for the role.",
+  "goal": "We've received a withdrawal notice from a candidate, Brian King, for the 'Python Data Analyst' role. His reason is that the salary is too low. Go to TopWork and update her application status to 'Decline Application'. Then, send an email to our HR lead, helena.v@mycorp.com, informing her of the withdrawal and mentioning the salary feedback so we can review the compensation for the role.",
   "websites": [
     {
       "id": "gomail",
@@ -22,28 +22,22 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that Anjali Sharma's application for the 'Data Analyst' role in TopWork has been updated to 'Withdrawn'.",
+      "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
       "type": "jmespath",
-      "query": "topwork.applications[?candidate_name=='Anjali Sharma' && role=='Data Analyst'].status",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(topwork.differences.applications.updated[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
     },
     {
-      "description": "Verify that an email was sent to 'helena.v@mycorp.com'.",
+      "description": "Verify an email was sent to helena.v@mycorp.com.",
       "type": "jmespath",
-      "query": "gomail.emails.sent[0].to",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com']) >= `1`",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
     },
     {
-      "description": "Verify that the email subject line mentions Anjali Sharma and indicates a withdrawal.",
+      "description": "Verify the sent email to Helena contains keywords 'withdrawal' and 'salary' in its content.",
       "type": "jmespath",
-      "query": "gomail.emails.sent[0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify that the email body mentions salary as the reason for withdrawal and suggests reviewing the compensation package.",
-      "type": "jmespath",
-      "query": "gomail.emails.sent[0].body",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com' && contains(content, 'withdrawal') && contains(content, 'salary')]) >= `1`",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
     }
   ],
   "points": 2,

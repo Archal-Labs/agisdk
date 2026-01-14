@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-zilloft-1",
-  "goal": "I want to track a specific property at 1800 Pearl Street, Boulder, CO. On Zilloft, find its last sale date. Then, create an all-day event on my GoCalendar for that same date but for next year, titled 'Review Property Value: 1800 Pearl' to remind me to check its appreciation.",
+  "goal": "I want to track a specific property at 8017 Valley Rd, Dallas, TX 75266. On Zilloft, find its last sale date. Then, create an all-day event on my GoCalendar for that same date but for next year, titled 'Review Property Value: 1800 Pearl' to remind me to check its appreciation.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a new event was added to GoCalendar.",
+      "description": "Verify that the last sale date for the property at 8017 Valley Rd, Dallas, TX 75266 was successfully extracted by Zilloft. (Assuming zilloft.finalstate.extractedData.lastSaleDate is the path for this information)",
       "type": "jmespath",
-      "query": "gocalendar.events.added | length",
+      "query": "zilloft.finalstate.extractedData.lastSaleDate != null",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the title of the created GoCalendar event.",
+      "description": "Verify that exactly one event was added to GoCalendar.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the GoCalendar event is set as an all-day event.",
+      "description": "Verify the title of the created GoCalendar event is 'Review Property Value: 1800 Pearl'.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].allDay",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Review Property Value: 1800 Pearl')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the start date of the GoCalendar event (month/day from Zilloft, year is next year).",
+      "description": "Verify the GoCalendar event is an all-day event and its date is set to the last sale date (from Zilloft) but for next year.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].startDate",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.date != null && gocalendar.differences.events.added.values(@)[0].start.dateTime == null",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

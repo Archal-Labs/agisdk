@@ -1,0 +1,151 @@
+{
+  "total_checked": 282,
+  "total_fixed": 10,
+  "dry_run": false,
+  "fixes": [
+    {
+      "task_id": "flyunified-gocalendar-udriver-1",
+      "queries_checked": 4,
+      "queries_fixed": 2,
+      "fixes": [
+        {
+          "index": 1,
+          "description": "Verify the UDriver pickup location is '1 Hotel San Francisco'.",
+          "original": "contains(udriver.finalstate.ride.bookedTrip.pickup, '1 Hotel San Francisco')",
+          "fixed": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1 Hotel San Francisco')",
+          "applied_fixes": [
+            "udriver pickup is object, use .address"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Verify the UDriver dropoff location is '1001 Castro Street'.",
+          "original": "contains(udriver.finalstate.ride.bookedTrip.destination, '1001 Castro Street')",
+          "fixed": "contains(udriver.finalstate.ride.bookedTrip.destination.address, '1001 Castro Street')",
+          "applied_fixes": [
+            "udriver destination is object, use .address"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "flyunified-gocalendar-udriver-2",
+      "queries_checked": 4,
+      "queries_fixed": 1,
+      "fixes": [
+        {
+          "index": 0,
+          "description": "Verify that an UDriverXL trip was booked from 100 Van Ness Ave to 1 Hotel San Francisco.",
+          "original": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup, '100 Van Ness Ave') && contains(udriver.finalstate.ride.bookedTrip.destination, '1 Hotel San Francisco')",
+          "fixed": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup.address, '100 Van Ness Ave') && contains(udriver.finalstate.ride.bookedTrip.destination.address, '1 Hotel San Francisco')",
+          "applied_fixes": [
+            "udriver destination is object, use .address",
+            "udriver pickup is object, use .address"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "gocalendar-opendining-udriver-1",
+      "queries_checked": 3,
+      "queries_fixed": 1,
+      "fixes": [
+        {
+          "index": 2,
+          "description": "Verify a UDriverXL was booked for pickup at 100 Van Ness Ave.",
+          "original": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup, '100 Van Ness Ave')",
+          "fixed": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup.address, '100 Van Ness Ave')",
+          "applied_fixes": [
+            "udriver pickup is object, use .address"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "gocalendar-opendining-udriver-2",
+      "queries_checked": 4,
+      "queries_fixed": 2,
+      "fixes": [
+        {
+          "index": 1,
+          "description": "Verify the first UDriver trip was booked from 1 Hotel San Francisco to Foreign Cinema at 1:15 PM.",
+          "original": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup, '1 Hotel San Francisco') && contains(destination, 'Foreign Cinema') && time == '13:15:00'] | length(@)",
+          "fixed": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, '1 Hotel San Francisco') && contains(destination.address, 'Foreign Cinema') && time == '13:15:00'] | length(@)",
+          "applied_fixes": [
+            "udriver pickup in filter, use .address",
+            "udriver destination in filter, use .address"
+          ]
+        },
+        {
+          "index": 2,
+          "description": "Verify the second UDriver trip was booked from Foreign Cinema to 1 Hotel San Francisco at 3:30 PM.",
+          "original": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup, 'Foreign Cinema') && contains(destination, '1 Hotel San Francisco') && time == '15:30:00'] | length(@)",
+          "fixed": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, 'Foreign Cinema') && contains(destination.address, '1 Hotel San Francisco') && time == '15:30:00'] | length(@)",
+          "applied_fixes": [
+            "udriver pickup in filter, use .address",
+            "udriver destination in filter, use .address"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "opendining-udriver-1",
+      "queries_checked": 4,
+      "queries_fixed": 2,
+      "fixes": [
+        {
+          "index": 0,
+          "description": "Verify a UDriver ride was booked with the correct destination.",
+          "original": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination, '8 Mission Street')",
+          "fixed": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination.address, '8 Mission Street')",
+          "applied_fixes": [
+            "udriver destination is object, use .address"
+          ]
+        },
+        {
+          "index": 1,
+          "description": "Verify the UDriver ride pickup location is correct.",
+          "original": "contains(udriver.finalstate.ride.bookedTrip.pickup, '1000 Chestnut Street Apartments')",
+          "fixed": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1000 Chestnut Street Apartments')",
+          "applied_fixes": [
+            "udriver pickup is object, use .address"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "opendining-udriver-2",
+      "queries_checked": 4,
+      "queries_fixed": 1,
+      "fixes": [
+        {
+          "index": 3,
+          "description": "Verify the UDriver ride details: pickup, destination, and pickup time.",
+          "original": "udriver.finalstate.ride.bookedTrip | contains(pickup, '1001 Castro Street') && contains(destination, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
+          "fixed": "udriver.finalstate.ride.bookedTrip | contains(pickup.address, '1001 Castro Street') && contains(destination.address, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
+          "applied_fixes": [
+            "udriver pickup in filter, use .address",
+            "udriver destination in filter, use .address"
+          ]
+        }
+      ]
+    },
+    {
+      "task_id": "opendining-udriver-3",
+      "queries_checked": 2,
+      "queries_fixed": 1,
+      "fixes": [
+        {
+          "index": 1,
+          "description": "Verify that a UDriver was ordered from 100 Van Ness Ave to 1000 Chestnut Street Apartments.",
+          "original": "udriver.finalstate.ride.bookedTrip | [?contains(pickup, '100 Van Ness Ave') && contains(destination, '1000 Chestnut Street Apartments')] | [0]",
+          "fixed": "udriver.finalstate.ride.bookedTrip | [?contains(pickup.address, '100 Van Ness Ave') && contains(destination.address, '1000 Chestnut Street Apartments')] | [0]",
+          "applied_fixes": [
+            "udriver pickup in filter, use .address",
+            "udriver destination in filter, use .address"
+          ]
+        }
+      ]
+    }
+  ]
+}

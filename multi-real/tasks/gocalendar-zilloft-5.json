@@ -1,0 +1,51 @@
+{
+  "id": "gocalendar-zilloft-5",
+  "goal": "I'm trying to understand home value trends in Phoenix, AZ. Find two 3-bedroom, 2-bathroom single-family homes in the 85016 zip code that were sold in the last 90 days. For each one, find its sale price and the price it was last sold for *before* that. Create a single calendar event for next Friday at 2 PM called 'Analyze Phoenix Comps' and in the notes, list both addresses and their two most recent sale prices for comparison.",
+  "websites": [
+    {
+      "id": "gocalendar",
+      "name": "GoCalendar",
+      "similarTo": "Google Calendar",
+      "previewImage": "/websitePreviews/gocalendar_preview.jpg",
+      "url": "https://real-gocalendar.vercel.app"
+    },
+    {
+      "id": "zilloft",
+      "name": "Zilloft",
+      "similarTo": "Zillow",
+      "previewImage": "/websitePreviews/zilloft_preview.jpg",
+      "url": "https://real-zilloft.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that a calendar event was successfully added.",
+      "type": "jmespath",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the title of the created calendar event.",
+      "type": "jmespath",
+      "query": "gocalendar.differences.events.added.values(@)[0].title",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify that the calendar event notes contain information about the two homes' addresses and sale prices.",
+      "type": "jmespath",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, 'Address:') && contains(gocalendar.differences.events.added.values(@)[0].notes, 'Last Sale Price:') && contains(gocalendar.differences.events.added.values(@)[0].notes, 'Previous Sale Price:')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the start date and time of the calendar event is next Friday at 2 PM.",
+      "type": "jmespath",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

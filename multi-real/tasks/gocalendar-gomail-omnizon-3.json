@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-gomail-omnizon-3",
-  "goal": "I need to upgrade my home office. Find three different ergonomic office chairs on Omnizon, all under $350 and with good lumbar support. Compile the names and product links of these three chairs into an email to my financial advisor (f.advisor@consult.com) for review. Also, block out one hour on my calendar next Tuesday afternoon to 'Make final office chair purchase decision'.",
+  "goal": "I see on my calendar that we have 'Onboard new designer' scheduled for next Monday. Let's get them a welcome gift. On Omnizon, find a wireless mouse and a floor mat with a combined cost below $80. Then, send an email to the new designer, leila.h@startupdesign.io, and CC hr-onboarding@startupdesign.io. The subject should be 'Welcome Gift!' and the body should say the items are on their way, including the product links. Finally, add a note to the 'Onboard new designer' calendar event that says 'Welcome gifts (mouse, desk mat) ordered.'",
   "websites": [
     {
       "id": "gocalendar",
@@ -29,27 +29,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify an email was sent to the financial advisor.",
+      "description": "Verify that an email was sent.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email body contains names and links of the chairs.",
+      "description": "Verify the email recipient, CC, and subject.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient == 'leila.h@startupdesign.io' && contains(gomail.differences.emails.added[?sent == `true`][0].cc, 'hr-onboarding@startupdesign.io') && gomail.differences.emails.added[?sent == `true`][0].subject == 'Welcome Gift!'",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify a calendar event with the correct title was created.",
+      "description": "Verify the email body contains mention of items being on their way and product links.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'on their way') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the calendar event duration is 1 hour.",
+      "description": "Verify the 'Onboard new designer' calendar event's description was updated with the note about welcome gifts.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].duration_minutes",
+      "query": "contains(gocalendar.finalstate.events.values(@)[?title == 'Onboard new designer'][0].description, 'Welcome gifts (mouse, desk mat) ordered.')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

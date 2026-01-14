@@ -1,6 +1,6 @@
 {
   "id": "gomail-staynb-2",
-  "goal": "I have a work trip booked at 'The Pearl District Condo' in Portland. I need to find the cancellation policy for this booking on StaynB and email my findings to the finance department at finance.dept@corporate.com, specifically stating the last day for a full refund.",
+  "goal": "Create a new StaynB wishlist called 'Canadian Rockies Trip'. Then, search for places in Banff, Canada and add the 'Tidal Getaway' property to this new list. Finally, share the entire wishlist with my friend Leo at leo.g@workplace.net.",
   "websites": [
     {
       "id": "gomail",
@@ -22,21 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify the email was sent to the correct recipient.",
+      "description": "Verify a new StaynB wishlist named 'Canadian Rockies Trip' was created.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].to",
+      "query": "length(staynb.differences.wishlists.added[?name=='Canadian Rockies Trip']) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email subject line is correct.",
+      "description": "Verify the 'Tidal Getaway' property was added to the 'Canadian Rockies Trip' wishlist in StaynB.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].subject",
+      "query": "length(staynb.differences.wishlistItems.added[?propertyName=='Tidal Getaway' && wishlistName=='Canadian Rockies Trip']) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the email body contains the cancellation deadline information, including the extracted date.",
+      "description": "Verify an email was sent to Leo (leo.g@workplace.net) sharing the 'Canadian Rockies Trip' wishlist.",
       "type": "jmespath",
-      "query": "gomail.emails.added[0].body",
+      "query": "length(gomail.differences.emails.added[?sent == `true` && contains(recipient, 'leo.g@workplace.net') && (contains(subject, 'Canadian Rockies Trip') || contains(content, 'Canadian Rockies Trip'))]) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

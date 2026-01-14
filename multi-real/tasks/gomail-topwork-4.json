@@ -1,0 +1,51 @@
+{
+  "id": "gomail-topwork-4",
+  "goal": "Hey, can you check out the 'Mobile App UI/UX Design' gig on TopWork? I'm thinking it might be a good fit for the junior role we discussed. Copy the full job description and send it over to me at recruiter.main@mycorp.com with the subject 'Potential Junior Role Spec' so I can take a look.",
+  "websites": [
+    {
+      "id": "gomail",
+      "name": "GoMail",
+      "similarTo": "Gmail",
+      "previewImage": "/websitePreviews/gomail_preview.jpg",
+      "url": "https://real-gomail.vercel.app"
+    },
+    {
+      "id": "topwork",
+      "name": "TopWork",
+      "similarTo": "Indeed",
+      "previewImage": "/websitePreviews/topwork_preview.jpg",
+      "url": "https://real-topwork.vercel.app"
+    }
+  ],
+  "difficulty": "hard",
+  "challengeType": "action",
+  "possible": true,
+  "evals": [
+    {
+      "description": "Verify that an email has been sent.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+    },
+    {
+      "description": "Verify the recipient of the sent email is 'recruiter.main@mycorp.com'.",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiter.main@mycorp.com')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+    },
+    {
+      "description": "Verify the subject of the sent email is 'Potential Junior Role Spec'.",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Potential Junior Role Spec')",
+      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+    },
+    {
+      "description": "Verify the email content is not empty, implying the job description was copied.",
+      "type": "jmespath",
+      "query": "length(gomail.differences.emails.added[?sent == `true`][0].content) > `0`",
+      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+    }
+  ],
+  "points": 2,
+  "config": {}
+}

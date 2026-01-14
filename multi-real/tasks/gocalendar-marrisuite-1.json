@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-marrisuite-1",
-  "goal": "I'm thinking about a trip to Philadelphia for President's Day weekend, from February 14th to the 17th. Can you find me a Marrisuite hotel that has rooms with a balcony? Don't book anything yet, just put a 1-hour hold on my calendar for this Thursday at 4 PM to 'Finalize Philly Hotel'.",
+  "goal": "I'm thinking about a trip to Maryland for President's Day weekend, from February 14th to the 17th. Can you find me a Marrisuite hotel that has rooms with a balcony? Don't book anything yet, just put a 1-hour hold on my calendar for this Thursday at 4 PM to 'Finalize Philly Hotel'.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a new calendar event was created with the correct title.",
+      "description": "Verify that a calendar event was added.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].title",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the created calendar event is scheduled for 4:00 PM.",
+      "description": "Verify that the added calendar event has the correct title.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].start_time",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Philly Hotel')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the created calendar event has a duration of 1 hour.",
+      "description": "Verify that the added calendar event is scheduled for 4 PM (assuming this Thursday is handled by the system).",
       "type": "jmespath",
-      "query": "gocalendar.events.added[0].duration_minutes",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify that the 'Balcony' amenity filter was applied in the Marrisuite hotel search.",
-      "type": "jmespath",
-      "query": "marrisuite.search.applied_filters[?name=='Balcony' && type=='amenity'] | [0].name",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T16:00:00')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

@@ -1,6 +1,6 @@
 {
   "id": "gomail-networkin-topwork-1",
-  "goal": "Our Senior Analyst, Leo Vargas, has just resigned. First, check his NetworkIn profile to see if he's announced his new company. Then, create a new *internal-only* job posting on TopWork for a 'Business Analyst' to backfill his position. Finally, send an email to helena.choi@stratacorp.net in HR, informing her of Leo's departure and linking her to the new internal job requisition.",
+  "goal": "Our team needs a Python specialist. First, create a new job posting on TopWork for a 'Python Data Scientist' role with an hourly rate of $70 to $90. After that, search for 'Javier Reyes' on NetworkIn, who is a data scientist, and send him a connection request. Finally, draft an email to `recruiting.team@startupx.com` with the subject 'New Python Role Live' and mention that the job is posted and you've reached out to a promising candidate named Javier Reyes.",
   "websites": [
     {
       "id": "gomail",
@@ -29,21 +29,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a new job posting for 'Business Analyst' was created on TopWork and marked as 'internal-only'.",
+      "description": "Verify a new job posting for 'Python Data Scientist' was created on TopWork.",
       "type": "jmespath",
-      "query": "topwork.job_postings.added[?title=='Business Analyst' && internal_only==`true`]",
+      "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that an email was sent to helena.choi@stratacorp.net with the subject 'Departure and Backfill for Leo Vargas'.",
+      "description": "Verify the posted job on TopWork has an hourly rate within the $70-$90 range.",
       "type": "jmespath",
-      "query": "gomail.emails.added[?to=='helena.choi@stratacorp.net' && subject=='Departure and Backfill for Leo Vargas']",
+      "query": "topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.min >= `70` && topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.max <= `90`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify that the email body sent to Helena Choi contains the link to the newly created internal 'Business Analyst' job posting.",
+      "description": "Verify an email was sent to 'recruiting.team@startupx.com' with the subject 'New Python Role Live'.",
       "type": "jmespath",
-      "query": "gomail.emails.added[?to=='helena.choi@stratacorp.net' && subject=='Departure and Backfill for Leo Vargas'].body | [0]",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiting.team@startupx.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'New Python Role Live')",
+      "expected_value": "TODO: Add expected value after checking /finish JSON"
+    },
+    {
+      "description": "Verify the sent email's content mentions the job posting and Javier Reyes.",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'job is posted') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Javier Reyes')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

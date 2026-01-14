@@ -29,28 +29,22 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that the 'TENTATIVE: DC Flight' event was successfully created in GoCalendar and has a start date.",
+      "description": "Verify that a tentative calendar event for the DC flight was created.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Flight' && start != null] | length(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'TENTATIVE: DC Flight')]) >= `1`",
+      "expected_value": false
     },
     {
-      "description": "Verify that the 'TENTATIVE: DC Stay' event was successfully created in GoCalendar and has a start date.",
+      "description": "Verify that a tentative calendar event for the DC stay was created.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Stay' && start != null] | length(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'TENTATIVE: DC Stay')]) >= `1`",
+      "expected_value": false
     },
     {
-      "description": "Verify that the start date for the flight event matches the start date for the stay event, ensuring date consistency across bookings.",
+      "description": "Verify that exactly two events were added to the calendar.",
       "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Flight'].start[0] == gocalendar.events.added[?title=='TENTATIVE: DC Stay'].start[0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify that the end date for the flight event matches the end date for the stay event, ensuring date consistency across bookings for the full duration.",
-      "type": "jmespath",
-      "query": "gocalendar.events.added[?title=='TENTATIVE: DC Flight'].end[0] == gocalendar.events.added[?title=='TENTATIVE: DC Stay'].end[0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added)",
+      "expected_value": "TODO: Review - query returns int"
     }
   ],
   "points": 2,

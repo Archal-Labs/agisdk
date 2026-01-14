@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gocalendar-2",
-  "goal": "Check my GoCalendar for an event called 'Dublin Tech Summit' next month. Find me a round-trip flight on FlyUnified from Boston (BOS) to Dublin (DUB) that arrives at least one day before the summit starts and leaves the day after it ends. Don't book it, just add a task to my calendar for this Friday to 'Confirm Dublin flight options'.",
+  "goal": "My colleague's flight, FlyUnified FU789 from Chicago (ORD) to San Diego (SAN), is scheduled for the 10th of August. Can you find its scheduled arrival time and then create an event on my calendar to 'Leave for airport to pick up Maya' that is set for 90 minutes before the flight's arrival?",
   "websites": [
     {
       "id": "flyunified",
@@ -22,27 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a flight search was performed on FlyUnified with the correct origin and destination (Boston to Dublin).",
+      "description": "Verify that an event was successfully added to the calendar.",
       "type": "jmespath",
-      "query": "flyunified.flights.searched[?from=='BOS' && to=='DUB'] | length(@)",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the departure date for the flight search is correctly set to one day before the 'Dublin Tech Summit' start date.",
+      "description": "Verify that the title of the created calendar event is correct.",
       "type": "jmespath",
-      "query": "flyunified.flights.searched[0].departureDate",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Leave for airport to pick up Maya')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
-      "description": "Verify the return date for the flight search is correctly set to one day after the 'Dublin Tech Summit' end date.",
+      "description": "Verify the exact start time of the calendar event, which should be 90 minutes before the flight's scheduled arrival.",
       "type": "jmespath",
-      "query": "flyunified.flights.searched[0].returnDate",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify that a task titled 'Confirm Dublin flight options' was added to GoCalendar and is due this Friday.",
-      "type": "jmespath",
-      "query": "gocalendar.tasks.added[?title=='Confirm Dublin flight options'] | [0].dueDate",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

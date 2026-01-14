@@ -18,7 +18,56 @@ from playwright.sync_api import sync_playwright
 from agisdk.REAL.browsergym.webclones.evaluate import WebCloneEvaluator
 from agisdk.REAL.browsergym.webclones.task_config import DEFAULT_VERSION, TaskConfig
 from agisdk.REAL.logging import logger as rich_logger
-from agisdk.REAL.tasks import all_tasks as tasks
+
+
+def sync_tasks_to_package(
+    source_dir: Path = Path("multi-real/tasks"),
+    target_dir: Path = Path("src/agisdk/REAL/browsergym/webclones/v1/tasks")
+) -> None:
+    """
+    Sync tasks from source to package directory.
+
+    This ensures TaskConfig can find tasks by their ID, even if filenames
+    don't match the task IDs.
+    """
+    if not source_dir.exists() or not target_dir.exists():
+        return
+
+    for source_file in source_dir.glob("*.json"):
+        try:
+            with open(source_file) as f:
+                task = json.load(f)
+            task_id = task.get("id", source_file.stem)
+            target_file = target_dir / f"{task_id}.json"
+            with open(target_file, "w") as f:
+                json.dump(task, f, indent=2)
+        except Exception:
+            pass
+
+
+def load_tasks_from_directory(tasks_dir: Path = Path("multi-real/tasks")) -> list[dict[str, Any]]:
+    """
+    Load tasks dynamically from the multi-real/tasks directory.
+
+    This allows adding/removing/renaming task files without code changes.
+    """
+    if not tasks_dir.exists():
+        rich_logger.warning(f"Tasks directory not found: {tasks_dir}")
+        return []
+
+    tasks = []
+    for task_file in sorted(tasks_dir.glob("*.json")):
+        try:
+            with open(task_file) as f:
+                task = json.load(f)
+                # Ensure task has an ID (use filename if not present)
+                if "id" not in task:
+                    task["id"] = task_file.stem
+                tasks.append(task)
+        except Exception as e:
+            rich_logger.warning(f"Failed to load {task_file}: {e}")
+
+    return tasks
 
 
 class PlaywrightComputer:
@@ -124,19 +173,22 @@ class PlaywrightComputer:
         self.close()
 
 
-MODEL = "computer-use-preview"
+MODEL = "gpt-4o"
 WIDTH = 1024
 HEIGHT = 768
 ITER_LIMIT = 120
 TIME_LIMIT = 800
 
-client = OpenAI()
-
 
 def run_task(task: dict[str, Any], run_id: str, headless: bool) -> dict[str, Any]:
+    # Create OpenAI client (lazy initialization for thread safety)
+    client = OpenAI()
     tid = task["id"]
     goal = task["goal"]
-    base = task["website"]["url"]
+    task_version = task.get("version", DEFAULT_VERSION)
+    task_config = TaskConfig(tid, task_version)
+    # Get primary URL (first website for multi-app, or single website for single-app)
+    base = task_config.task.start_url
     cfg_url = f"{base}/config?run_id={run_id}&task_id={tid}&removePopup=true"
 
     rich_logger.task_start(f"{tid}: {goal[:50]}{'...' if len(goal) > 50 else ''}", "OpenAI-CUA")
@@ -346,27 +398,50 @@ def run_task(task: dict[str, Any], run_id: str, headless: bool) -> dict[str, Any
             else:
                 raise TimeoutError("iteration limit reached without final answer")
 
-            finish_url = f"{base}/finish"
+            # Collect finish JSON from all websites (handles both single-app and multi-app)
+            is_multi = task_config.is_multi_app()
+            
             env_state = {}
             try:
-                rich_logger.info(f"🌐 Navigating to {finish_url} to extract final state...")
-                comp.goto(finish_url)
-                comp.wait(2000)
-                with suppress(PlaywrightError, json.JSONDecodeError):
-                    pre = comp.page.query_selector("pre")
-                    if pre:
-                        env_state = json.loads(pre.inner_text())
-                        rich_logger.info(
-                            "✅ Successfully extracted env_state from /finish endpoint"
-                        )
-                    else:
-                        rich_logger.warning("❌ No <pre> element found at /finish endpoint")
+                if is_multi:
+                    # Multi-app: collect from each website and structure as {website_id: {...}}
+                    rich_logger.info(f"🌐 Collecting finish state from {len(task_config.get_websites())} websites...")
+                    for website in task_config.get_websites():
+                        finish_url = f"{website.url}/finish"
+                        rich_logger.info(f"   Navigating to {website.id}: {finish_url}")
+                        comp.goto(finish_url)
+                        comp.wait(2000)
+                        with suppress(PlaywrightError, json.JSONDecodeError):
+                            pre = comp.page.query_selector("pre")
+                            if pre:
+                                website_state = json.loads(pre.inner_text())
+                                env_state[website.id] = website_state
+                                rich_logger.info(f"   ✅ Collected state from {website.id}")
+                            else:
+                                rich_logger.warning(f"   ❌ No <pre> element found at {website.id}/finish")
+                                env_state[website.id] = {}
+                    rich_logger.info("✅ Successfully collected env_state from all websites")
+                else:
+                    # Single-app: collect from primary website
+                    finish_url = f"{base}/finish"
+                    rich_logger.info(f"🌐 Navigating to {finish_url} to extract final state...")
+                    comp.goto(finish_url)
+                    comp.wait(2000)
+                    with suppress(PlaywrightError, json.JSONDecodeError):
+                        pre = comp.page.query_selector("pre")
+                        if pre:
+                            env_state = json.loads(pre.inner_text())
+                            rich_logger.info(
+                                "✅ Successfully extracted env_state from /finish endpoint"
+                            )
+                        else:
+                            rich_logger.warning("❌ No <pre> element found at /finish endpoint")
             except Exception as e:
                 rich_logger.error(f"❌ Failed to navigate to /finish endpoint: {e}")
                 env_state = {}
 
-            task_version = task.get("version", DEFAULT_VERSION)
-            ev = WebCloneEvaluator(TaskConfig(tid, task_version))
+            # task_config already created above
+            ev = WebCloneEvaluator(task_config)
             reward, _, msg, _ = ev.evaluate(env_state=env_state, model_response=model_ans)
             rich_logger.info(f"🌍 Environment State: {json.dumps(env_state, indent=2)[:200]}...")
             rich_logger.info(
@@ -472,12 +547,13 @@ def main() -> None:
     default_name = f"CUA_{ts}"
 
     argp = argparse.ArgumentParser("Computer-Use runner")
-    argp.add_argument("--filter", default="omnizon-1", help="task id to run")
+    argp.add_argument("--filter", default="all", help="task id filter (substring match, or 'all' for all tasks)")
     argp.add_argument("--workers", type=int, default=1)
     argp.add_argument("--no-headless", action="store_true")
     argp.add_argument("--api-key", default=os.getenv("REALEVALS_API_KEY", ""))
     argp.add_argument("--run-name", default=default_name)
     argp.add_argument("--run-id", default="aba700cf-447a-4dc7-84eb-c50ca5df78b8")
+    argp.add_argument("--tasks-dir", type=Path, default=Path("multi-real/tasks"), help="directory containing task JSON files")
     args = argp.parse_args()
 
     run_id = args.run_id
@@ -485,10 +561,17 @@ def main() -> None:
     run_dir = create_results_directory()
     rich_logger.info(f"📁 Results directory: {run_dir}")
 
+    # Sync tasks to package directory (handles filename/ID mismatches)
+    sync_tasks_to_package(args.tasks_dir)
+
+    # Load tasks dynamically from directory
+    tasks = load_tasks_from_directory(args.tasks_dir)
+    rich_logger.info(f"📋 Loaded {len(tasks)} tasks from {args.tasks_dir}")
+
     if args.filter == "all":
         selected = tasks
     else:
-        selected = [t for t in tasks if t["id"] == args.filter]
+        selected = [t for t in tasks if args.filter in t["id"]]
     rich_logger.info(f"🚀 Running {len(selected)} task(s) with {args.workers} worker(s)")
 
     results: list[dict[str, Any]] = []

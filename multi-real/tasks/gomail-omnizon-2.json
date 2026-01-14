@@ -1,6 +1,6 @@
 {
   "id": "gomail-omnizon-2",
-  "goal": "Create a new baby registry on Omnizon for 'Baby Miller' with an event date of September 30th. Add a 'Graco 4Ever DLX Car Seat' and a 'Hatch Rest+ Sound Machine' to it. Once the registry is set up, send an announcement email to family@the-millers.com and friends@the-millers.com with the subject 'Baby Miller's Registry is Here!' and include the public link to the registry in the email body.",
+  "goal": "My friend Clara is into baking and my brother Tom needs computer peripherals. On Omnizon, find a 'set of non-stick baking sheets' under $30. Then, find a 'wireless mechanical keyboard'. Send an email to myself at my.ideas@gomail.com with the subject 'Gift Options'. In the email, paste the links for both the baking pans and the keyboard, labeling each one clearly as 'For Clara:' and 'For Tom:'.",
   "websites": [
     {
       "id": "gomail",
@@ -22,28 +22,22 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that the 'Baby Miller' registry was created on Omnizon with the correct event date.",
+      "description": "Verify that an email was successfully sent.",
       "type": "jmespath",
-      "query": "omnizon.registries[?name=='Baby Miller'].eventDate | [0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+      "expected_value": true
     },
     {
-      "description": "Verify that 'Graco 4Ever DLX Car Seat' and 'Hatch Rest+ Sound Machine' were added to 'Baby Miller's registry.",
+      "description": "Verify the recipient and subject of the sent email.",
       "type": "jmespath",
-      "query": "omnizon.registries[?name=='Baby Miller'].items[].name | sort(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.ideas@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Gift Options')",
+      "expected_value": false
     },
     {
-      "description": "Verify that an announcement email was sent from GoMail to the correct recipients with the specified subject.",
+      "description": "Verify the email content includes labels for Clara's item and Tom's item, implying links are present.",
       "type": "jmespath",
-      "query": "gomail.emails.sent[?subject=='Baby Miller''s Registry is Here!'].to | [0] | sort(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
-    },
-    {
-      "description": "Verify that the sent announcement email's body contains the public link to the 'Baby Miller' registry.",
-      "type": "jmespath",
-      "query": "gomail.emails.sent[?subject=='Baby Miller''s Registry is Here!'].body | [0]",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Clara:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Tom:')",
+      "expected_value": false
     }
   ],
   "points": 2,

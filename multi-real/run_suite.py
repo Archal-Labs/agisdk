@@ -1,22 +1,17 @@
 """
-multi-real/
-  tasks/
-    task-1.json
-    task-2.json
-    multi-app-1.json
-  run_suite.py
-```
-"""
+Multi-REAL Task Suite Viewer
 
+Lists and summarizes tasks in the benchmark.
+
+Usage:
+    uv run python run_suite.py --list
+"""
 
 import argparse
 import glob
 import json
 import os
 from pathlib import Path
-from datetime import datetime
-from src.agisdk.REAL.browsergym.webclones.evaluate import WebCloneEvaluator
-from src.agisdk.REAL.browsergym.webclones.task_config import TaskConfig
 
 
 def load_task_suite(tasks_dir: str) -> list[dict]:
