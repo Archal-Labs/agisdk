@@ -11,9 +11,9 @@ build
 .env
 *.env
 .env.*
-multi-real/final_states/
+
 **/.claude/settings.local.json
-final_states
+
 model_configs
 uv.lock
 example/leaderboard_example.py
