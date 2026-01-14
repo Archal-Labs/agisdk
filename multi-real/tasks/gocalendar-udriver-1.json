@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-udriver-1",
-  "goal": "I have a new physiotherapy appointment every other Tuesday at 3 PM, starting next week. Please create this recurring event in my GoCalendar. For each occurrence, also add a task that's due 90 minutes before the event begins, reminding me to 'Check UDriver surge pricing for trip to physio'. If my balance is lower than 50 dollars, please top it off",
+  "goal": "I need to schedule a meeting with a client, Ben Carter, at 1000 Chestnut Street Apartments for this Friday. I'll be coming from 1 Hotel San Francisco. First, find out the estimated travel time for a UDriver ride between those locations. Then, schedule a 1-hour meeting on my GoCalendar that starts exactly 20 minutes after my estimated arrival time. The meeting should be sometime after 2 PM. Invite ben.carter@example.com.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that at least one recurring physiotherapy appointment event was added to GoCalendar.",
+      "description": "Verify UDriver was used to estimate travel time, indicated by a calculated price or booked trip.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added)",
+      "query": "udriver.finalstate.ride.calculatedPrice != null || udriver.finalstate.ride.bookedTrip != null",
       "expected_value": true
     },
     {
-      "description": "Verify the title of the added physiotherapy appointment event.",
+      "description": "Verify a new meeting event was created in GoCalendar.",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'physiotherapy appointment')",
+      "query": "length(gocalendar.differences.events.added) >= `1`",
       "expected_value": true
     },
     {
-      "description": "Verify that at least one task was added to GoCalendar.",
+      "description": "Verify the meeting title includes 'Meeting' and Ben Carter is invited.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added)",
+      "query": "gocalendar.differences.events.added.values(@)[?contains(title, 'Meeting')] | [?attendees[?email=='ben.carter@example.com']] | length(@) >= `1`",
       "expected_value": true
     },
     {
-      "description": "Verify the title of the added task reminding to check UDriver surge pricing.",
+      "description": "Verify the meeting event has defined start and end times, indicating a planned duration and adherence to after 2 PM constraint.",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Check UDriver surge pricing for trip to physio')",
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[0].end.dateTime != null",
       "expected_value": true
     }
   ],
