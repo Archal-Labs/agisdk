@@ -1,6 +1,6 @@
 {
   "id": "gomail-omnizon-1",
-  "goal": "Our clinic needs more supplies. Find a '50-pack of KN95 face masks' on Omnizon sold by a vendor with at least a 4.5-star rating. Then, compose a formal email to our procurement head at procurement@healthclinic.org, CCing my own email address, stating that you've identified a potential supplier. Mention the product and the seller's name and ask them to inquire about pricing for a bulk order of 1,000 units. Do not send the email, just save it in drafts.",
+  "goal": "I need a new coffee maker. Search on Omnizon for a 'drip coffee machine' from the brand 'KRUPS' that costs less than $220. If you find one that matches, email my partner at sam.jones@gomail.com with the subject 'Coffee emergency solved!' and include the product link. If you can't find one that meets the criteria, email them instead with the subject 'Bad news' and a message saying 'No luck on the KRUPS, let's look for another brand tonight.'",
   "websites": [
     {
       "id": "gomail",
@@ -19,31 +19,31 @@
   ],
   "difficulty": "hard",
   "challengeType": "action",
-  "possible": false,
+  "possible": true,
   "evals": [
     {
-      "description": "Verify that a search for 'KN95 face masks' was performed on Omnizon.",
+      "description": "Verify that an email was sent to the correct recipient.",
       "type": "jmespath",
-      "query": "length(omnizon.initialfinaldiff.added.searches) >= `1` && contains(omnizon.initialfinaldiff.added.searches.values(@)[0].query, 'KN95 face masks')",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
-    },
-    {
-      "description": "Verify that an email has been drafted and saved in Gomail.",
-      "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1`",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
       "expected_value": true
     },
     {
-      "description": "Verify the drafted email's recipient and CC address are correctly set.",
+      "description": "Verify that the subject of the sent email is 'Coffee emergency solved!' (if a matching product was found).",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?draft == `true`][0].to[0], 'procurement@healthclinic.org') && contains(gomail.differences.emails.added[?draft == `true`][0].cc[0], 'my_email_address')",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
+      "expected_value": true
+    },
+    {
+      "description": "Verify that the content of the sent email includes a product link (if a matching product was found).",
+      "type": "jmespath",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http')",
       "expected_value": false
     },
     {
-      "description": "Verify the drafted email's content mentions the product, seller, and request for a bulk order of 1,000 units.",
+      "description": "Verify that the subject of the sent email is 'Bad news' (if no matching product was found).",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?draft == `true`][0].content, '50-pack of KN95 face masks') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'seller') && contains(gomail.differences.emails.added[?draft == `true`][0].content, '1,000 units')",
-      "expected_value": false
+      "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
+      "expected_value": true
     }
   ],
   "points": 2,

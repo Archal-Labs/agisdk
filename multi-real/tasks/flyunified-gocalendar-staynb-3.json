@@ -37,8 +37,8 @@
     {
       "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
       "type": "jmespath",
-      "query": "length(staynb.differences.bookings.added) >= `1` && contains(staynb.differences.bookings.added[0].checkIn, '2023-11-18') && contains(staynb.differences.bookings.added[0].checkOut, '2023-11-20') && contains(staynb.differences.bookings.added[0].features, 'dedicated workspace') && contains(staynb.differences.bookings.added[0].features, 'self check-in')",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn, '2023-11-18') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut, '2023-11-20') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'dedicated workspace') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'self check-in')",
+      "expected_value": false
     },
     {
       "description": "Verify the GoCalendar meeting 'Finalize Kenji Tanaka Interview Logistics' was scheduled correctly.",

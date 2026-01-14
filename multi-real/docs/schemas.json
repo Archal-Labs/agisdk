@@ -1,0 +1,1356 @@
+{
+  "generated_at": "2026-01-14T16:18:20.149663+00:00",
+  "coverage": {
+    "total_tasks": 72,
+    "tasks_with_gt": 6,
+    "tasks_without_gt": 66,
+    "total_apps_in_tasks": 12,
+    "apps_with_schema": 10,
+    "apps_missing_schema": [
+      "networkin",
+      "omnizon"
+    ],
+    "apps_known": [
+      "dashdish",
+      "flyunified",
+      "gocalendar",
+      "gomail",
+      "marrisuite",
+      "opendining",
+      "staynb",
+      "topwork",
+      "udriver",
+      "zilloft"
+    ],
+    "gt_files": [
+      "dashdish-gomail-1.json",
+      "flyunified-gocalendar-staynb-1.json",
+      "gomail-marrsuite-1.json",
+      "gomail-topwork-3.json",
+      "gomail-zilloft-1.json",
+      "opendining-udriver-1.json"
+    ],
+    "task_coverage": {
+      "gomail-opendining-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 5,
+        "todo_count": 5
+      },
+      "gocalendar-gomail-omnizon-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-networkin-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "networkin"
+        ],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-omnizon-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-udriver-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-zilloft-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-omnizon-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-zilloft-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-opendining-udriver-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gomail-staynb-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gomail-topwork-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-topwork-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-opendining-udriver-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-topwork-3": {
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "flyunified-gomail-staynb-5": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gocalendar-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-staynb-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-zilloft-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-zilloft-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 2,
+        "todo_count": 2
+      },
+      "gocalendar-topwork-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-omnizon-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 3,
+        "todo_count": 0
+      },
+      "flyunified-gomail-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-omnizon-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 5,
+        "todo_count": 5
+      },
+      "gocalendar-marrisuite-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gomail-staynb-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-opendining-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gocalendar-staynb-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 1
+      },
+      "gomail-omnizon-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 4,
+        "todo_count": 0
+      },
+      "flyunified-gomail-staynb-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-staynb-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "dashdish-gomail-1": {
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 0
+      },
+      "gocalendar-gomail-zilloft-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gocalendar-staynb-1": {
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 0
+      },
+      "gocalendar-gomail-opendining-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gomail-networkin-topwork-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "networkin"
+        ],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-opendining-staynb-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-omnizon-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 4,
+        "todo_count": 1
+      },
+      "gomail-opendining-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-udriver-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-topwork-6": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gocalendar-udriver-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gomail-staynb-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-zilloft-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-marrisuite-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-opendining-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-topwork-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-marrisuite-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "opendining-udriver-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 2,
+        "todo_count": 1
+      },
+      "flyunified-gomail-staynb-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-zilloft-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-opendining-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-opendining-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "flyunified-gocalendar-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "flyunified-gocalendar-udriver-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-marrisuite-1": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "opendining-udriver-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 0
+      },
+      "gomail-zilloft-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 0
+      },
+      "gocalendar-marrisuite-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-gomail-omnizon-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": false,
+        "missing_app_schemas": [
+          "omnizon"
+        ],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-topwork-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "flyunified-gocalendar-staynb-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 2
+      },
+      "gomail-zilloft-1": {
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 1
+      },
+      "gomail-topwork-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-gomail-opendining-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gomail-marrisuite-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-zilloft-5": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-staynb-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "opendining-udriver-1": {
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 0
+      },
+      "gomail-topwork-2": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gomail-topwork-5": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 3,
+        "todo_count": 3
+      },
+      "gocalendar-opendining-3": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      },
+      "gocalendar-zilloft-4": {
+        "has_ground_truth": false,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
+        "eval_count": 4,
+        "todo_count": 4
+      }
+    }
+  },
+  "schemas": {
+    "gomail": {
+      "sources": [
+        "dashdish-gomail-1.json",
+        "gomail-marrsuite-1.json",
+        "gomail-topwork-3.json",
+        "gomail-zilloft-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "differences",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": true,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "gomail.differences.emails.added",
+          "type": "list",
+          "description": "Standard diff structure - emails added",
+          "has_data": true,
+          "sample_keys": [
+            "id",
+            "from",
+            "to",
+            "cc",
+            "bcc"
+          ]
+        },
+        {
+          "path": "gomail.differences.emails.deleted",
+          "type": "list",
+          "description": "Standard diff structure - emails deleted",
+          "has_data": true,
+          "sample_keys": [
+            "id",
+            "from",
+            "to",
+            "cc",
+            "subject"
+          ]
+        },
+        {
+          "path": "gomail.differences.emails.updated",
+          "type": "list",
+          "description": "Standard diff structure - emails updated",
+          "has_data": true,
+          "sample_keys": [
+            "id"
+          ]
+        },
+        {
+          "path": "gomail.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "email"
+          ]
+        },
+        {
+          "path": "gomail.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "ui"
+          ]
+        },
+        {
+          "path": "gomail.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "ui"
+          ]
+        }
+      ]
+    },
+    "dashdish": {
+      "sources": [
+        "dashdish-gomail-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "differences",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": true,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "dashdish.differences.foodOrders.added",
+          "type": "dict",
+          "description": "Standard diff structure - foodOrders added",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "dashdish.differences.foodOrders.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - foodOrders deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "dashdish.differences.foodOrders.updated",
+          "type": "dict",
+          "description": "Standard diff structure - foodOrders updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "dashdish.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "cart",
+            "config"
+          ]
+        },
+        {
+          "path": "dashdish.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "cart",
+            "config"
+          ]
+        },
+        {
+          "path": "dashdish.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": []
+        }
+      ]
+    },
+    "flyunified": {
+      "sources": [
+        "flyunified-gocalendar-staynb-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "differences",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": true,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "flyunified.differences.bookedFlights.added",
+          "type": "dict",
+          "description": "Standard diff structure - bookedFlights added",
+          "has_data": true,
+          "sample_keys": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "path": "flyunified.differences.bookedFlights.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - bookedFlights deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.differences.bookedFlights.updated",
+          "type": "dict",
+          "description": "Standard diff structure - bookedFlights updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.differences.selectedFlightCartIds.added",
+          "type": "dict",
+          "description": "Standard diff structure - selectedFlightCartIds added",
+          "has_data": true,
+          "sample_keys": [
+            "0"
+          ]
+        },
+        {
+          "path": "flyunified.differences.selectedFlightCartIds.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - selectedFlightCartIds deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.differences.selectedFlightCartIds.updated",
+          "type": "dict",
+          "description": "Standard diff structure - selectedFlightCartIds updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.differences.purchaseDetails.added",
+          "type": "dict",
+          "description": "Standard diff structure - purchaseDetails added",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.differences.purchaseDetails.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - purchaseDetails deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.differences.purchaseDetails.updated",
+          "type": "dict",
+          "description": "Standard diff structure - purchaseDetails updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "flyunified.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "booking",
+            "ui",
+            "miles"
+          ]
+        },
+        {
+          "path": "flyunified.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "flightSearch",
+            "booking",
+            "ui",
+            "miles"
+          ]
+        }
+      ]
+    },
+    "gocalendar": {
+      "sources": [
+        "flyunified-gocalendar-staynb-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "differences",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": true,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "gocalendar.differences.events.added",
+          "type": "dict",
+          "description": "Standard diff structure - events added",
+          "has_data": true,
+          "sample_keys": [
+            "e789f6b8-298c-4c4b-b530-ba1501e4e708"
+          ]
+        },
+        {
+          "path": "gocalendar.differences.events.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - events deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.events.updated",
+          "type": "dict",
+          "description": "Standard diff structure - events updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.calendars.added",
+          "type": "dict",
+          "description": "Standard diff structure - calendars added",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.calendars.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - calendars deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.calendars.updated",
+          "type": "dict",
+          "description": "Standard diff structure - calendars updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.joinedEvents.added",
+          "type": "dict",
+          "description": "Standard diff structure - joinedEvents added",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.joinedEvents.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - joinedEvents deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.differences.joinedEvents.updated",
+          "type": "dict",
+          "description": "Standard diff structure - joinedEvents updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "gocalendar.initialfinaldiff.calendar",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "myEvents",
+            "filteredEvents",
+            "other_updated"
+          ]
+        }
+      ]
+    },
+    "staynb": {
+      "sources": [
+        "flyunified-gocalendar-staynb-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "query",
+        "state",
+        "url"
+      ],
+      "has_differences": false,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "staynb.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": []
+        },
+        {
+          "path": "staynb.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": []
+        },
+        {
+          "path": "staynb.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": []
+        }
+      ]
+    },
+    "marrisuite": {
+      "sources": [
+        "gomail-marrsuite-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "bookingDetailsDiff",
+        "cancellationDetailsDiff",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "recentSearchesDiff",
+        "roomRequestsDiff",
+        "state",
+        "submitMessage",
+        "submitStatus"
+      ],
+      "has_differences": false,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [
+        "bookingDetailsDiff",
+        "cancellationDetailsDiff",
+        "recentSearchesDiff",
+        "roomRequestsDiff"
+      ],
+      "diff_paths": [
+        {
+          "path": "marrisuite.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "booking"
+          ]
+        },
+        {
+          "path": "marrisuite.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "search",
+            "guest",
+            "booking",
+            "points"
+          ]
+        },
+        {
+          "path": "marrisuite.bookingDetailsDiff.added",
+          "type": "list",
+          "description": "App-specific diff - bookingDetailsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.bookingDetailsDiff.deleted",
+          "type": "list",
+          "description": "App-specific diff - bookingDetailsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.bookingDetailsDiff.updated",
+          "type": "list",
+          "description": "App-specific diff - bookingDetailsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.cancellationDetailsDiff.added",
+          "type": "list",
+          "description": "App-specific diff - cancellationDetailsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.cancellationDetailsDiff.deleted",
+          "type": "list",
+          "description": "App-specific diff - cancellationDetailsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.cancellationDetailsDiff.updated",
+          "type": "list",
+          "description": "App-specific diff - cancellationDetailsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.recentSearchesDiff.added",
+          "type": "list",
+          "description": "App-specific diff - recentSearchesDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.recentSearchesDiff.deleted",
+          "type": "list",
+          "description": "App-specific diff - recentSearchesDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.recentSearchesDiff.updated",
+          "type": "list",
+          "description": "App-specific diff - recentSearchesDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.roomRequestsDiff.added",
+          "type": "list",
+          "description": "App-specific diff - roomRequestsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.roomRequestsDiff.deleted",
+          "type": "list",
+          "description": "App-specific diff - roomRequestsDiff",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "marrisuite.roomRequestsDiff.updated",
+          "type": "list",
+          "description": "App-specific diff - roomRequestsDiff",
+          "has_data": false,
+          "sample_keys": null
+        }
+      ]
+    },
+    "topwork": {
+      "sources": [
+        "gomail-topwork-3.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": false,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "topwork.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "jobs"
+          ]
+        },
+        {
+          "path": "topwork.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "config",
+            "jobs"
+          ]
+        }
+      ]
+    },
+    "zilloft": {
+      "sources": [
+        "gomail-zilloft-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "differences",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": true,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "zilloft.differences.requestTours.added",
+          "type": "dict",
+          "description": "Standard diff structure - requestTours added",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.requestTours.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - requestTours deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.requestTours.updated",
+          "type": "dict",
+          "description": "Standard diff structure - requestTours updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.contactAgents.added",
+          "type": "dict",
+          "description": "Standard diff structure - contactAgents added",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.contactAgents.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - contactAgents deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.contactAgents.updated",
+          "type": "dict",
+          "description": "Standard diff structure - contactAgents updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.savedHomes.added",
+          "type": "dict",
+          "description": "Standard diff structure - savedHomes added",
+          "has_data": true,
+          "sample_keys": [
+            "0",
+            "1",
+            "2"
+          ]
+        },
+        {
+          "path": "zilloft.differences.savedHomes.deleted",
+          "type": "dict",
+          "description": "Standard diff structure - savedHomes deleted",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.differences.savedHomes.updated",
+          "type": "dict",
+          "description": "Standard diff structure - savedHomes updated",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "zilloft.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "savedHomes",
+            "config"
+          ]
+        },
+        {
+          "path": "zilloft.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": []
+        },
+        {
+          "path": "zilloft.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": []
+        }
+      ]
+    },
+    "opendining": {
+      "sources": [
+        "opendining-udriver-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "differences",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": true,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "opendining.differences.bookings.added",
+          "type": "list",
+          "description": "Standard diff structure - bookings added",
+          "has_data": true,
+          "sample_keys": [
+            "restaurant",
+            "date",
+            "time",
+            "guests",
+            "tel"
+          ]
+        },
+        {
+          "path": "opendining.differences.bookings.deleted",
+          "type": "list",
+          "description": "Standard diff structure - bookings deleted",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.bookings.updated",
+          "type": "list",
+          "description": "Standard diff structure - bookings updated",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.reviews.added",
+          "type": "list",
+          "description": "Standard diff structure - reviews added",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.reviews.deleted",
+          "type": "list",
+          "description": "Standard diff structure - reviews deleted",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.reviews.updated",
+          "type": "list",
+          "description": "Standard diff structure - reviews updated",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.savedRestaurants.added",
+          "type": "list",
+          "description": "Standard diff structure - savedRestaurants added",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.savedRestaurants.deleted",
+          "type": "list",
+          "description": "Standard diff structure - savedRestaurants deleted",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.differences.savedRestaurants.updated",
+          "type": "list",
+          "description": "Standard diff structure - savedRestaurants updated",
+          "has_data": false,
+          "sample_keys": null
+        },
+        {
+          "path": "opendining.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "booking"
+          ]
+        },
+        {
+          "path": "opendining.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "booking",
+            "search",
+            "config"
+          ]
+        }
+      ]
+    },
+    "udriver": {
+      "sources": [
+        "opendining-udriver-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": false,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "udriver.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "ride",
+            "ui",
+            "user"
+          ]
+        },
+        {
+          "path": "udriver.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "ride",
+            "ui",
+            "router",
+            "user"
+          ]
+        }
+      ]
+    }
+  }
+}

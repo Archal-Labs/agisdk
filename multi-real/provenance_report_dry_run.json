@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-01-13T16:48:56.812701+00:00",
+  "generated_at": "2026-01-14T19:17:25.680996+00:00",
   "ground_truth_dir": "final_states/manual",
   "dry_run": true,
-  "tasks_processed": 84,
-  "tasks_with_gt": 23,
-  "tasks_without_gt": 61,
-  "total_evals_updated": 3,
-  "total_evals_flagged": 28,
-  "total_evals_skipped": 38,
+  "tasks_processed": 72,
+  "tasks_with_gt": 15,
+  "tasks_without_gt": 57,
+  "total_evals_updated": 2,
+  "total_evals_flagged": 25,
+  "total_evals_skipped": 27,
   "details": [
     {
       "task_id": "dashdish-gomail-1",
@@ -64,74 +64,18 @@
         {
           "index": 1,
           "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
-          "query": "length(staynb.differences.bookings.added) >= `1` && contains(staynb.differences.bookings.added[0].checkIn, '2023-11-18') && contains(staynb.differences.bookings.added[0].checkOut, '2023-11-20') && contains(staynb.differences.bookings.added[0].features, 'dedicated workspace') && contains(staynb.differences.bookings.added[0].features, 'self check-in')",
+          "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn, '2023-11-18') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut, '2023-11-20') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'dedicated workspace') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'self check-in')",
           "query_type": "boolean",
           "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "derivation_method": "query_error",
-          "actual_query_result": null
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
         }
       ],
-      "updated_count": 0,
-      "flagged_count": 2,
+      "updated_count": 1,
+      "flagged_count": 1,
       "skipped_count": 1,
       "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-1",
-      "task_file": "tasks/gomail-omnizon-1.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify that a search for 'KN95 face masks' was performed on Omnizon.",
-          "query": "length(omnizon.initialfinaldiff.added.searches) >= `1` && contains(omnizon.initialfinaldiff.added.searches.values(@)[0].query, 'KN95 face masks')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "derivation_method": "query_error",
-          "actual_query_result": null
-        }
-      ],
-      "updated_count": 0,
-      "flagged_count": 1,
-      "skipped_count": 3,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-2",
-      "task_file": "tasks/gomail-omnizon-2.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 3,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-3",
-      "task_file": "tasks/gomail-omnizon-3.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 4,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-4",
-      "task_file": "tasks/gomail-omnizon-4.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-5",
-      "task_file": "tasks/gomail-omnizon-5.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
     },
     {
       "task_id": "gomail-topwork-1",
@@ -240,12 +184,12 @@
         {
           "index": 0,
           "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
-          "query": "length(topwork.differences.applications.updated[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
+          "query": "length(values(topwork.initialfinaldiff.updated.applications || `{}`)[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
           "query_type": "boolean",
           "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "derivation_method": "query_error",
-          "actual_query_result": null
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
         },
         {
           "index": 1,
@@ -268,8 +212,8 @@
           "actual_query_result": null
         }
       ],
-      "updated_count": 0,
-      "flagged_count": 3,
+      "updated_count": 1,
+      "flagged_count": 2,
       "skipped_count": 0,
       "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
     },
@@ -431,7 +375,7 @@
       "updated_count": 0,
       "flagged_count": 1,
       "skipped_count": 3,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+      "ground_truth_file": "final_states/manual/gomail-zilloft-1.json"
     },
     {
       "task_id": "gomail-zilloft-2",
@@ -440,83 +384,24 @@
       "updated_count": 0,
       "flagged_count": 0,
       "skipped_count": 4,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-3",
-      "task_file": "tasks/gomail-zilloft-3.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 4,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-4",
-      "task_file": "tasks/gomail-zilloft-4.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-5",
-      "task_file": "tasks/gomail-zilloft-5.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
+      "ground_truth_file": "final_states/manual/gomail-zilloft-1.json"
     },
     {
       "task_id": "opendining-udriver-1",
       "task_file": "tasks/opendining-udriver-1.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify a UDriver ride was booked with the correct destination.",
-          "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination.address, '8 Mission Street')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
-          "index": 1,
-          "description": "Verify the UDriver ride pickup location is correct.",
-          "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1000 Chestnut Street Apartments')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 2,
+      "evals": [],
+      "updated_count": 0,
       "flagged_count": 0,
-      "skipped_count": 2,
+      "skipped_count": 4,
       "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
     },
     {
       "task_id": "opendining-udriver-2",
       "task_file": "tasks/opendining-udriver-2.json",
-      "evals": [
-        {
-          "index": 3,
-          "description": "Verify the UDriver ride details: pickup, destination, and pickup time.",
-          "query": "udriver.finalstate.ride.bookedTrip | contains(pickup.address, '1001 Castro Street') && contains(destination.address, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 1,
+      "evals": [],
+      "updated_count": 0,
       "flagged_count": 0,
-      "skipped_count": 3,
+      "skipped_count": 4,
       "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
     },
     {

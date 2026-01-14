@@ -42,7 +42,7 @@
     {
       "description": "Verify that no booking was made on StaynB, as per instructions 'Don't book it yet'.",
       "type": "jmespath",
-      "query": "length(staynb.differences.bookings.added) == `0`",
+      "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) == `0`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     }
   ],

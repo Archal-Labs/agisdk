@@ -37,7 +37,7 @@
     {
       "description": "Verify that a StaynB was booked for 4 nights (May 3rd to May 7th) for an 'Entire place' in the 'Garden District' with a rating of 4.8 or higher.",
       "type": "jmespath",
-      "query": "staynb.differences.bookings.added[?checkIn=='2024-05-03' && checkOut=='2024-05-07' && contains(propertyDetails.type, 'Entire place') && contains(propertyDetails.location, 'Garden District') && propertyDetails.rating >= `4.8`] | length(@) >= `1`",
+      "query": "values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn=='2024-05-03' && checkOut=='2024-05-07' && contains(propertyDetails.type, 'Entire place') && contains(propertyDetails.location, 'Garden District') && propertyDetails.rating >= `4.8`] | length(@) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {

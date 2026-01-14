@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-01-13T04:47:55.416243+00:00",
+  "generated_at": "2026-01-14T19:17:33.997907+00:00",
   "ground_truth_dir": "final_states/manual",
   "dry_run": false,
-  "tasks_processed": 84,
-  "tasks_with_gt": 23,
-  "tasks_without_gt": 61,
-  "total_evals_updated": 20,
-  "total_evals_flagged": 31,
-  "total_evals_skipped": 18,
+  "tasks_processed": 72,
+  "tasks_with_gt": 15,
+  "tasks_without_gt": 57,
+  "total_evals_updated": 2,
+  "total_evals_flagged": 25,
+  "total_evals_skipped": 27,
   "details": [
     {
       "task_id": "dashdish-gomail-1",
@@ -64,176 +64,18 @@
         {
           "index": 1,
           "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
-          "query": "length(staynb.differences.bookings.added) >= `1` && contains(staynb.differences.bookings.added[0].checkIn, '2023-11-18') && contains(staynb.differences.bookings.added[0].checkOut, '2023-11-20') && contains(staynb.differences.bookings.added[0].features, 'dedicated workspace') && contains(staynb.differences.bookings.added[0].features, 'self check-in')",
+          "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn, '2023-11-18') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut, '2023-11-20') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'dedicated workspace') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'self check-in')",
           "query_type": "boolean",
           "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "derivation_method": "query_error",
-          "actual_query_result": null
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
         }
       ],
-      "updated_count": 0,
-      "flagged_count": 2,
+      "updated_count": 1,
+      "flagged_count": 1,
       "skipped_count": 1,
       "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-1",
-      "task_file": "tasks/gomail-omnizon-1.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify that a search for 'KN95 face masks' was performed on Omnizon.",
-          "query": "length(omnizon.initialfinaldiff.added.searches) >= `1` && contains(omnizon.initialfinaldiff.added.searches.values(@)[0].query, 'KN95 face masks')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "derivation_method": "query_error",
-          "actual_query_result": null
-        },
-        {
-          "index": 1,
-          "description": "Verify that an email has been drafted and saved in Gomail.",
-          "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1`",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "True"
-        },
-        {
-          "index": 2,
-          "description": "Verify the drafted email's recipient and CC address are correctly set.",
-          "query": "contains(gomail.differences.emails.added[?draft == `true`][0].to[0], 'procurement@healthclinic.org') && contains(gomail.differences.emails.added[?draft == `true`][0].cc[0], 'my_email_address')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
-          "index": 3,
-          "description": "Verify the drafted email's content mentions the product, seller, and request for a bulk order of 1,000 units.",
-          "query": "contains(gomail.differences.emails.added[?draft == `true`][0].content, '50-pack of KN95 face masks') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'seller') && contains(gomail.differences.emails.added[?draft == `true`][0].content, '1,000 units')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 3,
-      "flagged_count": 1,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-2",
-      "task_file": "tasks/gomail-omnizon-2.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify that an email was successfully sent.",
-          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "True"
-        },
-        {
-          "index": 1,
-          "description": "Verify the recipient and subject of the sent email.",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.ideas@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Gift Options')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
-          "index": 2,
-          "description": "Verify the email content includes labels for Clara's item and Tom's item, implying links are present.",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Clara:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Tom:')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 3,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-3",
-      "task_file": "tasks/gomail-omnizon-3.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify that an email was sent to the correct recipient.",
-          "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query returned null",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "[]"
-        },
-        {
-          "index": 1,
-          "description": "Verify that the subject of the sent email is 'Coffee emergency solved!' (if a matching product was found).",
-          "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query returned null",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "[]"
-        },
-        {
-          "index": 2,
-          "description": "Verify that the content of the sent email includes a product link (if a matching product was found).",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
-          "index": 3,
-          "description": "Verify that the subject of the sent email is 'Bad news' (if no matching product was found).",
-          "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query returned null",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "[]"
-        }
-      ],
-      "updated_count": 4,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-4",
-      "task_file": "tasks/gomail-omnizon-4.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
-    },
-    {
-      "task_id": "gomail-omnizon-5",
-      "task_file": "tasks/gomail-omnizon-5.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
     },
     {
       "task_id": "gomail-topwork-1",
@@ -342,12 +184,12 @@
         {
           "index": 0,
           "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
-          "query": "length(topwork.differences.applications.updated[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
+          "query": "length(values(topwork.initialfinaldiff.updated.applications || `{}`)[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
           "query_type": "boolean",
           "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "derivation_method": "query_error",
-          "actual_query_result": null
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
         },
         {
           "index": 1,
@@ -370,8 +212,8 @@
           "actual_query_result": null
         }
       ],
-      "updated_count": 0,
-      "flagged_count": 3,
+      "updated_count": 1,
+      "flagged_count": 2,
       "skipped_count": 0,
       "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
     },
@@ -528,199 +370,38 @@
           "new_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
           "derivation_method": "query_error",
           "actual_query_result": null
-        },
-        {
-          "index": 1,
-          "description": "Verify that a single email was sent from gomail.",
-          "query": "length(gomail.differences.emails.added[?sent == `true`])",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "5"
-        },
-        {
-          "index": 2,
-          "description": "Verify the recipient of the sent email is 'my.prospects@gomail.com'.",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.prospects@gomail.com')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
-          "index": 3,
-          "description": "Verify the content of the sent email includes addresses and costs of listings found in Raleigh.",
-          "query": "length(gomail.differences.emails.added[?sent == `true`][0].content) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Raleigh') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Cost')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - invalid token: Parse error at column 52, token \"0\"",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 3,
-      "flagged_count": 1,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-2",
-      "task_file": "tasks/gomail-zilloft-2.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify an email was sent.",
-          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "True"
-        },
-        {
-          "index": 1,
-          "description": "Verify the email was sent to the correct recipient.",
-          "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query returned null",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "[]"
-        },
-        {
-          "index": 2,
-          "description": "Verify the email has the correct subject.",
-          "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query returned null",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "[]"
-        },
-        {
-          "index": 3,
-          "description": "Verify the email content includes the property's address, sale price, and sale date.",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Address:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Sale Price:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Sale Date:')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 4,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-3",
-      "task_file": "tasks/gomail-zilloft-3.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify that an email was sent.",
-          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": true,
-          "derivation_method": "boolean_true",
-          "actual_query_result": "True"
-        },
-        {
-          "index": 1,
-          "description": "Verify the recipient of the sent email is 'market.analysis@gomail.com'.",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'market.analysis@gomail.com')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
-          "index": 2,
-          "description": "Verify the subject of the sent email is 'Denver Comp'.",
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Denver Comp')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        }
-      ],
-      "updated_count": 3,
-      "flagged_count": 0,
-      "skipped_count": 1,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-4",
-      "task_file": "tasks/gomail-zilloft-4.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "gomail-zilloft-5",
-      "task_file": "tasks/gomail-zilloft-5.json",
-      "evals": [],
-      "updated_count": 0,
-      "flagged_count": 0,
-      "skipped_count": 0,
-      "ground_truth_file": "final_states/manual/gomail-zilloft-3.json"
-    },
-    {
-      "task_id": "opendining-udriver-1",
-      "task_file": "tasks/opendining-udriver-1.json",
-      "evals": [
-        {
-          "index": 0,
-          "description": "Verify a UDriver ride was booked with the correct destination.",
-          "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination, '8 Mission Street')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "derivation_method": "query_error",
-          "actual_query_result": null
-        },
-        {
-          "index": 1,
-          "description": "Verify the UDriver ride pickup location is correct.",
-          "query": "contains(udriver.finalstate.ride.bookedTrip.pickup, '1000 Chestnut Street Apartments')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "derivation_method": "query_error",
-          "actual_query_result": null
-        }
-      ],
-      "updated_count": 0,
-      "flagged_count": 2,
-      "skipped_count": 2,
-      "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
-    },
-    {
-      "task_id": "opendining-udriver-2",
-      "task_file": "tasks/opendining-udriver-2.json",
-      "evals": [
-        {
-          "index": 3,
-          "description": "Verify the UDriver ride details: pickup, destination, and pickup time.",
-          "query": "udriver.finalstate.ride.bookedTrip | contains(pickup, '1001 Castro Street') && contains(destination, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: {'",
-          "derivation_method": "query_error",
-          "actual_query_result": null
         }
       ],
       "updated_count": 0,
       "flagged_count": 1,
       "skipped_count": 3,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-1.json"
+    },
+    {
+      "task_id": "gomail-zilloft-2",
+      "task_file": "tasks/gomail-zilloft-2.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/gomail-zilloft-1.json"
+    },
+    {
+      "task_id": "opendining-udriver-1",
+      "task_file": "tasks/opendining-udriver-1.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
+    },
+    {
+      "task_id": "opendining-udriver-2",
+      "task_file": "tasks/opendining-udriver-2.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
       "ground_truth_file": "final_states/manual/opendining-udriver-1.json"
     },
     {

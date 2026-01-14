@@ -25,13 +25,13 @@
       "description": "Verify a UDriver ride was booked with the correct destination.",
       "type": "jmespath",
       "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.destination.address, '8 Mission Street')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: {'"
+      "expected_value": false
     },
     {
       "description": "Verify the UDriver ride pickup location is correct.",
       "type": "jmespath",
       "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1000 Chestnut Street Apartments')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: {'"
+      "expected_value": false
     },
     {
       "description": "Verify a table reservation was made on OpenDining.",

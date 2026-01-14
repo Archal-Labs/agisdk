@@ -24,13 +24,13 @@
     {
       "description": "Verify that a booking for Marrisuite was successfully added.",
       "type": "jmespath",
-      "query": "length(marrisuite.differences.bookings.added) >= `1` && contains(marrisuite.differences.bookings.added[0].hotelName, 'Marrisuite')",
+      "query": "length(marrisuite.bookingDetailsDiff.added) >= `1` && contains(marrisuite.bookingDetailsDiff.added[0].hotelName, 'Marrisuite')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
       "description": "Verify the details of the Marrisuite booking, including check-in/out dates and room type.",
       "type": "jmespath",
-      "query": "marrisuite.differences.bookings.added[0].checkIn == '2024-07-22' && marrisuite.differences.bookings.added[0].checkOut == '2024-07-26' && contains(marrisuite.differences.bookings.added[0].roomType, 'Executive Suite')",
+      "query": "marrisuite.bookingDetailsDiff.added[0].checkIn == '2024-07-22' && marrisuite.bookingDetailsDiff.added[0].checkOut == '2024-07-26' && contains(marrisuite.bookingDetailsDiff.added[0].roomType, 'Executive Suite')",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {

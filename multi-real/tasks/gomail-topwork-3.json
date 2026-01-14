@@ -24,8 +24,8 @@
     {
       "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
       "type": "jmespath",
-      "query": "length(topwork.differences.applications.updated[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "query": "length(values(topwork.initialfinaldiff.updated.applications || `{}`)[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
+      "expected_value": false
     },
     {
       "description": "Verify an email was sent to helena.v@mycorp.com.",

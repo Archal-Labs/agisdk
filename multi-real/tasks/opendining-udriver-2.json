@@ -43,7 +43,7 @@
       "description": "Verify the UDriver ride details: pickup, destination, and pickup time.",
       "type": "jmespath",
       "query": "udriver.finalstate.ride.bookedTrip | contains(pickup.address, '1001 Castro Street') && contains(destination.address, '1 Hotel San Francisco') && contains(pickupTime, '07:30 PM')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: {'"
+      "expected_value": false
     }
   ],
   "points": 2,

@@ -24,7 +24,7 @@
     {
       "description": "Verify that a hotel booking was created for SpringHill Suites in downtown Denver from October 28th to 30th.",
       "type": "jmespath",
-      "query": "marrisuite.differences.bookings.added[?contains(hotelName, 'SpringHill Suites') && contains(location, 'Denver') && checkIn == '2023-10-28' && checkOut == '2023-10-30'] | length(@) >= `1`",
+      "query": "marrisuite.bookingDetailsDiff.added[?contains(hotelName, 'SpringHill Suites') && contains(location, 'Denver') && checkIn == '2023-10-28' && checkOut == '2023-10-30'] | length(@) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {

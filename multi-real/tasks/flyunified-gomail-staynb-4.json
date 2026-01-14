@@ -37,7 +37,7 @@
     {
       "description": "Verify that a StaynB booking is made for 5 nights, starting on July 10th (check-out July 15th).",
       "type": "jmespath",
-      "query": "length(staynb.differences.bookings.added) >= `1` && staynb.differences.bookings.added[0].checkIn == '2024-07-10' && staynb.differences.bookings.added[0].checkOut == '2024-07-15'",
+      "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn == '2024-07-10' && values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut == '2024-07-15'",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {

@@ -88,14 +88,93 @@ QUERY_FIXES = [
         "flyunified booked flights length",
     ),
 
-    # StaynB patterns - bookings.added is correct, but let's ensure consistency
-    # Actually, queries already use staynb.differences.bookings.added which is correct
+    # ==========================================================================
+    # MARRISUITE: Has NO 'differences' key - uses bookingDetailsDiff instead
+    # ==========================================================================
+    # marrisuite.differences.bookings.added → marrisuite.bookingDetailsDiff.added
+    (
+        r"marrisuite\.differences\.bookings\.added\[\?([^\]]+)\]",
+        r"marrisuite.bookingDetailsDiff.added[?\1]",
+        "marrisuite bookings filter - use bookingDetailsDiff",
+    ),
+    (
+        r"length\(marrisuite\.differences\.bookings\.added\)",
+        r"length(marrisuite.bookingDetailsDiff.added)",
+        "marrisuite bookings length - use bookingDetailsDiff",
+    ),
+    (
+        r"marrisuite\.differences\.bookings\.added\[(\d+)\]",
+        r"marrisuite.bookingDetailsDiff.added[\1]",
+        "marrisuite bookings index - use bookingDetailsDiff",
+    ),
+    (
+        r"marrisuite\.differences\.bookings\.added",
+        r"marrisuite.bookingDetailsDiff.added",
+        "marrisuite bookings array - use bookingDetailsDiff",
+    ),
 
-    # OpenDining patterns - bookings.added is correct
+    # ==========================================================================
+    # STAYNB: Has NO 'differences' key - uses initialfinaldiff instead
+    # NOTE: The actual booking structure may differ. These are best-effort fixes.
+    # If queries still fail, manual review of ground truth is needed.
+    # ==========================================================================
+    (
+        r"staynb\.differences\.bookings\.added\[\?([^\]]+)\]",
+        r"values(staynb.initialfinaldiff.added.booking.bookingDetails)[?\1]",
+        "staynb bookings filter - use initialfinaldiff",
+    ),
+    (
+        r"length\(staynb\.differences\.bookings\.added\)",
+        r"length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`))",
+        "staynb bookings length - use initialfinaldiff",
+    ),
+    (
+        r"staynb\.differences\.bookings\.added\[(\d+)\]",
+        r"values(staynb.initialfinaldiff.added.booking.bookingDetails)[\1]",
+        "staynb bookings index - use initialfinaldiff",
+    ),
+    (
+        r"staynb\.differences\.bookings\.added",
+        r"values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)",
+        "staynb bookings array - use initialfinaldiff",
+    ),
+    # Wishlists - also use initialfinaldiff
+    (
+        r"staynb\.differences\.wishlists\.added",
+        r"values(staynb.initialfinaldiff.added.wishlist.wishlists || `{}`)",
+        "staynb wishlists - use initialfinaldiff",
+    ),
+    (
+        r"staynb\.differences\.wishlistItems\.added",
+        r"values(staynb.initialfinaldiff.added.wishlist.items || `{}`)",
+        "staynb wishlist items - use initialfinaldiff",
+    ),
 
-    # GocalenDAR patterns - events.added is correct (uses values(@) for dict)
+    # ==========================================================================
+    # TOPWORK: Has NO 'differences' key - uses initialfinaldiff instead
+    # ==========================================================================
+    (
+        r"topwork\.differences\.applications\.updated",
+        r"values(topwork.initialfinaldiff.updated.applications || `{}`)",
+        "topwork applications updated - use initialfinaldiff",
+    ),
+    (
+        r"topwork\.differences\.applications\.added",
+        r"values(topwork.initialfinaldiff.added.applications || `{}`)",
+        "topwork applications added - use initialfinaldiff",
+    ),
 
+    # ==========================================================================
+    # OpenDining patterns - uses differences.bookings correctly
+    # ==========================================================================
+
+    # ==========================================================================
+    # GocalenDAR patterns - events.added is a dict, use values() to iterate
+    # ==========================================================================
+
+    # ==========================================================================
     # UDriver patterns - pickup/destination are objects, not strings
+    # ==========================================================================
     # contains(udriver.finalstate.ride.bookedTrip.destination, 'text')
     # should be: contains(udriver.finalstate.ride.bookedTrip.destination.address, 'text')
     (

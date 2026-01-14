@@ -37,7 +37,7 @@
     {
       "description": "Verify a StayNB with a kitchen was booked for the same dates in the destination city.",
       "type": "jmespath",
-      "query": "staynb.differences.bookings.added[?checkIn=='2024-03-13' && checkOut=='2024-03-16' && contains(amenities, 'kitchen')]",
+      "query": "values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn=='2024-03-13' && checkOut=='2024-03-16' && contains(amenities, 'kitchen')]",
       "expected_value": false
     },
     {

@@ -24,13 +24,13 @@
     {
       "description": "Verify a new StaynB wishlist named 'Canadian Rockies Trip' was created.",
       "type": "jmespath",
-      "query": "length(staynb.differences.wishlists.added[?name=='Canadian Rockies Trip']) >= `1`",
+      "query": "length(values(staynb.initialfinaldiff.added.wishlist.wishlists || `{}`)[?name=='Canadian Rockies Trip']) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
       "description": "Verify the 'Tidal Getaway' property was added to the 'Canadian Rockies Trip' wishlist in StaynB.",
       "type": "jmespath",
-      "query": "length(staynb.differences.wishlistItems.added[?propertyName=='Tidal Getaway' && wishlistName=='Canadian Rockies Trip']) >= `1`",
+      "query": "length(values(staynb.initialfinaldiff.added.wishlist.items || `{}`)[?propertyName=='Tidal Getaway' && wishlistName=='Canadian Rockies Trip']) >= `1`",
       "expected_value": "TODO: Add expected value after checking /finish JSON"
     },
     {
