@@ -32,25 +32,25 @@
       "description": "Verify an email was sent to ava.w@gomail.com and brian.k@gomail.com.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'ava.w@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'brian.k@gomail.com')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email contains a link to a StaynB property.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'staynb.com/property')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email contains at least three distinct OpenDining restaurant links.",
       "type": "jmespath",
       "query": "length(split(gomail.differences.emails.added[?sent == `true`][0].content, 'opendining.com/restaurant')) >= `4`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify at least three restaurants were identified/saved in OpenDining.",
       "type": "jmespath",
       "query": "length(opendining.differences.savedRestaurants.added) >= `3`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

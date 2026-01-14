@@ -25,25 +25,25 @@
       "description": "Verify that a new calendar event was successfully created.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the calendar event's title is 'Look at this wild house in Charlotte!'.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Look at this wild house in Charlotte!')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the calendar event is scheduled for this Tuesday at 7 PM.",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
+      "expected_value": true
     },
     {
       "description": "Verify that the Zilloft property link is included in the event description and 'maria.g@gomail.com' is an attendee.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'zilloft.com') && contains(gocalendar.differences.events.added.values(@)[0].attendees[?email=='maria.g@gomail.com'].email, 'maria.g@gomail.com')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

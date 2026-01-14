@@ -25,25 +25,25 @@
       "description": "Verify two restaurant bookings were successfully created.",
       "type": "jmespath",
       "query": "length(opendining.differences.bookings.added) >= `2`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the first restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the next month.",
       "type": "jmespath",
       "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[0].partySize == `4` && contains(opendining.differences.bookings.added[0].date, 'T19:30:00')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the second restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the month after next.",
       "type": "jmespath",
       "query": "contains(opendining.differences.bookings.added[1].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[1].partySize == `4` && contains(opendining.differences.bookings.added[1].date, 'T19:30:00')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify a recurring calendar event was created for the 'Client Dinner' at 7:30 PM on the first Friday of the next month.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Client Dinner') && contains(gocalendar.differences.events.added.values(@)[0].title, 'The Capital Grille') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T19:30:00')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

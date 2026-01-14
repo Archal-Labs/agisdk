@@ -32,25 +32,25 @@
       "description": "Verify that an email was sent.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the email recipient, CC, and subject.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0].recipient == 'leila.h@startupdesign.io' && contains(gomail.differences.emails.added[?sent == `true`][0].cc, 'hr-onboarding@startupdesign.io') && gomail.differences.emails.added[?sent == `true`][0].subject == 'Welcome Gift!'",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the email body contains mention of items being on their way and product links.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'on their way') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the 'Onboard new designer' calendar event's description was updated with the note about welcome gifts.",
       "type": "jmespath",
-      "query": "contains(gocalendar.finalstate.events.values(@)[?title == 'Onboard new designer'][0].description, 'Welcome gifts (mouse, desk mat) ordered.')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gocalendar.differences.events.added.values(@)[?title == 'Onboard new designer'][0].description, 'Welcome gifts (mouse, desk mat) ordered.')",
+      "expected_value": true
     }
   ],
   "points": 2,

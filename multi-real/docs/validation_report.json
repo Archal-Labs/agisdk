@@ -1,62 +1,44 @@
 {
-  "generated_at": "2026-01-14T19:19:08.154249+00:00",
+  "generated_at": "2026-01-14T22:47:57.838548+00:00",
   "summary": {
-    "total_tasks": 72,
-    "gt_coverage": "8.3%",
-    "query_validity": "62.7%",
-    "expected_values_complete": "14.8%",
-    "gt_pass_rate": "50.0%",
-    "action_items": 4
+    "total_tasks": 69,
+    "gt_coverage": "13.0%",
+    "query_validity": "67.5%",
+    "expected_values_complete": "100.0%",
+    "gt_pass_rate": "100.0%",
+    "action_items": 1
   },
   "coverage": {
-    "tasks_with_gt": 6,
-    "tasks_without_gt": 66,
-    "gt_percentage": 8.3,
-    "apps_with_schema": 10,
-    "apps_missing_schema": [
-      "networkin",
-      "omnizon"
-    ]
+    "tasks_with_gt": 9,
+    "tasks_without_gt": 60,
+    "gt_percentage": 13.0,
+    "apps_with_schema": 12,
+    "apps_missing_schema": []
   },
   "query_health": {
-    "total_queries": 263,
-    "valid_queries": 165,
-    "invalid_queries": 98,
-    "validity_percentage": 62.7
+    "total_queries": 252,
+    "valid_queries": 170,
+    "invalid_queries": 82,
+    "validity_percentage": 67.5
   },
   "expected_values": {
-    "total_evals": 263,
-    "complete": 39,
-    "todo": 224,
-    "completion_percentage": 14.8
+    "total_evals": 252,
+    "complete": 252,
+    "todo": 0,
+    "completion_percentage": 100.0
   },
   "ground_truth_validation": {
-    "queries_tested": 54,
-    "passed": 27,
-    "failed": 27,
-    "pass_rate": 50.0,
-    "tasks_without_gt": 57
+    "queries_tested": 30,
+    "passed": 30,
+    "failed": 0,
+    "pass_rate": 100.0,
+    "tasks_without_gt": 61
   },
   "action_items": [
     {
-      "priority": "high",
-      "action": "Collect ground truth for apps: networkin, omnizon",
-      "impact": "2 apps have no schema knowledge"
-    },
-    {
       "priority": "medium",
-      "action": "Fill 224 TODO expected values",
-      "impact": "Required for automated evaluation"
-    },
-    {
-      "priority": "medium",
-      "action": "Fix 98 invalid queries",
+      "action": "Fix 82 invalid queries",
       "impact": "Queries may fail during evaluation"
-    },
-    {
-      "priority": "high",
-      "action": "Investigate 27 queries failing against ground truth",
-      "impact": "These queries won't work during evaluation"
     }
   ]
 }

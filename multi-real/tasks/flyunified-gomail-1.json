@@ -25,25 +25,25 @@
       "description": "Verify that at least one flight was selected or added to a cart in flyunified, indicating a flight was found.",
       "type": "jmespath",
       "query": "length(flyunified.differences.selectedFlightCartIds) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that an email was sent from gomail.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email's recipient is the travel agent.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'firstclass.travel@gomail.com')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email's content includes flight details like 'Price' and 'Flight Number'.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Price') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Flight Number')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

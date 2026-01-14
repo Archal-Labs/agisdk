@@ -25,25 +25,25 @@
       "description": "Verify that at least one email was sent.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "expected_value": true
     },
     {
       "description": "Verify the recipient of the sent email is 'tom.h@mycorp.com'.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'tom.h@mycorp.com')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the subject of the sent email is 'Denver Backend - Interview Slate'.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Denver Backend - Interview Slate')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the email content lists applicant names, implying successful retrieval from TopWork (e.g., containing 'Applicant' or placeholder names like 'John Doe').",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'John Doe') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Jane Smith')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     }
   ],
   "points": 2,

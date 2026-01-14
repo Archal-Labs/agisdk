@@ -32,19 +32,19 @@
       "description": "Verify that a restaurant booking was successfully made for 10 people at a seafood restaurant, including a check for outdoor seating.",
       "type": "jmespath",
       "query": "opendining.differences.bookings.added[0] != null && opendining.differences.bookings.added[0].partySize == `10` && contains(opendining.differences.bookings.added[0].restaurantDetails.cuisine, 'Seafood') && opendining.differences.bookings.added[0].restaurantDetails.hasOutdoorSeating == `true`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a calendar event was created for the farewell dinner, with a relevant title.",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added.values(@)[0] != null && contains(gocalendar.differences.events.added.values(@)[0].title, 'Farewell Dinner') && contains(gocalendar.differences.events.added.values(@)[0].title, 'Mark')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that an email was sent to HR with the correct recipient, subject, and includes reservation confirmation details.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0] != null && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'hr.events@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Farewell Dinner for Mark') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Reservation Confirmation')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

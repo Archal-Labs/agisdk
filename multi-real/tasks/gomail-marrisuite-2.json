@@ -24,26 +24,26 @@
     {
       "description": "Verify that at least one Marrisuite hotel location was identified with the required amenities.",
       "type": "jmespath",
-      "query": "length(marrisite.finalstate.found_hotels) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(marrisuite.bookingDetailsDiff.added) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify that an email was sent to the dev team alias.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the email subject indicates hotels for the Miami offsite.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Miami Offsite Hotels') || contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Marrisuite Locations')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the email content lists hotel names and asks the team to vote for their favorite.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'hotel names') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'vote for your favorite')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

@@ -32,25 +32,25 @@
       "description": "Verify an email was sent to the reading circle with the correct subject.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'reading.circle@my-groups.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Coffee for next meeting')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email contains content referring to dark roast coffee.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'dark roast coffee') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '$')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email contains content referring to coffee mugs and implies a set of at least 4.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'coffee mugs') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'set') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '4') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '$')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify a reminder was set on the calendar for Saturday at 9 AM with the correct title.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Buy coffee and mugs for book club') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '09:00:00') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'Sat')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

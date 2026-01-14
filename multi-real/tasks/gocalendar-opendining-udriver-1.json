@@ -32,19 +32,19 @@
       "description": "Verify a dinner reservation was successfully made at 'Taco Loco' for 3 people.",
       "type": "jmespath",
       "query": "length(opendining.differences.bookings.added) >= `1` && contains(opendining.differences.bookings.added[0].restaurantName, 'Taco Loco') && opendining.differences.bookings.added[0].partySize >= `3`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify a 2-hour 'Dinner with Client' event was added to the calendar.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added.values(@)) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Dinner with Client')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify a UDriverXL was booked for pickup at 100 Van Ness Ave.",
       "type": "jmespath",
       "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup.address, '100 Van Ness Ave')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

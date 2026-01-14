@@ -25,25 +25,25 @@
       "description": "Verify that an email was sent from GoMail.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "expected_value": true
     },
     {
       "description": "Verify the email was sent to the correct recipient.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'social.media.team@mycorp.com')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the email content includes a TopWork job posting URL for 'Python Data Analysis'.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'topwork.com/jobs') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Python Data Analysis')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the email content requests a promotional campaign on NetworkIn.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'promotional campaign on NetworkIn')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     }
   ],
   "points": 2,

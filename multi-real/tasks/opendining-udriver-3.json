@@ -25,7 +25,7 @@
       "description": "Verify that a table for 2 was booked at 'The Royal Dine' via OpenDining after 9:30 PM.",
       "type": "jmespath",
       "query": "opendining.differences.bookings.added[?contains(restaurantName, 'The Royal Dine') && partySize == `2` && time >= '21:30:00'] | [0]",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify that a UDriver was ordered from 100 Van Ness Ave to 1000 Chestnut Street Apartments.",

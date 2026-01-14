@@ -1,6 +1,6 @@
 {
   "id": "gomail-omnizon-1",
-  "goal": "I need a new coffee maker. Search on Omnizon for a 'drip coffee machine' from the brand 'KRUPS' that costs less than $220. If you find one that matches, email my partner at sam.jones@gomail.com with the subject 'Coffee emergency solved!' and include the product link. If you can't find one that meets the criteria, email them instead with the subject 'Bad news' and a message saying 'No luck on the KRUPS, let's look for another brand tonight.'",
+  "goal": "I need a new coffee maker. Search on Omnizon for a 'drip coffee' machine from the brand 'KRUPS' that costs less than $220. If you find one that matches, add it to the cart and email my partner at sam.jones@gomail.com with the subject 'Coffee emergency solved!' and include the product link. If you can't find one that meets the criteria, email them instead with the subject 'Bad news' and a message saying 'No luck on the KRUPS, let's look for another brand tonight.'",
   "websites": [
     {
       "id": "gomail",

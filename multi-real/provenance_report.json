@@ -1,13 +1,13 @@
 {
-  "generated_at": "2026-01-14T19:17:33.997907+00:00",
+  "generated_at": "2026-01-14T21:47:02.541171+00:00",
   "ground_truth_dir": "final_states/manual",
   "dry_run": false,
-  "tasks_processed": 72,
-  "tasks_with_gt": 15,
-  "tasks_without_gt": 57,
-  "total_evals_updated": 2,
+  "tasks_processed": 69,
+  "tasks_with_gt": 17,
+  "tasks_without_gt": 52,
+  "total_evals_updated": 3,
   "total_evals_flagged": 25,
-  "total_evals_skipped": 27,
+  "total_evals_skipped": 34,
   "details": [
     {
       "task_id": "dashdish-gomail-1",
@@ -32,26 +32,6 @@
       "task_file": "tasks/flyunified-gocalendar-staynb-2.json",
       "evals": [
         {
-          "index": 2,
-          "description": "Verify that exactly two events were added to the calendar.",
-          "query": "length(gocalendar.differences.events.added)",
-          "query_type": "unknown",
-          "old_expected_value": "TODO: Review - query returns int",
-          "new_expected_value": "TODO: Review - query returns int",
-          "derivation_method": "field_extraction_flagged",
-          "actual_query_result": "1"
-        }
-      ],
-      "updated_count": 0,
-      "flagged_count": 1,
-      "skipped_count": 2,
-      "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
-    },
-    {
-      "task_id": "flyunified-gocalendar-staynb-3",
-      "task_file": "tasks/flyunified-gocalendar-staynb-3.json",
-      "evals": [
-        {
           "index": 0,
           "description": "Verify a round-trip flight from HND to SJC was booked on FlyUnified.",
           "query": "length(flyunified.differences.bookedFlights.added) >= `1` && contains(flyunified.differences.bookedFlights.added[0].departureAirport, 'HND') && contains(flyunified.differences.bookedFlights.added[0].arrivalAirport, 'SJC') && contains(flyunified.differences.bookedFlights.added[0].departureDate, '2023-11-18') && contains(flyunified.differences.bookedFlights.added[0].returnDate, '2023-11-20')",
@@ -60,22 +40,80 @@
           "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
           "derivation_method": "query_error",
           "actual_query_result": null
+        }
+      ],
+      "updated_count": 0,
+      "flagged_count": 1,
+      "skipped_count": 2,
+      "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-2.json"
+    },
+    {
+      "task_id": "gomail-networkin-topwork-1",
+      "task_file": "tasks/gomail-networkin-topwork-1.json",
+      "evals": [
+        {
+          "index": 0,
+          "description": "Verify a new job posting for 'Python Data Scientist' was created on TopWork.",
+          "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Add expected value after checking /finish JSON",
+          "new_expected_value": "TODO: Query error - In function contains(), invalid type for value: No",
+          "derivation_method": "query_error",
+          "actual_query_result": null
         },
         {
           "index": 1,
-          "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
-          "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn, '2023-11-18') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut, '2023-11-20') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'dedicated workspace') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'self check-in')",
+          "description": "Verify the posted job on TopWork has an hourly rate within the $70-$90 range.",
+          "query": "topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.min >= `70` && topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.max <= `90`",
           "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
+          "old_expected_value": "TODO: Add expected value after checking /finish JSON",
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": null
+        },
+        {
+          "index": 2,
+          "description": "Verify an email was sent to 'recruiting.team@startupx.com' with the subject 'New Python Role Live'.",
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiting.team@startupx.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'New Python Role Live')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Add expected value after checking /finish JSON",
+          "new_expected_value": false,
+          "derivation_method": "boolean_false",
+          "actual_query_result": "False"
+        },
+        {
+          "index": 3,
+          "description": "Verify the sent email's content mentions the job posting and Jessica William.",
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'job is posted') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Jessica William')",
+          "query_type": "boolean",
+          "old_expected_value": "TODO: Add expected value after checking /finish JSON",
           "new_expected_value": false,
           "derivation_method": "boolean_false",
           "actual_query_result": "False"
         }
       ],
-      "updated_count": 1,
+      "updated_count": 3,
       "flagged_count": 1,
-      "skipped_count": 1,
-      "ground_truth_file": "final_states/manual/flyunified-gocalendar-staynb-1.json"
+      "skipped_count": 0,
+      "ground_truth_file": "final_states/manual/gomail-networkin-topwork-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-1",
+      "task_file": "tasks/gomail-omnizon-1.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 4,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
+    },
+    {
+      "task_id": "gomail-omnizon-2",
+      "task_file": "tasks/gomail-omnizon-2.json",
+      "evals": [],
+      "updated_count": 0,
+      "flagged_count": 0,
+      "skipped_count": 3,
+      "ground_truth_file": "final_states/manual/gomail-omnizon-1.json"
     },
     {
       "task_id": "gomail-topwork-1",
@@ -182,16 +220,6 @@
       "task_file": "tasks/gomail-topwork-3.json",
       "evals": [
         {
-          "index": 0,
-          "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
-          "query": "length(values(topwork.initialfinaldiff.updated.applications || `{}`)[?candidate == 'Brian King' && status == 'Decline Application']) >= `1`",
-          "query_type": "boolean",
-          "old_expected_value": "TODO: Query error - In function length(), invalid type for value: None",
-          "new_expected_value": false,
-          "derivation_method": "boolean_false",
-          "actual_query_result": "False"
-        },
-        {
           "index": 1,
           "description": "Verify an email was sent to helena.v@mycorp.com.",
           "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com']) >= `1`",
@@ -212,9 +240,9 @@
           "actual_query_result": null
         }
       ],
-      "updated_count": 1,
+      "updated_count": 0,
       "flagged_count": 2,
-      "skipped_count": 0,
+      "skipped_count": 1,
       "ground_truth_file": "final_states/manual/gomail-topwork-3.json"
     },
     {

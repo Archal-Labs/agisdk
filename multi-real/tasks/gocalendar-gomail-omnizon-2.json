@@ -32,25 +32,25 @@
       "description": "Verify that an email was sent to the correct recipient.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the sent email's subject line is relevant to breakroom supplies.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'breakroom supplies')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the email content mentions all three requested items and includes at least one link.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'air fryer') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'knives') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'water bottle') && (contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'https'))",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a calendar event was created with the correct title and the specified start date/time.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Follow up on breakroom supplies') && gocalendar.differences.events.added.values(@)[0].start.dateTime",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

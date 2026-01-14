@@ -32,19 +32,19 @@
       "description": "Verify a calendar event named 'Potential Dinner Engagement' is added for Saturday at 8 PM.",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added.values(@)[?contains(title, 'Potential Dinner Engagement') && contains(start.dateTime, 'T20:00:00')] | length(@) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify an email was sent to 'alex.chen@gomail.com'.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true` && recipient == 'alex.chen@gomail.com'].recipient",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email's subject is relevant to restaurant options and its content includes booking links.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Restaurant Options') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'booking links')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

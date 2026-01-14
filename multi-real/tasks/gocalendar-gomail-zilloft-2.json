@@ -32,25 +32,25 @@
       "description": "Verify that at least two calendar events were added.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `2`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the first added calendar event has a title (presumably related to the open house).",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added.values(@)[0].title != null",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that an email was sent.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email's subject and recipient.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0].subject == 'Weekend Open House Itinerary' && gomail.differences.emails.added[?sent == `true`][0].recipient == 'family.updates@gomail.com'",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

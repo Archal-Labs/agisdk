@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-01-14T16:29:22.950464+00:00",
+  "generated_at": "2026-01-14T22:47:52.585998+00:00",
   "summary": {
-    "tasks_analyzed": 72,
-    "total_queries": 263,
-    "valid_queries": 165,
-    "invalid_queries": 98,
-    "tasks_with_issues": 66
+    "tasks_analyzed": 69,
+    "total_queries": 252,
+    "valid_queries": 170,
+    "invalid_queries": 82,
+    "tasks_with_issues": 59
   },
   "fix_patterns": [],
   "tasks": [
@@ -76,20 +76,13 @@
               "path": "finance.dept"
             },
             {
-              "valid": false,
-              "reason": "unknown app: mycompany",
-              "app_id": "mycompany",
-              "path": "mycompany.co"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
           "issues": [
-            "Invalid path 'finance.dept': unknown app: finance",
-            "Invalid path 'mycompany.co': unknown app: mycompany"
+            "Invalid path 'finance.dept': unknown app: finance"
           ],
           "suggestions": [],
           "eval_index": 2,
@@ -146,7 +139,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a calendar event was added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Confirm Dublin flight options')",
@@ -163,10 +156,10 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the added calendar event contains 'Confirm Dublin flight options'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].start.date",
+          "query": "gocalendar.differences.events.added.values(@)[0].start.date != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -188,7 +181,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the calendar event is scheduled for a Friday (representing 'this Friday').",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(flyunified.differences.bookedFlights.added)",
@@ -205,7 +198,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that no flight was booked on FlyUnified.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -235,7 +228,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an event was successfully added to the calendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Leave for airport to pick up Maya')",
@@ -252,10 +245,10 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the title of the created calendar event is correct.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
+          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -277,7 +270,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the exact start time of the calendar event, which should be 90 minutes before the flight's scheduled arrival.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -290,11 +283,11 @@
         "staynb"
       ],
       "total_queries": 4,
-      "valid_queries": 3,
-      "invalid_queries": 1,
+      "valid_queries": 1,
+      "invalid_queries": 3,
       "queries": [
         {
-          "query": "flyunified.differences.bookedFlights.added[?origin=='IAD' && departureDate=='2024-03-13' && returnDate=='2024-03-16' && (destination=='London' || destination=='Paris' || destination=='Rome' || destination=='Madrid' || destination=='Berlin' || destination=='Amsterdam' || destination=='Dublin' || destination=='Lisbon')]",
+          "query": "length(values(flyunified.differences.bookedFlights.added)[?flight.outboundFlight.info.from.destination.code == 'IAD' && (flight.outboundFlight.info.to.destination.code == 'LHR' || flight.outboundFlight.info.to.destination.code == 'CDG' || flight.outboundFlight.info.to.destination.code == 'FCO' || flight.outboundFlight.info.to.destination.code == 'MAD' || flight.outboundFlight.info.to.destination.code == 'BER' || flight.outboundFlight.info.to.destination.code == 'AMS' || flight.outboundFlight.info.to.destination.code == 'DUB' || flight.outboundFlight.info.to.destination.code == 'LIS')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -302,30 +295,101 @@
               "valid": true,
               "matched_path": "flyunified.differences.bookedFlights.added",
               "path": "flyunified.differences.bookedFlights.added"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.from.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
             }
           ],
-          "issues": [],
+          "issues": [
+            "Invalid path 'flight.outboundFlight.info.from.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight"
+          ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a round-trip flight was booked on FlyUnified departing from IAD to a European city, from March 13th to March 16th.",
-          "expected_value": false
+          "expected_value": true
         },
         {
-          "query": "values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn=='2024-03-13' && checkOut=='2024-03-16' && contains(amenities, 'kitchen')]",
+          "query": "length(staynb.finalstate.booking.bookingDetails[?contains(checkin, '03-13') && contains(checkout, '03-16')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": true,
-              "matched_path": "staynb.initialfinaldiff.added",
-              "path": "staynb.initialfinaldiff.added.booking.bookingDetails"
+              "valid": false,
+              "reason": "path not found in schema",
+              "known_paths": [
+                "staynb.initialfinaldiff.added",
+                "staynb.initialfinaldiff.deleted",
+                "staynb.initialfinaldiff.updated"
+              ],
+              "path": "staynb.finalstate.booking.bookingDetails"
             }
           ],
-          "issues": [],
+          "issues": [
+            "Invalid path 'staynb.finalstate.booking.bookingDetails': path not found in schema"
+          ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify a StayNB with a kitchen was booked for the same dates in the destination city.",
-          "expected_value": false
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[?title=='Europe Trip' && start.date=='2024-03-13' && end.date=='2024-03-16']",
@@ -387,76 +451,11 @@
         "staynb"
       ],
       "total_queries": 3,
-      "valid_queries": 3,
-      "invalid_queries": 0,
+      "valid_queries": 1,
+      "invalid_queries": 2,
       "queries": [
         {
-          "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'TENTATIVE: DC Flight')]) >= `1`",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gocalendar.differences.events.added",
-              "path": "gocalendar.differences.events.added.values"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 0,
-          "description": "Verify that a tentative calendar event for the DC flight was created.",
-          "expected_value": false
-        },
-        {
-          "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'TENTATIVE: DC Stay')]) >= `1`",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gocalendar.differences.events.added",
-              "path": "gocalendar.differences.events.added.values"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 1,
-          "description": "Verify that a tentative calendar event for the DC stay was created.",
-          "expected_value": false
-        },
-        {
-          "query": "length(gocalendar.differences.events.added)",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gocalendar.differences.events.added",
-              "path": "gocalendar.differences.events.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 2,
-          "description": "Verify that exactly two events were added to the calendar.",
-          "expected_value": "TODO: Review - query returns int"
-        }
-      ]
-    },
-    {
-      "task_id": "flyunified-gocalendar-staynb-3",
-      "file": "flyunified-gocalendar-staynb-3.json",
-      "websites": [
-        "flyunified",
-        "gocalendar",
-        "staynb"
-      ],
-      "total_queries": 3,
-      "valid_queries": 2,
-      "invalid_queries": 1,
-      "queries": [
-        {
-          "query": "length(flyunified.differences.bookedFlights.added) >= `1` && contains(flyunified.differences.bookedFlights.added[0].departureAirport, 'HND') && contains(flyunified.differences.bookedFlights.added[0].arrivalAirport, 'SJC') && contains(flyunified.differences.bookedFlights.added[0].departureDate, '2023-11-18') && contains(flyunified.differences.bookedFlights.added[0].returnDate, '2023-11-20')",
+          "query": "length(values(flyunified.differences.bookedFlights.added)[?flight.outboundFlight.info.from.destination.code == 'HND' && flight.outboundFlight.info.to.destination.code == 'SJC']) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -466,31 +465,26 @@
               "path": "flyunified.differences.bookedFlights.added"
             },
             {
-              "valid": true,
-              "matched_path": "flyunified.differences.bookedFlights.added",
-              "path": "flyunified.differences.bookedFlights.added"
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.from.destination.code"
             },
             {
-              "valid": true,
-              "matched_path": "flyunified.differences.bookedFlights.added",
-              "path": "flyunified.differences.bookedFlights.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "flyunified.differences.bookedFlights.added",
-              "path": "flyunified.differences.bookedFlights.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "flyunified.differences.bookedFlights.added",
-              "path": "flyunified.differences.bookedFlights.added"
+              "valid": false,
+              "reason": "unknown app: flight",
+              "app_id": "flight",
+              "path": "flight.outboundFlight.info.to.destination.code"
             }
           ],
-          "issues": [],
+          "issues": [
+            "Invalid path 'flight.outboundFlight.info.from.destination.code': unknown app: flight",
+            "Invalid path 'flight.outboundFlight.info.to.destination.code': unknown app: flight"
+          ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a round-trip flight from HND to SJC was booked on FlyUnified.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn, '2023-11-18') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut, '2023-11-20') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'dedicated workspace') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'self check-in')",
@@ -527,7 +521,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": false
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Kenji Tanaka Interview Logistics') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '2023-11-17T10:00:00') && contains(gocalendar.differences.events.added.values(@)[0].duration, `30`) && contains(gocalendar.differences.events.added.values(@)[0].attendees, 'recruiting@mycompany.com')",
@@ -564,17 +558,10 @@
               "valid": true,
               "matched_path": "gocalendar.differences.events.added",
               "path": "gocalendar.differences.events.added.values"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycompany",
-              "app_id": "mycompany",
-              "path": "mycompany.com"
             }
           ],
           "issues": [
-            "Invalid path 'start.dateTime': unknown app: start",
-            "Invalid path 'mycompany.com': unknown app: mycompany"
+            "Invalid path 'start.dateTime': unknown app: start"
           ],
           "suggestions": [],
           "eval_index": 2,
@@ -610,7 +597,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a flight was booked on FlyUnified to SFO.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1 Hotel San Francisco')",
@@ -633,7 +620,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the UDriver pickup location is '1 Hotel San Francisco'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(udriver.finalstate.ride.bookedTrip.destination.address, '1001 Castro Street')",
@@ -656,7 +643,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the UDriver dropoff location is '1001 Castro Street'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Ride to Castro')",
@@ -673,7 +660,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify a calendar event titled 'Ride to Castro' was created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -730,7 +717,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an UDriverXL trip was booked from 100 Van Ness Ave to 1 Hotel San Francisco.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(flyunified.differences.bookedFlights.added) >= `1` && contains(flyunified.differences.bookedFlights.added[0].destination, 'PDX') && contains(flyunified.differences.bookedFlights.added[0].origin, 'SFO') && contains(flyunified.differences.bookedFlights.added[0].departureDate, '2024-06-28')",
@@ -762,7 +749,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a one-way flight was booked on FlyUnified from SFO to PDX departing on June 28th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Travel to Portland')",
@@ -784,7 +771,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that a new event named 'Travel to Portland' was created on the calendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0] != null && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '2024-06-28T16:15:00') && contains(gocalendar.differences.events.added.values(@)[0].end.dateTime, '2024-06-28T19')",
@@ -826,7 +813,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the 'Travel to Portland' event starts at the UDriver pickup time (4:15 PM) and ends at or after the flight's earliest departure time (7 PM) on June 28th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -856,7 +843,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that at least one flight was selected or added to a cart in flyunified, indicating a flight was found.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
@@ -873,7 +860,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that an email was sent from gomail.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'firstclass.travel@gomail.com')",
@@ -890,28 +877,15 @@
               "reason": "unknown app: firstclass",
               "app_id": "firstclass",
               "path": "firstclass.travel"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'firstclass.travel': unknown app: firstclass",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'firstclass.travel': unknown app: firstclass"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email's recipient is the travel agent.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Price') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Flight Number')",
@@ -933,7 +907,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the sent email's content includes flight details like 'Price' and 'Flight Number'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -946,8 +920,8 @@
         "staynb"
       ],
       "total_queries": 3,
-      "valid_queries": 2,
-      "invalid_queries": 1,
+      "valid_queries": 3,
+      "invalid_queries": 0,
       "queries": [
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'offsite-planning@mycompany.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Offsite Cost Comparison')",
@@ -965,24 +939,16 @@
               "path": "gomail.differences.emails.added"
             },
             {
-              "valid": false,
-              "reason": "unknown app: mycompany",
-              "app_id": "mycompany",
-              "path": "mycompany.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
-          "issues": [
-            "Invalid path 'mycompany.com': unknown app: mycompany"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent to the correct recipient with the specified subject.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'London') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost (London):')",
@@ -1004,7 +970,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the sent email's content includes cost information for London (flight + lodging).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Berlin') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost (Berlin):')",
@@ -1026,7 +992,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the sent email's content includes cost information for Berlin (flight + lodging).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1082,7 +1048,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a business class flight from SFO to NRT arriving on or before March 10th and returning March 17th next year was identified/booked on FlyUnified.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'anya.sharma@clientcorp.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Travel Proposal: Tokyo Meeting')",
@@ -1106,25 +1072,18 @@
               "path": "anya.sharma"
             },
             {
-              "valid": false,
-              "reason": "unknown app: clientcorp",
-              "app_id": "clientcorp",
-              "path": "clientcorp.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
           "issues": [
-            "Invalid path 'anya.sharma': unknown app: anya",
-            "Invalid path 'clientcorp.com': unknown app: clientcorp"
+            "Invalid path 'anya.sharma': unknown app: anya"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify an email was sent to anita.sharma@clientcorp.com with the subject 'Travel Proposal: Tokyo Meeting'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'SFO to NRT') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Business Class') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'March 10') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'March 17')",
@@ -1161,7 +1120,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the email content includes details of the SFO to NRT business class flight.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Osaka') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '5-star') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Luxe') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'nightly rates')",
@@ -1198,7 +1157,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the email content includes details for multiple 5-star StaynB 'Luxe' properties in the Osaka district with nightly rates.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1229,7 +1188,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a flight from JFK to KEF for October 25th was booked.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn == '2023-10-25' && guests == `1` && nights == `3` && contains(area, 'Mi\u00f0borg') && contains(amenities, 'kitchenette')]) >= `1`",
@@ -1246,7 +1205,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a StaynB booking for 3 nights, 1 person, in 'Mi\u00f0borg' with a kitchenette was made, with check-in on the flight arrival date (October 25th).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `2` && all(gomail.differences.emails.added[?sent == `true`][*].recipient, &contains(@, 'trip.archive@gomail.com')) && all(gomail.differences.emails.added[?sent == `true`][*].subject, &contains(@, 'Iceland Logistics Confirmed')) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'flight') || contains(content, 'JFK') || contains(content, 'KEF')]) >= `1`) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'StaynB') || contains(content, 'hotel') || contains(content, 'Mi\u00f0borg')]) >= `1`)",
@@ -1270,18 +1229,6 @@
               "path": "trip.archive"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
@@ -1298,13 +1245,12 @@
             }
           ],
           "issues": [
-            "Invalid path 'trip.archive': unknown app: trip",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'trip.archive': unknown app: trip"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that two emails were sent to 'trip.archive@gomail.com' with the subject 'Iceland Logistics Confirmed', and that at least one email contains flight details and at least one contains hotel details.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1355,7 +1301,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that two flights are booked, originating from MIA and YVR, both departing on July 10th to Montreal (YUL).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn == '2024-07-10' && values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut == '2024-07-15'",
@@ -1382,7 +1328,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a StaynB booking is made for 5 nights, starting on July 10th (check-out July 15th).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'montreal.meetup.planning@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Montreal Plan') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'My flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Their flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Lodging cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost:')",
@@ -1404,18 +1350,6 @@
               "reason": "unknown app: montreal",
               "app_id": "montreal",
               "path": "montreal.meetup.planning"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             },
             {
               "valid": true,
@@ -1444,13 +1378,12 @@
             }
           ],
           "issues": [
-            "Invalid path 'montreal.meetup.planning': unknown app: montreal",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'montreal.meetup.planning': unknown app: montreal"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify an email is sent to 'montreal.meetup.planning@gomail.com' with the subject 'Montreal Plan' and detailing flight and lodging costs.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1481,7 +1414,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a round-trip flight from PDX to MSY departing May 3rd and returning May 7th was booked on FlyUnified.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn=='2024-05-03' && checkOut=='2024-05-07' && contains(propertyDetails.type, 'Entire place') && contains(propertyDetails.location, 'Garden District') && propertyDetails.rating >= `4.8`] | length(@) >= `1`",
@@ -1528,7 +1461,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a StaynB was booked for 4 nights (May 3rd to May 7th) for an 'Entire place' in the 'Garden District' with a rating of 4.8 or higher.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true` && recipient=='chloe.s@gomail.com' && contains(subject, 'You''re going to New Orleans!') && contains(content, 'flight') && contains(content, 'stay')] | length(@) >= `1`",
@@ -1545,28 +1478,15 @@
               "reason": "unknown app: chloe",
               "app_id": "chloe",
               "path": "chloe.s"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'chloe.s': unknown app: chloe",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'chloe.s': unknown app: chloe"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that a fun email was sent to Chloe at 'chloe.s@gomail.com' with the correct subject and mentioning flight and stay details.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true` && recipient=='surprise.logistics@gomail.com' && contains(subject, 'NOLA Bday Booked') && (contains(content, 'confirmation') || contains(content, 'booking'))] | length(@) >= `1`",
@@ -1583,28 +1503,15 @@
               "reason": "unknown app: surprise",
               "app_id": "surprise",
               "path": "surprise.logistics"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'surprise.logistics': unknown app: surprise",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'surprise.logistics': unknown app: surprise"
           ],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that an email containing booking confirmation numbers was sent to 'surprise.logistics@gomail.com' with the subject 'NOLA Bday Booked'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1635,22 +1542,15 @@
               "reason": "unknown app: f",
               "app_id": "f",
               "path": "f.advisor"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: consult",
-              "app_id": "consult",
-              "path": "consult.com"
             }
           ],
           "issues": [
-            "Invalid path 'f.advisor': unknown app: f",
-            "Invalid path 'consult.com': unknown app: consult"
+            "Invalid path 'f.advisor': unknown app: f"
           ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent to the financial advisor.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Office Chair Options for Review')",
@@ -1667,7 +1567,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the sent email's subject indicates an office chair review.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(split(gomail.differences.emails.added[?sent == `true`][0].content, 'http')) >= `4`",
@@ -1684,7 +1584,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the email content includes at least three product links, indicating chairs were found.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Make final office chair purchase decision')",
@@ -1701,7 +1601,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that a calendar event was added with the correct title.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime && gocalendar.differences.events.added.values(@)[0].end.dateTime && (gocalendar.differences.events.added.values(@)[0].end.dateTime - gocalendar.differences.events.added.values(@)[0].start.dateTime) == `3600000`",
@@ -1714,7 +1614,7 @@
           "suggestions": [],
           "eval_index": 4,
           "description": "Verify that the calendar event is scheduled for next Tuesday afternoon and is 1 hour long.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1745,7 +1645,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent to the correct recipient.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'breakroom supplies')",
@@ -1762,7 +1662,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the sent email's subject line is relevant to breakroom supplies.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'air fryer') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'knives') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'water bottle') && (contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'https'))",
@@ -1799,7 +1699,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the email content mentions all three requested items and includes at least one link.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Follow up on breakroom supplies') && gocalendar.differences.events.added.values(@)[0].start.dateTime",
@@ -1829,7 +1729,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that a calendar event was created with the correct title and the specified start date/time.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1842,8 +1742,8 @@
         "omnizon"
       ],
       "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
+      "valid_queries": 3,
+      "invalid_queries": 1,
       "queries": [
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
@@ -1860,7 +1760,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true`][0].recipient == 'leila.h@startupdesign.io' && contains(gomail.differences.emails.added[?sent == `true`][0].cc, 'hr-onboarding@startupdesign.io') && gomail.differences.emails.added[?sent == `true`][0].subject == 'Welcome Gift!'",
@@ -1879,21 +1779,9 @@
               "path": "leila.h"
             },
             {
-              "valid": false,
-              "reason": "unknown app: startupdesign",
-              "app_id": "startupdesign",
-              "path": "startupdesign.io"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: startupdesign",
-              "app_id": "startupdesign",
-              "path": "startupdesign.io"
             },
             {
               "valid": true,
@@ -1902,14 +1790,12 @@
             }
           ],
           "issues": [
-            "Invalid path 'leila.h': unknown app: leila",
-            "Invalid path 'startupdesign.io': unknown app: startupdesign",
-            "Invalid path 'startupdesign.io': unknown app: startupdesign"
+            "Invalid path 'leila.h': unknown app: leila"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the email recipient, CC, and subject.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'on their way') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'http')",
@@ -1931,33 +1817,24 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the email body contains mention of items being on their way and product links.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "contains(gocalendar.finalstate.events.values(@)[?title == 'Onboard new designer'][0].description, 'Welcome gifts (mouse, desk mat) ordered.')",
+          "query": "contains(gocalendar.differences.events.added.values(@)[?title == 'Onboard new designer'][0].description, 'Welcome gifts (mouse, desk mat) ordered.')",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.finalstate.events.values"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.added",
+              "path": "gocalendar.differences.events.added.values"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.finalstate.events.values': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the 'Onboard new designer' calendar event's description was updated with the note about welcome gifts.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -1995,25 +1872,18 @@
               "path": "reading.circle"
             },
             {
-              "valid": false,
-              "reason": "unknown app: groups",
-              "app_id": "groups",
-              "path": "groups.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
           "issues": [
-            "Invalid path 'reading.circle': unknown app: reading",
-            "Invalid path 'groups.com': unknown app: groups"
+            "Invalid path 'reading.circle': unknown app: reading"
           ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify an email was sent to the reading circle with the correct subject.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'dark roast coffee') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '$')",
@@ -2040,7 +1910,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the sent email contains content referring to dark roast coffee.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'coffee mugs') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'set') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '4') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '$')",
@@ -2077,7 +1947,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email contains content referring to coffee mugs and implies a set of at least 4.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Buy coffee and mugs for book club') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '09:00:00') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'Sat')",
@@ -2124,7 +1994,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify a reminder was set on the calendar for Saturday at 9 AM with the correct title.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2163,7 +2033,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a calendar event named 'Potential Dinner Engagement' is added for Saturday at 8 PM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true` && recipient == 'alex.chen@gomail.com'].recipient",
@@ -2180,28 +2050,15 @@
               "reason": "unknown app: alex",
               "app_id": "alex",
               "path": "alex.chen"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'alex.chen': unknown app: alex",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'alex.chen': unknown app: alex"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify an email was sent to 'alex.chen@gomail.com'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Restaurant Options') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'booking links')",
@@ -2228,7 +2085,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email's subject is relevant to restaurant options and its content includes booking links.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2289,7 +2146,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a restaurant booking was successfully made for 10 people at a seafood restaurant, including a check for outdoor seating.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0] != null && contains(gocalendar.differences.events.added.values(@)[0].title, 'Farewell Dinner') && contains(gocalendar.differences.events.added.values(@)[0].title, 'Mark')",
@@ -2316,7 +2173,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a calendar event was created for the farewell dinner, with a relevant title.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true`][0] != null && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'hr.events@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Farewell Dinner for Mark') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Reservation Confirmation')",
@@ -2340,18 +2197,6 @@
               "path": "hr.events"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
@@ -2363,13 +2208,12 @@
             }
           ],
           "issues": [
-            "Invalid path 'hr.events': unknown app: hr",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'hr.events': unknown app: hr"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that an email was sent to HR with the correct recipient, subject, and includes reservation confirmation details.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2405,7 +2249,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a calendar event titled 'Strategy Lunch' was created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(opendining.differences.bookings.added) >= `1` && opendining.differences.bookings.added[0].partySize >= `2`",
@@ -2427,7 +2271,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a restaurant booking for at least two people was made.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'beatrice.lim@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Lunch is set for Thursday! See you then.')",
@@ -2451,31 +2295,18 @@
               "path": "beatrice.lim"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
           "issues": [
-            "Invalid path 'beatrice.lim': unknown app: beatrice",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'beatrice.lim': unknown app: beatrice"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that an email was sent to 'beatrice.lim@gomail.com' with the specified content.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2513,31 +2344,18 @@
               "path": "my.personal.email"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
           "issues": [
-            "Invalid path 'my.personal.email': unknown app: my",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'my.personal.email': unknown app: my"
           ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify an email was sent to the correct recipient ('my.personal.email@gomail.com') with the subject 'Rental Comparison'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Address:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Price:')",
@@ -2559,7 +2377,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the email body contains text indicating at least two rental properties (e.g., 'Address:' and 'Price:'), implying the Zilloft data was included.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Analyze Austin Rentals') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '10:00:00')",
@@ -2594,7 +2412,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify a calendar event named 'Analyze Austin Rentals' was created and scheduled for 10 AM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2625,7 +2443,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that at least two calendar events were added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].title != null",
@@ -2642,7 +2460,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the first added calendar event has a title (presumably related to the open house).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
@@ -2659,7 +2477,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that an email was sent.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true`][0].subject == 'Weekend Open House Itinerary' && gomail.differences.emails.added[?sent == `true`][0].recipient == 'family.updates@gomail.com'",
@@ -2681,28 +2499,15 @@
               "reason": "unknown app: family",
               "app_id": "family",
               "path": "family.updates"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'family.updates': unknown app: family",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'family.updates': unknown app: family"
           ],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the sent email's subject and recipient.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2719,7 +2524,7 @@
       "invalid_queries": 0,
       "queries": [
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].title",
+          "query": "gocalendar.differences.events.added.values(@)[0].title != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -2733,7 +2538,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a calendar event was created with the correct title.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'http')",
@@ -2750,7 +2555,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the calendar event description contains at least one 'http' link, indicating Zilloft properties were pasted.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
@@ -2767,7 +2572,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify an email was sent to the correct recipient with the specified subject.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
@@ -2784,7 +2589,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the subject of the sent email is correct.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2833,7 +2638,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a calendar event for 'Virtual Tour' is created for next Wednesday at 4 PM Pacific Time.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1` && contains(gomail.differences.emails.added[?draft == `true`][0].recipient, 'relocation.specialist@gomail.com') && contains(gomail.differences.emails.added[?draft == `true`][0].subject, 'Potential SD Property') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'Found a promising option. I''ve scheduled a time for a virtual tour. Please see the details and let me know if you can get in touch with the listing agent.') && (contains(gomail.differences.emails.added[?draft == `true`][0].content, 'San Diego') || gomail.differences.emails.added[?draft == `true`][0].content | contains(@, ' CA '))",
@@ -2857,18 +2662,6 @@
               "path": "relocation.specialist"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
@@ -2890,13 +2683,12 @@
             }
           ],
           "issues": [
-            "Invalid path 'relocation.specialist': unknown app: relocation",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'relocation.specialist': unknown app: relocation"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify an email draft is created for the relocation specialist with the correct recipient, subject, and body content including the property address.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -2926,7 +2718,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a calendar event was added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Philly Hotel')",
@@ -2943,7 +2735,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the added calendar event has the correct title.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T16:00:00')",
@@ -2968,7 +2760,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the added calendar event is scheduled for 4 PM (assuming this Thursday is handled by the system).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3003,7 +2795,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a booking for Marrisuite was successfully added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "marrisuite.bookingDetailsDiff.added[0].checkIn == '2024-07-22' && marrisuite.bookingDetailsDiff.added[0].checkOut == '2024-07-26' && contains(marrisuite.bookingDetailsDiff.added[0].roomType, 'Executive Suite')",
@@ -3030,7 +2822,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the details of the Marrisuite booking, including check-in/out dates and room type.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added.values(@)) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Submit London Trip Expense Report') && gocalendar.differences.events.added.values(@)[0].start.date == '2024-07-29'",
@@ -3065,7 +2857,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that a calendar event titled 'Submit London Trip Expense Report' was added for July 29th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3095,7 +2887,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a hotel booking was successfully made for the Marrisuite.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "marrisuite.bookingDetailsDiff.added[0].checkIn == '2024-04-26' && marrisuite.bookingDetailsDiff.added[0].checkOut == '2024-04-28'",
@@ -3117,7 +2909,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the hotel booking check-in date is April 26th and check-out date is April 28th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Spa Appointment') && gocalendar.differences.events.added.values(@)[0].start.date == '2024-04-27'",
@@ -3152,7 +2944,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the calendar event 'Spa Appointment' was added for April 27th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime == '2024-04-27T14:00:00' && gocalendar.differences.events.added.values(@)[0].end.dateTime == '2024-04-27T16:00:00'",
@@ -3189,7 +2981,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the calendar event starts at 2 PM and ends at 4 PM on April 27th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3201,8 +2993,8 @@
         "marrisuite"
       ],
       "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
+      "valid_queries": 4,
+      "invalid_queries": 0,
       "queries": [
         {
           "query": "length(marrisuite.bookingDetailsDiff.added) >= `1`",
@@ -3219,7 +3011,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a hotel booking was successfully created in the Marrisuite application.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "marrisuite.bookingDetailsDiff.added[0] | (contains(hotelName, 'Marrisuite') && contains(roomType, 'King Suite') && contains(location, 'Miami, FL'))",
@@ -3236,59 +3028,41 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the details of the Marrisuite booking: hotel name is 'Marrisuite', room type is 'King Suite', and location is 'Miami, FL'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "length(gocalendar.differences.events.modified.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Marrisuite')]) >= `1`",
+          "query": "length(gocalendar.differences.events.updated.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Marrisuite')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.differences.events.modified.values"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.updated",
+              "path": "gocalendar.differences.events.updated.values"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.differences.events.modified.values': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the original 'Our Anniversary' calendar event in GoCalendar was updated to include the hotel's name.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "length(gocalendar.differences.events.modified.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Confirmation:')]) >= `1`",
+          "query": "length(gocalendar.differences.events.updated.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Confirmation:')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.differences.events.modified.values"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.updated",
+              "path": "gocalendar.differences.events.updated.values"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.differences.events.modified.values': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that the original 'Our Anniversary' calendar event in GoCalendar was updated to include a booking confirmation number.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3318,10 +3092,10 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a new calendar event was created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].title",
+          "query": "gocalendar.differences.events.added.values(@)[0].title != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -3335,10 +3109,10 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the created calendar event.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
+          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -3360,7 +3134,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the start date and time of the calendar event. (This Saturday at 2 PM)",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'http')",
@@ -3377,7 +3151,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the calendar event description contains links, indicating the headphone options were added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3407,7 +3181,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify two restaurant bookings were successfully created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[0].partySize == `4` && contains(opendining.differences.bookings.added[0].date, 'T19:30:00')",
@@ -3434,7 +3208,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the first restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the next month.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(opendining.differences.bookings.added[1].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[1].partySize == `4` && contains(opendining.differences.bookings.added[1].date, 'T19:30:00')",
@@ -3461,7 +3235,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the second restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the month after next.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Client Dinner') && contains(gocalendar.differences.events.added.values(@)[0].title, 'The Capital Grille') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T19:30:00')",
@@ -3501,7 +3275,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify a recurring calendar event was created for the 'Client Dinner' at 7:30 PM on the first Friday of the next month.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3536,7 +3310,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a reservation was successfully made for two people at a restaurant.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1`",
@@ -3553,7 +3327,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a calendar event was created for the reservation.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].restaurantAddress)",
@@ -3575,7 +3349,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the calendar event's notes contain the restaurant's full address.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].confirmationId)",
@@ -3597,7 +3371,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the calendar event's notes contain the reservation confirmation ID.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3613,7 +3387,7 @@
       "invalid_queries": 1,
       "queries": [
         {
-          "query": "opendining.differences.bookings.added[0].partySize",
+          "query": "opendining.differences.bookings.added[0].partySize != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -3627,7 +3401,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a restaurant booking for one person has been made in OpenDining.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Solo Sushi Night')",
@@ -3644,10 +3418,10 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a calendar event titled 'Solo Sushi Night' has been created in GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].end.dateTime",
+          "query": "gocalendar.differences.events.added.values(@)[0].end.dateTime != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -3669,7 +3443,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the calendar event is exactly 90 minutes long (1 hour and 30 minutes).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'Sushi') || contains(opendining.differences.bookings.added[0].restaurantName, 'sushi')",
@@ -3691,7 +3465,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that the restaurant booked is a sushi restaurant (by checking its name).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3732,7 +3506,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a dinner reservation was successfully made at 'Taco Loco' for 3 people.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added.values(@)) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Dinner with Client')",
@@ -3754,7 +3528,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify a 2-hour 'Dinner with Client' event was added to the calendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup.address, '100 Van Ness Ave')",
@@ -3787,7 +3561,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify a UDriverXL was booked for pickup at 100 Van Ness Ave.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3818,7 +3592,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a table was booked at Foreign Cinema for two people.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, '1 Hotel San Francisco') && contains(destination.address, 'Foreign Cinema') && time == '13:15:00'] | length(@)",
@@ -3850,7 +3624,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the first UDriver trip was booked from 1 Hotel San Francisco to Foreign Cinema at 1:15 PM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, 'Foreign Cinema') && contains(destination.address, '1 Hotel San Francisco') && time == '15:30:00'] | length(@)",
@@ -3882,7 +3656,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the second UDriver trip was booked from Foreign Cinema to 1 Hotel San Francisco at 3:30 PM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(udriver.initialfinaldiff.added.ride.bookedTrips)",
@@ -3899,7 +3673,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify exactly two UDriver trips were booked.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -3934,7 +3708,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a calendar event was successfully added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Whistler Trip')",
@@ -3951,7 +3725,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the added calendar event is 'Finalize Whistler Trip'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T19:00:00')",
@@ -3976,7 +3750,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the start time of the added calendar event is 7 PM (19:00:00).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) == `0`",
@@ -3993,7 +3767,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that no booking was made on StaynB, as per instructions 'Don't book it yet'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4023,7 +3797,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a booking was added in StaynB for the team retreat.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].hotelName, 'Miami') || contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].location, 'Miami')",
@@ -4045,7 +3819,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the booked property in StaynB is located in Miami (checking name for keyword).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Tentative: Team Retreat')",
@@ -4067,7 +3841,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that a calendar event titled 'Tentative: Team Retreat' was added to GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].start.date == '2025-01-22' && gocalendar.differences.events.added.values(@)[0].end.date == '2025-01-26'",
@@ -4104,7 +3878,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that the GoCalendar event for the retreat is scheduled from January 22nd to January 26th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4116,86 +3890,59 @@
         "topwork"
       ],
       "total_queries": 3,
-      "valid_queries": 0,
-      "invalid_queries": 3,
+      "valid_queries": 3,
+      "invalid_queries": 0,
       "queries": [
         {
-          "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && notes != null && notes != '']) >= `1`",
+          "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && notes != null && notes != '']) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.finalstate.events"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.added",
+              "path": "gocalendar.differences.events.added"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.finalstate.events': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that the 'Recruiting Pipeline Review' event exists in the final state and has updated notes.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'TopWork')]) >= `1`",
+          "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'TopWork')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.finalstate.events"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.added",
+              "path": "gocalendar.differences.events.added"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.finalstate.events': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the note attached to the 'Recruiting Pipeline Review' event contains a reference to 'TopWork'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'Modern React E-Commerce Website')]) >= `1`",
+          "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'Modern React E-Commerce Website')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.finalstate.events"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.added",
+              "path": "gocalendar.differences.events.added"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.finalstate.events': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the note mentions the specific job role 'Modern React E-Commerce Website' for which the candidate applied.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4225,7 +3972,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that two calendar events were created for the introductory calls.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Introductory Call')",
@@ -4242,7 +3989,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the first scheduled introductory call event.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[1].title, 'Introductory Call')",
@@ -4259,7 +4006,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the title of the second scheduled introductory call event.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '13:00:00')",
@@ -4284,7 +4031,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the start time of the first introductory call is scheduled for 1 PM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4319,7 +4066,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a new job posting for 'Python Data Scientist' was created on TopWork.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1`",
@@ -4336,7 +4083,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that a new reminder event was added to gocalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Check Python role applicants') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T10:00:00')",
@@ -4366,7 +4113,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the calendar reminder's title is 'Check Python role applicants' and it is scheduled for 10 AM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4396,7 +4143,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a calendar event for 'Strategize Job Promotion' was created IF the applicant count for 'WordPress Blog Website' job was less than 5, or that no event was created otherwise. This evaluates the conditional logic based on the TopWork check.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0] | contains(title, 'Strategize Job Promotion')",
@@ -4413,7 +4160,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the created calendar event is 'Strategize Job Promotion', if an event was created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0] | (contains(start.dateTime, 'T14:00:00') && contains(end.dateTime, 'T15:00:00'))",
@@ -4445,7 +4192,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the created calendar event starts at 2 PM and is 1 hour long (ends at 3 PM) on 'this Friday', if an event was created. Note: 'this Friday' depends on the execution date.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4457,8 +4204,8 @@
         "udriver"
       ],
       "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
+      "valid_queries": 4,
+      "invalid_queries": 0,
       "queries": [
         {
           "query": "length(gocalendar.differences.events.added)",
@@ -4475,7 +4222,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that at least one recurring physiotherapy appointment event was added to GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'physiotherapy appointment')",
@@ -4492,59 +4239,41 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the added physiotherapy appointment event.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "length(gocalendar.differences.tasks.added)",
+          "query": "length(gocalendar.differences.events.added)",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.differences.tasks.added"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.added",
+              "path": "gocalendar.differences.events.added"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.differences.tasks.added': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that at least one task was added to GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "contains(gocalendar.differences.tasks.added.values(@)[0].title, 'Check UDriver surge pricing for trip to physio')",
+          "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Check UDriver surge pricing for trip to physio')",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gocalendar.differences.events.added",
-                "gocalendar.differences.events.deleted",
-                "gocalendar.differences.events.updated",
-                "gocalendar.differences.calendars.added",
-                "gocalendar.differences.calendars.deleted"
-              ],
-              "path": "gocalendar.differences.tasks.added.values"
+              "valid": true,
+              "matched_path": "gocalendar.differences.events.added",
+              "path": "gocalendar.differences.events.added.values"
             }
           ],
-          "issues": [
-            "Invalid path 'gocalendar.differences.tasks.added.values': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the title of the added task reminding to check UDriver surge pricing.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4590,7 +4319,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify UDriver was used to estimate travel time, indicated by a calculated price or booked trip.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1`",
@@ -4607,7 +4336,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify a new meeting event was created in GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[?contains(title, 'Meeting')] | [?attendees[?email=='ben.carter@example.com']] | length(@) >= `1`",
@@ -4624,22 +4353,15 @@
               "reason": "unknown app: ben",
               "app_id": "ben",
               "path": "ben.carter"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: example",
-              "app_id": "example",
-              "path": "example.com"
             }
           ],
           "issues": [
-            "Invalid path 'ben.carter': unknown app: ben",
-            "Invalid path 'example.com': unknown app: example"
+            "Invalid path 'ben.carter': unknown app: ben"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the meeting title includes 'Meeting' and Ben Carter is invited.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[0].end.dateTime != null",
@@ -4676,7 +4398,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the meeting event has defined start and end times, indicating a planned duration and adherence to after 2 PM constraint.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4715,7 +4437,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that the last sale date for the property at 8017 Valley Rd, Dallas, TX 75266 was successfully extracted by Zilloft. (Assuming zilloft.finalstate.extractedData.lastSaleDate is the path for this information)",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gocalendar.differences.events.added) >= `1`",
@@ -4732,7 +4454,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that exactly one event was added to GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Review Property Value: 1800 Pearl')",
@@ -4749,7 +4471,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the title of the created GoCalendar event is 'Review Property Value: 1800 Pearl'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].start.date != null && gocalendar.differences.events.added.values(@)[0].start.dateTime == null",
@@ -4786,7 +4508,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the GoCalendar event is an all-day event and its date is set to the last sale date (from Zilloft) but for next year.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4816,7 +4538,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that at least two open house events were added to the GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Open House')",
@@ -4833,7 +4555,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the first added event's title indicates an 'Open House'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[1].title, 'Open House')",
@@ -4850,7 +4572,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the second added event's title indicates an 'Open House'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[1].start.dateTime != null",
@@ -4887,7 +4609,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that both added events have specific start and end times (are not all-day events).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -4917,7 +4639,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a new event was created in GoCalendar.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Discuss Atlanta Rental Budget')",
@@ -4934,7 +4656,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the GoCalendar event has the correct title.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '16:00:00') && contains(gocalendar.differences.events.added.values(@)[0].end.dateTime, '16:30:00')",
@@ -4971,10 +4693,10 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the GoCalendar event is scheduled for Thursday at 4:00 PM and is 30 minutes long.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].description",
+          "query": "gocalendar.differences.events.added.values(@)[0].description != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -4988,7 +4710,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the median rent price from Zilloft was pasted into the GoCalendar event description.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -5018,7 +4740,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a new calendar event was successfully created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Look at this wild house in Charlotte!')",
@@ -5035,10 +4757,10 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the calendar event's title is 'Look at this wild house in Charlotte!'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
+          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -5060,7 +4782,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the calendar event is scheduled for this Tuesday at 7 PM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'zilloft.com') && contains(gocalendar.differences.events.added.values(@)[0].attendees[?email=='maria.g@gomail.com'].email, 'maria.g@gomail.com')",
@@ -5073,18 +4795,6 @@
               "path": "gocalendar.differences.events.added.values"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "zilloft.differences.requestTours.added",
-                "zilloft.differences.requestTours.deleted",
-                "zilloft.differences.requestTours.updated",
-                "zilloft.differences.contactAgents.added",
-                "zilloft.differences.contactAgents.deleted"
-              ],
-              "path": "zilloft.com"
-            },
-            {
               "valid": true,
               "matched_path": "gocalendar.differences.events.added",
               "path": "gocalendar.differences.events.added.values"
@@ -5097,46 +4807,19 @@
             },
             {
               "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
-              "valid": false,
               "reason": "unknown app: maria",
               "app_id": "maria",
               "path": "maria.g"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'zilloft.com': path not found in schema",
             "Invalid path 'maria.g': unknown app: maria",
-            "Invalid path 'gomail.com': path not found in schema",
-            "Invalid path 'maria.g': unknown app: maria",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'maria.g': unknown app: maria"
           ],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that the Zilloft property link is included in the event description and 'maria.g@gomail.com' is an attendee.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -5166,10 +4849,10 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a calendar event was successfully added.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].title",
+          "query": "gocalendar.differences.events.added.values(@)[0].title != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -5183,7 +4866,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the title of the created calendar event.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, 'Address:') && contains(gocalendar.differences.events.added.values(@)[0].notes, 'Last Sale Price:') && contains(gocalendar.differences.events.added.values(@)[0].notes, 'Previous Sale Price:')",
@@ -5210,10 +4893,10 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the calendar event notes contain information about the two homes' addresses and sale prices.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
+          "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -5235,7 +4918,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the start date and time of the calendar event is next Friday at 2 PM.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -5265,7 +4948,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a hotel booking was created for SpringHill Suites in downtown Denver from October 28th to 30th.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true` && recipient == 'isabelle.vance@corp-email.com'] | length(@) >= `1`",
@@ -5282,22 +4965,15 @@
               "reason": "unknown app: isabelle",
               "app_id": "isabelle",
               "path": "isabelle.vance"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: email",
-              "app_id": "email",
-              "path": "email.com"
             }
           ],
           "issues": [
-            "Invalid path 'isabelle.vance': unknown app: isabelle",
-            "Invalid path 'email.com': unknown app: email"
+            "Invalid path 'isabelle.vance': unknown app: isabelle"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify an email was sent to the manager with the correct recipient.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true` && contains(recipient, 'isabelle.vance@corp-email.com') && contains(content, 'cancellation policy') && contains(content, 'confirmation number')] | length(@) >= `1`",
@@ -5314,22 +4990,15 @@
               "reason": "unknown app: isabelle",
               "app_id": "isabelle",
               "path": "isabelle.vance"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: email",
-              "app_id": "email",
-              "path": "email.com"
             }
           ],
           "issues": [
-            "Invalid path 'isabelle.vance': unknown app: isabelle",
-            "Invalid path 'email.com': unknown app: email"
+            "Invalid path 'isabelle.vance': unknown app: isabelle"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email includes the cancellation policy summary and a confirmation number.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -5341,29 +5010,25 @@
         "marrisuite"
       ],
       "total_queries": 4,
-      "valid_queries": 3,
-      "invalid_queries": 1,
+      "valid_queries": 4,
+      "invalid_queries": 0,
       "queries": [
         {
-          "query": "length(marrisite.finalstate.found_hotels) >= `1`",
+          "query": "length(marrisuite.bookingDetailsDiff.added) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "unknown app: marrisite",
-              "app_id": "marrisite",
-              "path": "marrisite.finalstate.found_hotels"
+              "valid": true,
+              "matched_path": "marrisuite.bookingDetailsDiff.added",
+              "path": "marrisuite.bookingDetailsDiff.added"
             }
           ],
-          "issues": [
-            "Invalid path 'marrisite.finalstate.found_hotels': unknown app: marrisite",
-            "App 'marrisite' not in task websites: ['gomail', 'marrisuite']"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that at least one Marrisuite hotel location was identified with the required amenities.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
@@ -5380,7 +5045,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that an email was sent to the dev team alias.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Miami Offsite Hotels') || contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Marrisuite Locations')",
@@ -5402,7 +5067,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the email subject indicates hotels for the Miami offsite.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'hotel names') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'vote for your favorite')",
@@ -5424,106 +5089,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that the email content lists hotel names and asks the team to vote for their favorite.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
-        }
-      ]
-    },
-    {
-      "task_id": "gomail-networkin-1",
-      "file": "gomail-networkin-1.json",
-      "websites": [
-        "gomail",
-        "networkin"
-      ],
-      "total_queries": 4,
-      "valid_queries": 3,
-      "invalid_queries": 1,
-      "queries": [
-        {
-          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 0,
-          "description": "Verify that an email was sent.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'project-team@agilecorp.io')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: agilecorp",
-              "app_id": "agilecorp",
-              "path": "agilecorp.io"
-            }
-          ],
-          "issues": [
-            "Invalid path 'agilecorp.io': unknown app: agilecorp"
-          ],
-          "suggestions": [],
-          "eval_index": 1,
-          "description": "Verify the email was sent to 'project-team@agilecorp.io'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Agile Project Masters') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'post')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 2,
-          "description": "Verify the email subject is relevant to the post and the group.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'thoughts') && length(gomail.differences.emails.added[?sent == `true`][0].content) > `50`",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 3,
-          "description": "Verify the email body contains the request for thoughts and a non-empty copied post.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -5536,78 +5102,48 @@
         "topwork"
       ],
       "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
+      "valid_queries": 3,
+      "invalid_queries": 1,
       "queries": [
         {
-          "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
+          "query": "length(values(topwork.initialfinaldiff.added.jobs.jobs)[?contains(description || '', 'Python Data Scientist')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
               "valid": true,
               "matched_path": "topwork.initialfinaldiff.added",
-              "path": "topwork.initialfinaldiff.added.jobs"
-            },
-            {
-              "valid": true,
-              "matched_path": "topwork.initialfinaldiff.added",
-              "path": "topwork.initialfinaldiff.added.jobs.values"
+              "path": "topwork.initialfinaldiff.added.jobs.jobs"
             }
           ],
           "issues": [],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a new job posting for 'Python Data Scientist' was created on TopWork.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.min >= `70` && topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.max <= `90`",
+          "query": "length(values(topwork.initialfinaldiff.added.jobs.jobs)[?hourlyRateFrom >= `70` && hourlyRateTo <= `90`]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
               "valid": true,
               "matched_path": "topwork.initialfinaldiff.added",
-              "path": "topwork.initialfinaldiff.added.jobs.values"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: hourlyRate",
-              "app_id": "hourlyRate",
-              "path": "hourlyRate.min"
-            },
-            {
-              "valid": true,
-              "matched_path": "topwork.initialfinaldiff.added",
-              "path": "topwork.initialfinaldiff.added.jobs.values"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: hourlyRate",
-              "app_id": "hourlyRate",
-              "path": "hourlyRate.max"
+              "path": "topwork.initialfinaldiff.added.jobs.jobs"
             }
           ],
-          "issues": [
-            "Invalid path 'hourlyRate.min': unknown app: hourlyRate",
-            "Invalid path 'hourlyRate.max': unknown app: hourlyRate"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the posted job on TopWork has an hourly rate within the $70-$90 range.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiting.team@startupx.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'New Python Role Live')",
+          "query": "length(gomail.differences.emails.added[?sent == `true` && to[0] == 'recruiting.team@startupx.com' && subject == 'New Python Role Live']) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
             {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
@@ -5618,38 +5154,21 @@
               "reason": "unknown app: recruiting",
               "app_id": "recruiting",
               "path": "recruiting.team"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: startupx",
-              "app_id": "startupx",
-              "path": "startupx.com"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
             }
           ],
           "issues": [
-            "Invalid path 'recruiting.team': unknown app: recruiting",
-            "Invalid path 'startupx.com': unknown app: startupx"
+            "Invalid path 'recruiting.team': unknown app: recruiting"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify an email was sent to 'recruiting.team@startupx.com' with the subject 'New Python Role Live'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'job is posted') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Javier Reyes')",
+          "query": "length(gomail.differences.emails.added[?sent == `true` && subject == 'New Python Role Live' && contains(content, 'posted') && contains(content, 'Jessica')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
             {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
@@ -5659,223 +5178,14 @@
           "issues": [],
           "suggestions": [],
           "eval_index": 3,
-          "description": "Verify the sent email's content mentions the job posting and Javier Reyes.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "description": "Verify the sent email's content mentions the job posting and Jessica William.",
+          "expected_value": true
         }
       ]
     },
     {
       "task_id": "gomail-omnizon-1",
       "file": "gomail-omnizon-1.json",
-      "websites": [
-        "gomail",
-        "omnizon"
-      ],
-      "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
-      "queries": [
-        {
-          "query": "length(omnizon.initialfinaldiff.added.searches) >= `1` && contains(omnizon.initialfinaldiff.added.searches.values(@)[0].query, 'KN95 face masks')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": false,
-              "reason": "unknown app: omnizon",
-              "app_id": "omnizon",
-              "path": "omnizon.initialfinaldiff.added.searches"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: omnizon",
-              "app_id": "omnizon",
-              "path": "omnizon.initialfinaldiff.added.searches.values"
-            }
-          ],
-          "issues": [
-            "Invalid path 'omnizon.initialfinaldiff.added.searches': unknown app: omnizon",
-            "Invalid path 'omnizon.initialfinaldiff.added.searches.values': unknown app: omnizon"
-          ],
-          "suggestions": [],
-          "eval_index": 0,
-          "description": "Verify that a search for 'KN95 face masks' was performed on Omnizon.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
-        },
-        {
-          "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1`",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 1,
-          "description": "Verify that an email has been drafted and saved in Gomail.",
-          "expected_value": true
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?draft == `true`][0].to[0], 'procurement@healthclinic.org') && contains(gomail.differences.emails.added[?draft == `true`][0].cc[0], 'my_email_address')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: healthclinic",
-              "app_id": "healthclinic",
-              "path": "healthclinic.org"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [
-            "Invalid path 'healthclinic.org': unknown app: healthclinic"
-          ],
-          "suggestions": [],
-          "eval_index": 2,
-          "description": "Verify the drafted email's recipient and CC address are correctly set.",
-          "expected_value": false
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?draft == `true`][0].content, '50-pack of KN95 face masks') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'seller') && contains(gomail.differences.emails.added[?draft == `true`][0].content, '1,000 units')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 3,
-          "description": "Verify the drafted email's content mentions the product, seller, and request for a bulk order of 1,000 units.",
-          "expected_value": false
-        }
-      ]
-    },
-    {
-      "task_id": "gomail-omnizon-2",
-      "file": "gomail-omnizon-2.json",
-      "websites": [
-        "gomail",
-        "omnizon"
-      ],
-      "total_queries": 3,
-      "valid_queries": 2,
-      "invalid_queries": 1,
-      "queries": [
-        {
-          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 0,
-          "description": "Verify that an email was successfully sent.",
-          "expected_value": true
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.ideas@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Gift Options')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: my",
-              "app_id": "my",
-              "path": "my.ideas"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [
-            "Invalid path 'my.ideas': unknown app: my",
-            "Invalid path 'gomail.com': path not found in schema"
-          ],
-          "suggestions": [],
-          "eval_index": 1,
-          "description": "Verify the recipient and subject of the sent email.",
-          "expected_value": false
-        },
-        {
-          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Clara:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Tom:')",
-          "syntax_valid": true,
-          "syntax_error": null,
-          "paths_analyzed": [
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
-            }
-          ],
-          "issues": [],
-          "suggestions": [],
-          "eval_index": 2,
-          "description": "Verify the email content includes labels for Clara's item and Tom's item, implying links are present.",
-          "expected_value": false
-        }
-      ]
-    },
-    {
-      "task_id": "gomail-omnizon-3",
-      "file": "gomail-omnizon-3.json",
       "websites": [
         "gomail",
         "omnizon"
@@ -5955,6 +5265,88 @@
       ]
     },
     {
+      "task_id": "gomail-omnizon-2",
+      "file": "gomail-omnizon-2.json",
+      "websites": [
+        "gomail",
+        "omnizon"
+      ],
+      "total_queries": 3,
+      "valid_queries": 2,
+      "invalid_queries": 1,
+      "queries": [
+        {
+          "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
+          "syntax_valid": true,
+          "syntax_error": null,
+          "paths_analyzed": [
+            {
+              "valid": true,
+              "matched_path": "gomail.differences.emails.added",
+              "path": "gomail.differences.emails.added"
+            }
+          ],
+          "issues": [],
+          "suggestions": [],
+          "eval_index": 0,
+          "description": "Verify that an email was successfully sent.",
+          "expected_value": true
+        },
+        {
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.ideas@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Gift Options')",
+          "syntax_valid": true,
+          "syntax_error": null,
+          "paths_analyzed": [
+            {
+              "valid": true,
+              "matched_path": "gomail.differences.emails.added",
+              "path": "gomail.differences.emails.added"
+            },
+            {
+              "valid": false,
+              "reason": "unknown app: my",
+              "app_id": "my",
+              "path": "my.ideas"
+            },
+            {
+              "valid": true,
+              "matched_path": "gomail.differences.emails.added",
+              "path": "gomail.differences.emails.added"
+            }
+          ],
+          "issues": [
+            "Invalid path 'my.ideas': unknown app: my"
+          ],
+          "suggestions": [],
+          "eval_index": 1,
+          "description": "Verify the recipient and subject of the sent email.",
+          "expected_value": false
+        },
+        {
+          "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Clara:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'For Tom:')",
+          "syntax_valid": true,
+          "syntax_error": null,
+          "paths_analyzed": [
+            {
+              "valid": true,
+              "matched_path": "gomail.differences.emails.added",
+              "path": "gomail.differences.emails.added"
+            },
+            {
+              "valid": true,
+              "matched_path": "gomail.differences.emails.added",
+              "path": "gomail.differences.emails.added"
+            }
+          ],
+          "issues": [],
+          "suggestions": [],
+          "eval_index": 2,
+          "description": "Verify the email content includes labels for Clara's item and Tom's item, implying links are present.",
+          "expected_value": false
+        }
+      ]
+    },
+    {
       "task_id": "gomail-opendining-1",
       "file": "gomail-opendining-1.json",
       "websites": [
@@ -5980,7 +5372,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify an email was sent.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'chloe.b@gomail.com')",
@@ -5997,28 +5389,15 @@
               "reason": "unknown app: chloe",
               "app_id": "chloe",
               "path": "chloe.b"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'chloe.b': unknown app: chloe",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'chloe.b': unknown app: chloe"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the sent email's recipient is chloe.b@gomail.com.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Dinner Reservation Details')",
@@ -6035,7 +5414,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email's subject is 'Dinner Reservation Details'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'La Trattoria')",
@@ -6052,7 +5431,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the sent email's content includes 'La Trattoria' (indicating reservation details were forwarded).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -6082,7 +5461,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a review was added to OpenDining.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(opendining.differences.reviews.added[0].restaurantName, 'Spacious Eats')",
@@ -6099,7 +5478,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the added review is for 'Spacious Eats'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(opendining.differences.reviews.added[0].subject, 'Feedback on my recent visit')",
@@ -6116,7 +5495,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the subject of the review is 'Feedback on my recent visit'.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -6128,11 +5507,11 @@
         "opendining"
       ],
       "total_queries": 5,
-      "valid_queries": 3,
-      "invalid_queries": 2,
+      "valid_queries": 4,
+      "invalid_queries": 1,
       "queries": [
         {
-          "query": "opendining.differences.bookings.added[0].partySize",
+          "query": "opendining.differences.bookings.added[0].partySize != null",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
@@ -6146,7 +5525,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a restaurant booking or identification was made in OpenDining for a party of 8 people.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`])",
@@ -6163,7 +5542,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that at least one email was sent from gomail.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'kenji@gomail.com')",
@@ -6174,27 +5553,13 @@
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
-          "issues": [
-            "Invalid path 'gomail.com': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that an email was sent to kenji@gomail.com.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'anita.r@gomail.com')",
@@ -6211,28 +5576,15 @@
               "reason": "unknown app: anita",
               "app_id": "anita",
               "path": "anita.r"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'anita.r': unknown app: anita",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'anita.r': unknown app: anita"
           ],
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify that an email was sent to anita.r@gomail.com.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Wednesday') && contains(gomail.differences.emails.added[?sent == `true`][0].content, '7 PM') && (contains(gomail.differences.emails.added[?sent == `true`][0].content, 'confirm') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'works'))",
@@ -6264,7 +5616,7 @@
           "suggestions": [],
           "eval_index": 4,
           "description": "Verify the email content includes 'Wednesday', '7 PM', and asks for confirmation (e.g., 'confirm' or 'works').",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -6277,8 +5629,8 @@
         "staynb"
       ],
       "total_queries": 4,
-      "valid_queries": 1,
-      "invalid_queries": 3,
+      "valid_queries": 3,
+      "invalid_queries": 1,
       "queries": [
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'ava.w@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'brian.k@gomail.com')",
@@ -6302,18 +5654,6 @@
               "path": "ava.w"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
@@ -6323,30 +5663,16 @@
               "reason": "unknown app: brian",
               "app_id": "brian",
               "path": "brian.k"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
             "Invalid path 'ava.w': unknown app: ava",
-            "Invalid path 'gomail.com': path not found in schema",
-            "Invalid path 'brian.k': unknown app: brian",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'brian.k': unknown app: brian"
           ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify an email was sent to ava.w@gomail.com and brian.k@gomail.com.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'staynb.com/property')",
@@ -6357,25 +5683,13 @@
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "staynb.initialfinaldiff.added",
-                "staynb.initialfinaldiff.deleted",
-                "staynb.initialfinaldiff.updated"
-              ],
-              "path": "staynb.com"
             }
           ],
-          "issues": [
-            "Invalid path 'staynb.com': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the sent email contains a link to a StaynB property.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(split(gomail.differences.emails.added[?sent == `true`][0].content, 'opendining.com/restaurant')) >= `4`",
@@ -6386,27 +5700,13 @@
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "opendining.differences.bookings.added",
-                "opendining.differences.bookings.deleted",
-                "opendining.differences.bookings.updated",
-                "opendining.differences.reviews.added",
-                "opendining.differences.reviews.deleted"
-              ],
-              "path": "opendining.com"
             }
           ],
-          "issues": [
-            "Invalid path 'opendining.com': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email contains at least three distinct OpenDining restaurant links.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(opendining.differences.savedRestaurants.added) >= `3`",
@@ -6423,7 +5723,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify at least three restaurants were identified/saved in OpenDining.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -6453,22 +5753,15 @@
               "reason": "unknown app: finance",
               "app_id": "finance",
               "path": "finance.dept"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: corporate",
-              "app_id": "corporate",
-              "path": "corporate.com"
             }
           ],
           "issues": [
-            "Invalid path 'finance.dept': unknown app: finance",
-            "Invalid path 'corporate.com': unknown app: corporate"
+            "Invalid path 'finance.dept': unknown app: finance"
           ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent to the finance department.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Cancellation Policy') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'The Pearl District Condo')",
@@ -6490,7 +5783,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify that the subject of the sent email is relevant to the task (cancellation policy and property name).",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'last day for a full refund')",
@@ -6507,7 +5800,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify that the email body explicitly states the last day for a full refund.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -6537,7 +5830,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify a new StaynB wishlist named 'Canadian Rockies Trip' was created.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(values(staynb.initialfinaldiff.added.wishlist.items || `{}`)[?propertyName=='Tidal Getaway' && wishlistName=='Canadian Rockies Trip']) >= `1`",
@@ -6554,7 +5847,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the 'Tidal Getaway' property was added to the 'Canadian Rockies Trip' wishlist in StaynB.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true` && contains(recipient, 'leo.g@workplace.net') && (contains(subject, 'Canadian Rockies Trip') || contains(content, 'Canadian Rockies Trip'))]) >= `1`",
@@ -6571,22 +5864,15 @@
               "reason": "unknown app: leo",
               "app_id": "leo",
               "path": "leo.g"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: workplace",
-              "app_id": "workplace",
-              "path": "workplace.net"
             }
           ],
           "issues": [
-            "Invalid path 'leo.g': unknown app: leo",
-            "Invalid path 'workplace.net': unknown app: workplace"
+            "Invalid path 'leo.g': unknown app: leo"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify an email was sent to Leo (leo.g@workplace.net) sharing the 'Canadian Rockies Trip' wishlist.",
-          "expected_value": "TODO: Add expected value after checking /finish JSON"
+          "expected_value": true
         }
       ]
     },
@@ -6616,7 +5902,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that at least one email was sent.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'tom.h@mycorp.com')",
@@ -6633,22 +5919,15 @@
               "reason": "unknown app: tom",
               "app_id": "tom",
               "path": "tom.h"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycorp",
-              "app_id": "mycorp",
-              "path": "mycorp.com"
             }
           ],
           "issues": [
-            "Invalid path 'tom.h': unknown app: tom",
-            "Invalid path 'mycorp.com': unknown app: mycorp"
+            "Invalid path 'tom.h': unknown app: tom"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the recipient of the sent email is 'tom.h@mycorp.com'.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Denver Backend - Interview Slate')",
@@ -6665,7 +5944,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the subject of the sent email is 'Denver Backend - Interview Slate'.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'John Doe') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Jane Smith')",
@@ -6692,7 +5971,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the email content lists applicant names, implying successful retrieval from TopWork (e.g., containing 'Applicant' or placeholder names like 'John Doe').",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         }
       ]
     },
@@ -6704,8 +5983,8 @@
         "topwork"
       ],
       "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
+      "valid_queries": 3,
+      "invalid_queries": 1,
       "queries": [
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
@@ -6722,7 +6001,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent from GoMail.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'social.media.team@mycorp.com')",
@@ -6739,22 +6018,15 @@
               "reason": "unknown app: social",
               "app_id": "social",
               "path": "social.media.team"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycorp",
-              "app_id": "mycorp",
-              "path": "mycorp.com"
             }
           ],
           "issues": [
-            "Invalid path 'social.media.team': unknown app: social",
-            "Invalid path 'mycorp.com': unknown app: mycorp"
+            "Invalid path 'social.media.team': unknown app: social"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the email was sent to the correct recipient.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'topwork.com/jobs') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Python Data Analysis')",
@@ -6767,27 +6039,16 @@
               "path": "gomail.differences.emails.added"
             },
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "topwork.initialfinaldiff.added",
-                "topwork.initialfinaldiff.updated"
-              ],
-              "path": "topwork.com"
-            },
-            {
               "valid": true,
               "matched_path": "gomail.differences.emails.added",
               "path": "gomail.differences.emails.added"
             }
           ],
-          "issues": [
-            "Invalid path 'topwork.com': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the email content includes a TopWork job posting URL for 'Python Data Analysis'.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'promotional campaign on NetworkIn')",
@@ -6804,7 +6065,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the email content requests a promotional campaign on NetworkIn.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         }
       ]
     },
@@ -6834,71 +6095,57 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify Brian King's application status was updated to 'Decline Application' in TopWork.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": false
         },
         {
-          "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com']) >= `1`",
+          "query": "length(values(gomail.initialfinaldiff.added.email.emails || `{}`)[?sent == `true` && contains(to, 'helena.v@mycorp.com')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
               "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
+              "matched_path": "gomail.initialfinaldiff.added",
+              "path": "gomail.initialfinaldiff.added.email.emails"
             },
             {
               "valid": false,
               "reason": "unknown app: helena",
               "app_id": "helena",
               "path": "helena.v"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycorp",
-              "app_id": "mycorp",
-              "path": "mycorp.com"
             }
           ],
           "issues": [
-            "Invalid path 'helena.v': unknown app: helena",
-            "Invalid path 'mycorp.com': unknown app: mycorp"
+            "Invalid path 'helena.v': unknown app: helena"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify an email was sent to helena.v@mycorp.com.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
-          "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com' && contains(content, 'withdrawal') && contains(content, 'salary')]) >= `1`",
+          "query": "length(values(gomail.initialfinaldiff.added.email.emails || `{}`)[?sent == `true` && contains(to, 'helena.v@mycorp.com') && contains(content, 'withdrawal') && contains(content, 'salary')]) >= `1`",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
               "valid": true,
-              "matched_path": "gomail.differences.emails.added",
-              "path": "gomail.differences.emails.added"
+              "matched_path": "gomail.initialfinaldiff.added",
+              "path": "gomail.initialfinaldiff.added.email.emails"
             },
             {
               "valid": false,
               "reason": "unknown app: helena",
               "app_id": "helena",
               "path": "helena.v"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycorp",
-              "app_id": "mycorp",
-              "path": "mycorp.com"
             }
           ],
           "issues": [
-            "Invalid path 'helena.v': unknown app: helena",
-            "Invalid path 'mycorp.com': unknown app: mycorp"
+            "Invalid path 'helena.v': unknown app: helena"
           ],
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the sent email to Helena contains keywords 'withdrawal' and 'salary' in its content.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         }
       ]
     },
@@ -6928,7 +6175,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email has been sent.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiter.main@mycorp.com')",
@@ -6945,22 +6192,15 @@
               "reason": "unknown app: recruiter",
               "app_id": "recruiter",
               "path": "recruiter.main"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycorp",
-              "app_id": "mycorp",
-              "path": "mycorp.com"
             }
           ],
           "issues": [
-            "Invalid path 'recruiter.main': unknown app: recruiter",
-            "Invalid path 'mycorp.com': unknown app: mycorp"
+            "Invalid path 'recruiter.main': unknown app: recruiter"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the recipient of the sent email is 'recruiter.main@mycorp.com'.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Potential Junior Role Spec')",
@@ -6977,7 +6217,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the subject of the sent email is 'Potential Junior Role Spec'.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`][0].content) > `0`",
@@ -6994,7 +6234,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the email content is not empty, implying the job description was copied.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         }
       ]
     },
@@ -7029,22 +6269,15 @@
               "reason": "unknown app: hiring",
               "app_id": "hiring",
               "path": "hiring.committee"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: mycorp",
-              "app_id": "mycorp",
-              "path": "mycorp.com"
             }
           ],
           "issues": [
-            "Invalid path 'hiring.committee': unknown app: hiring",
-            "Invalid path 'mycorp.com': unknown app: mycorp"
+            "Invalid path 'hiring.committee': unknown app: hiring"
           ],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify an email was sent to the hiring committee.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Full Applicant Roster: React Website')",
@@ -7061,7 +6294,7 @@
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the sent email has the correct subject.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Applicant') || contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Candidate')",
@@ -7083,7 +6316,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the email content contains information about job applicants, implying the list was pulled from TopWork.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         }
       ]
     },
@@ -7113,7 +6346,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that an email was sent via GoMail.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'clara.p@email.com')",
@@ -7130,22 +6363,15 @@
               "reason": "unknown app: clara",
               "app_id": "clara",
               "path": "clara.p"
-            },
-            {
-              "valid": false,
-              "reason": "unknown app: email",
-              "app_id": "email",
-              "path": "email.com"
             }
           ],
           "issues": [
-            "Invalid path 'clara.p': unknown app: clara",
-            "Invalid path 'email.com': unknown app: email"
+            "Invalid path 'clara.p': unknown app: clara"
           ],
           "suggestions": [],
           "eval_index": 1,
           "description": "Verify the sent email's recipient is clara.p@email.com.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Mobile App UI/UX Design') || contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Application')",
@@ -7167,7 +6393,7 @@
           "suggestions": [],
           "eval_index": 2,
           "description": "Verify the email subject is relevant to the 'Mobile App UI/UX Design' role or application.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'excited to see her application') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'apply via the link')",
@@ -7189,7 +6415,7 @@
           "suggestions": [],
           "eval_index": 3,
           "description": "Verify the email content expresses excitement and includes the application link.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         }
       ]
     },
@@ -7201,34 +6427,25 @@
         "zilloft"
       ],
       "total_queries": 4,
-      "valid_queries": 2,
-      "invalid_queries": 2,
+      "valid_queries": 3,
+      "invalid_queries": 1,
       "queries": [
         {
-          "query": "length(zilloft.differences.favoritedListings.added)",
+          "query": "length(zilloft.differences.savedHomes.added)",
           "syntax_valid": true,
           "syntax_error": null,
           "paths_analyzed": [
             {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "zilloft.differences.requestTours.added",
-                "zilloft.differences.requestTours.deleted",
-                "zilloft.differences.requestTours.updated",
-                "zilloft.differences.contactAgents.added",
-                "zilloft.differences.contactAgents.deleted"
-              ],
-              "path": "zilloft.differences.favoritedListings.added"
+              "valid": true,
+              "matched_path": "zilloft.differences.savedHomes.added",
+              "path": "zilloft.differences.savedHomes.added"
             }
           ],
-          "issues": [
-            "Invalid path 'zilloft.differences.favoritedListings.added': path not found in schema"
-          ],
+          "issues": [],
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that three listings were favorited in Zilloft.",
-          "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+          "expected_value": true
         },
         {
           "query": "length(gomail.differences.emails.added[?sent == `true`])",
@@ -7262,23 +6479,10 @@
               "reason": "unknown app: my",
               "app_id": "my",
               "path": "my.prospects"
-            },
-            {
-              "valid": false,
-              "reason": "path not found in schema",
-              "known_paths": [
-                "gomail.differences.emails.added",
-                "gomail.differences.emails.deleted",
-                "gomail.differences.emails.updated",
-                "gomail.initialfinaldiff.added",
-                "gomail.initialfinaldiff.deleted"
-              ],
-              "path": "gomail.com"
             }
           ],
           "issues": [
-            "Invalid path 'my.prospects': unknown app: my",
-            "Invalid path 'gomail.com': path not found in schema"
+            "Invalid path 'my.prospects': unknown app: my"
           ],
           "suggestions": [],
           "eval_index": 2,
@@ -7646,7 +6850,7 @@
           "suggestions": [],
           "eval_index": 0,
           "description": "Verify that a table for 2 was booked at 'The Royal Dine' via OpenDining after 9:30 PM.",
-          "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+          "expected_value": true
         },
         {
           "query": "udriver.finalstate.ride.bookedTrip | [?contains(pickup.address, '100 Van Ness Ave') && contains(destination.address, '1000 Chestnut Street Apartments')] | [0]",

@@ -25,25 +25,25 @@
       "description": "Verify that an email was sent via GoMail.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "expected_value": true
     },
     {
       "description": "Verify the sent email's recipient is clara.p@email.com.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'clara.p@email.com')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the email subject is relevant to the 'Mobile App UI/UX Design' role or application.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Mobile App UI/UX Design') || contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Application')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the email content expresses excitement and includes the application link.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'excited to see her application') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'apply via the link')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     }
   ],
   "points": 2,

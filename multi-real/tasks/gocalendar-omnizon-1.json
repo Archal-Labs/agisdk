@@ -25,25 +25,25 @@
       "description": "Verify that a new calendar event was created.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the title of the created calendar event.",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].title",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gocalendar.differences.events.added.values(@)[0].title != null",
+      "expected_value": true
     },
     {
       "description": "Verify the start date and time of the calendar event. (This Saturday at 2 PM)",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event description contains links, indicating the headphone options were added.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'http')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

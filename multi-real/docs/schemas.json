@@ -1,21 +1,20 @@
 {
-  "generated_at": "2026-01-14T16:18:20.149663+00:00",
+  "generated_at": "2026-01-14T21:48:26.026970+00:00",
   "coverage": {
-    "total_tasks": 72,
-    "tasks_with_gt": 6,
-    "tasks_without_gt": 66,
+    "total_tasks": 69,
+    "tasks_with_gt": 9,
+    "tasks_without_gt": 60,
     "total_apps_in_tasks": 12,
-    "apps_with_schema": 10,
-    "apps_missing_schema": [
-      "networkin",
-      "omnizon"
-    ],
+    "apps_with_schema": 12,
+    "apps_missing_schema": [],
     "apps_known": [
       "dashdish",
       "flyunified",
       "gocalendar",
       "gomail",
       "marrisuite",
+      "networkin",
+      "omnizon",
       "opendining",
       "staynb",
       "topwork",
@@ -25,7 +24,10 @@
     "gt_files": [
       "dashdish-gomail-1.json",
       "flyunified-gocalendar-staynb-1.json",
+      "flyunified-gocalendar-staynb-2.json",
       "gomail-marrsuite-1.json",
+      "gomail-networkin-topwork-1.json",
+      "gomail-omnizon-1.json",
       "gomail-topwork-3.json",
       "gomail-zilloft-1.json",
       "opendining-udriver-1.json"
@@ -40,28 +42,15 @@
       },
       "gocalendar-gomail-omnizon-2": {
         "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
-        "eval_count": 4,
-        "todo_count": 4
-      },
-      "gomail-networkin-1": {
-        "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "networkin"
-        ],
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 4,
         "todo_count": 4
       },
       "gocalendar-gomail-omnizon-4": {
         "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 4,
         "todo_count": 4
       },
@@ -81,10 +70,8 @@
       },
       "gocalendar-omnizon-1": {
         "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 4,
         "todo_count": 4
       },
@@ -135,7 +122,7 @@
         "all_apps_have_schema": true,
         "missing_app_schemas": [],
         "eval_count": 3,
-        "todo_count": 3
+        "todo_count": 2
       },
       "flyunified-gomail-staynb-5": {
         "has_ground_truth": false,
@@ -181,10 +168,8 @@
       },
       "gomail-omnizon-2": {
         "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 3,
         "todo_count": 0
       },
@@ -197,10 +182,8 @@
       },
       "gocalendar-gomail-omnizon-1": {
         "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 5,
         "todo_count": 5
       },
@@ -226,20 +209,11 @@
         "todo_count": 4
       },
       "flyunified-gocalendar-staynb-2": {
-        "has_ground_truth": false,
+        "has_ground_truth": true,
         "all_apps_have_schema": true,
         "missing_app_schemas": [],
         "eval_count": 3,
         "todo_count": 1
-      },
-      "gomail-omnizon-3": {
-        "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
-        "eval_count": 4,
-        "todo_count": 0
       },
       "flyunified-gomail-staynb-4": {
         "has_ground_truth": false,
@@ -284,13 +258,11 @@
         "todo_count": 3
       },
       "gomail-networkin-topwork-1": {
-        "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "networkin"
-        ],
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 4,
-        "todo_count": 4
+        "todo_count": 1
       },
       "gomail-opendining-staynb-1": {
         "has_ground_truth": false,
@@ -300,13 +272,11 @@
         "todo_count": 4
       },
       "gomail-omnizon-1": {
-        "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
+        "has_ground_truth": true,
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 4,
-        "todo_count": 1
+        "todo_count": 0
       },
       "gomail-opendining-2": {
         "has_ground_truth": false,
@@ -457,10 +427,8 @@
       },
       "gocalendar-gomail-omnizon-3": {
         "has_ground_truth": false,
-        "all_apps_have_schema": false,
-        "missing_app_schemas": [
-          "omnizon"
-        ],
+        "all_apps_have_schema": true,
+        "missing_app_schemas": [],
         "eval_count": 4,
         "todo_count": 4
       },
@@ -470,13 +438,6 @@
         "missing_app_schemas": [],
         "eval_count": 3,
         "todo_count": 3
-      },
-      "flyunified-gocalendar-staynb-3": {
-        "has_ground_truth": false,
-        "all_apps_have_schema": true,
-        "missing_app_schemas": [],
-        "eval_count": 3,
-        "todo_count": 2
       },
       "gomail-zilloft-1": {
         "has_ground_truth": true,
@@ -562,6 +523,8 @@
       "sources": [
         "dashdish-gomail-1.json",
         "gomail-marrsuite-1.json",
+        "gomail-networkin-topwork-1.json",
+        "gomail-omnizon-1.json",
         "gomail-topwork-3.json",
         "gomail-zilloft-1.json"
       ],
@@ -703,7 +666,8 @@
     },
     "flyunified": {
       "sources": [
-        "flyunified-gocalendar-staynb-1.json"
+        "flyunified-gocalendar-staynb-1.json",
+        "flyunified-gocalendar-staynb-2.json"
       ],
       "top_level_keys": [
         "actionhistory",
@@ -724,7 +688,9 @@
           "has_data": true,
           "sample_keys": [
             "0",
-            "1"
+            "1",
+            "2",
+            "3"
           ]
         },
         {
@@ -805,12 +771,23 @@
             "ui",
             "miles"
           ]
+        },
+        {
+          "path": "flyunified.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "booking",
+            "ui",
+            "miles"
+          ]
         }
       ]
     },
     "gocalendar": {
       "sources": [
-        "flyunified-gocalendar-staynb-1.json"
+        "flyunified-gocalendar-staynb-1.json",
+        "flyunified-gocalendar-staynb-2.json"
       ],
       "top_level_keys": [
         "actionhistory",
@@ -830,7 +807,8 @@
           "description": "Standard diff structure - events added",
           "has_data": true,
           "sample_keys": [
-            "e789f6b8-298c-4c4b-b530-ba1501e4e708"
+            "e789f6b8-298c-4c4b-b530-ba1501e4e708",
+            "2515c670-0620-490b-8791-b6075a011740"
           ]
         },
         {
@@ -903,7 +881,8 @@
     },
     "staynb": {
       "sources": [
-        "flyunified-gocalendar-staynb-1.json"
+        "flyunified-gocalendar-staynb-1.json",
+        "flyunified-gocalendar-staynb-2.json"
       ],
       "top_level_keys": [
         "actionhistory",
@@ -1071,6 +1050,7 @@
     },
     "topwork": {
       "sources": [
+        "gomail-networkin-topwork-1.json",
         "gomail-topwork-3.json"
       ],
       "top_level_keys": [
@@ -1089,7 +1069,16 @@
           "type": "dict",
           "description": "Initial vs final state diff",
           "keys": [
-            "jobs"
+            "jobs",
+            "notifications"
+          ]
+        },
+        {
+          "path": "topwork.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "notifications"
           ]
         },
         {
@@ -1098,8 +1087,180 @@
           "description": "Initial vs final state diff",
           "keys": [
             "config",
-            "jobs"
+            "jobs",
+            "notifications"
           ]
+        }
+      ]
+    },
+    "networkin": {
+      "sources": [
+        "gomail-networkin-topwork-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "state"
+      ],
+      "has_differences": false,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [],
+      "diff_paths": [
+        {
+          "path": "networkin.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "jobs",
+            "notifications"
+          ]
+        },
+        {
+          "path": "networkin.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "notifications"
+          ]
+        },
+        {
+          "path": "networkin.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "config",
+            "jobs",
+            "notifications"
+          ]
+        }
+      ]
+    },
+    "omnizon": {
+      "sources": [
+        "gomail-omnizon-1.json"
+      ],
+      "top_level_keys": [
+        "actionhistory",
+        "cancelledOrderDetailsDiff",
+        "cartDetailsDiff",
+        "finalstate",
+        "initialfinaldiff",
+        "initialstate",
+        "orderDetailsDiff",
+        "state"
+      ],
+      "has_differences": false,
+      "has_initialfinaldiff": true,
+      "app_specific_diffs": [
+        "cancelledOrderDetailsDiff",
+        "cartDetailsDiff",
+        "orderDetailsDiff"
+      ],
+      "diff_paths": [
+        {
+          "path": "omnizon.initialfinaldiff.added",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "order",
+            "similarProducts"
+          ]
+        },
+        {
+          "path": "omnizon.initialfinaldiff.deleted",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "cart"
+          ]
+        },
+        {
+          "path": "omnizon.initialfinaldiff.updated",
+          "type": "dict",
+          "description": "Initial vs final state diff",
+          "keys": [
+            "cart",
+            "ui",
+            "filter",
+            "router",
+            "similarProducts"
+          ]
+        },
+        {
+          "path": "omnizon.orderDetailsDiff.added",
+          "type": "dict",
+          "description": "App-specific diff - orderDetailsDiff",
+          "has_data": true,
+          "sample_keys": [
+            "0",
+            "1",
+            "2",
+            "3",
+            "4"
+          ]
+        },
+        {
+          "path": "omnizon.orderDetailsDiff.deleted",
+          "type": "dict",
+          "description": "App-specific diff - orderDetailsDiff",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "omnizon.orderDetailsDiff.updated",
+          "type": "dict",
+          "description": "App-specific diff - orderDetailsDiff",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "omnizon.cancelledOrderDetailsDiff.added",
+          "type": "dict",
+          "description": "App-specific diff - cancelledOrderDetailsDiff",
+          "has_data": true,
+          "sample_keys": [
+            "0",
+            "1"
+          ]
+        },
+        {
+          "path": "omnizon.cancelledOrderDetailsDiff.deleted",
+          "type": "dict",
+          "description": "App-specific diff - cancelledOrderDetailsDiff",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "omnizon.cancelledOrderDetailsDiff.updated",
+          "type": "dict",
+          "description": "App-specific diff - cancelledOrderDetailsDiff",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "omnizon.cartDetailsDiff.added",
+          "type": "dict",
+          "description": "App-specific diff - cartDetailsDiff",
+          "has_data": true,
+          "sample_keys": [
+            "0"
+          ]
+        },
+        {
+          "path": "omnizon.cartDetailsDiff.deleted",
+          "type": "dict",
+          "description": "App-specific diff - cartDetailsDiff",
+          "has_data": false,
+          "sample_keys": []
+        },
+        {
+          "path": "omnizon.cartDetailsDiff.updated",
+          "type": "dict",
+          "description": "App-specific diff - cartDetailsDiff",
+          "has_data": false,
+          "sample_keys": []
         }
       ]
     },

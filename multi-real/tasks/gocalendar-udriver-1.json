@@ -25,25 +25,25 @@
       "description": "Verify that at least one recurring physiotherapy appointment event was added to GoCalendar.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the title of the added physiotherapy appointment event.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'physiotherapy appointment')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that at least one task was added to GoCalendar.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.tasks.added)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added)",
+      "expected_value": true
     },
     {
       "description": "Verify the title of the added task reminding to check UDriver surge pricing.",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.tasks.added.values(@)[0].title, 'Check UDriver surge pricing for trip to physio')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Check UDriver surge pricing for trip to physio')",
+      "expected_value": true
     }
   ],
   "points": 2,

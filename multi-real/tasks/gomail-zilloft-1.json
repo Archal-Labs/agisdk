@@ -24,8 +24,8 @@
     {
       "description": "Verify that three listings were favorited in Zilloft.",
       "type": "jmespath",
-      "query": "length(zilloft.differences.favoritedListings.added)",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "query": "length(zilloft.differences.savedHomes.added)",
+      "expected_value": true
     },
     {
       "description": "Verify that a single email was sent from gomail.",

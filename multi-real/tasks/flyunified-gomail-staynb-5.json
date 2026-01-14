@@ -32,25 +32,25 @@
       "description": "Verify that a round-trip flight from PDX to MSY departing May 3rd and returning May 7th was booked on FlyUnified.",
       "type": "jmespath",
       "query": "flyunified.differences.bookedFlights.added[?origin=='PDX' && destination=='MSY' && departureDate=='2024-05-03' && returnDate=='2024-05-07'] | length(@) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a StaynB was booked for 4 nights (May 3rd to May 7th) for an 'Entire place' in the 'Garden District' with a rating of 4.8 or higher.",
       "type": "jmespath",
       "query": "values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn=='2024-05-03' && checkOut=='2024-05-07' && contains(propertyDetails.type, 'Entire place') && contains(propertyDetails.location, 'Garden District') && propertyDetails.rating >= `4.8`] | length(@) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a fun email was sent to Chloe at 'chloe.s@gomail.com' with the correct subject and mentioning flight and stay details.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true` && recipient=='chloe.s@gomail.com' && contains(subject, 'You''re going to New Orleans!') && contains(content, 'flight') && contains(content, 'stay')] | length(@) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that an email containing booking confirmation numbers was sent to 'surprise.logistics@gomail.com' with the subject 'NOLA Bday Booked'.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true` && recipient=='surprise.logistics@gomail.com' && contains(subject, 'NOLA Bday Booked') && (contains(content, 'confirmation') || contains(content, 'booking'))] | length(@) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

@@ -32,19 +32,19 @@
       "description": "Verify that a flight from JFK to KEF for October 25th was booked.",
       "type": "jmespath",
       "query": "length(flyunified.differences.bookedFlights.added[?destination == 'KEF' && origin == 'JFK' && departureDate == '2023-10-25']) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a StaynB booking for 3 nights, 1 person, in 'Mi\u00f0borg' with a kitchenette was made, with check-in on the flight arrival date (October 25th).",
       "type": "jmespath",
       "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn == '2023-10-25' && guests == `1` && nights == `3` && contains(area, 'Mi\u00f0borg') && contains(amenities, 'kitchenette')]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that two emails were sent to 'trip.archive@gomail.com' with the subject 'Iceland Logistics Confirmed', and that at least one email contains flight details and at least one contains hotel details.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `2` && all(gomail.differences.emails.added[?sent == `true`][*].recipient, &contains(@, 'trip.archive@gomail.com')) && all(gomail.differences.emails.added[?sent == `true`][*].subject, &contains(@, 'Iceland Logistics Confirmed')) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'flight') || contains(content, 'JFK') || contains(content, 'KEF')]) >= `1`) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'StaynB') || contains(content, 'hotel') || contains(content, 'Mi\u00f0borg')]) >= `1`)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

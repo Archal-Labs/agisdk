@@ -32,13 +32,13 @@
       "description": "Verify a calendar event for 'Virtual Tour' is created for next Wednesday at 4 PM Pacific Time.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Virtual Tour') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T16:00:00')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify an email draft is created for the relocation specialist with the correct recipient, subject, and body content including the property address.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1` && contains(gomail.differences.emails.added[?draft == `true`][0].recipient, 'relocation.specialist@gomail.com') && contains(gomail.differences.emails.added[?draft == `true`][0].subject, 'Potential SD Property') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'Found a promising option. I''ve scheduled a time for a virtual tour. Please see the details and let me know if you can get in touch with the listing agent.') && (contains(gomail.differences.emails.added[?draft == `true`][0].content, 'San Diego') || gomail.differences.emails.added[?draft == `true`][0].content | contains(@, ' CA '))",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

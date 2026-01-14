@@ -25,25 +25,25 @@
       "description": "Verify that a reservation was successfully made for two people at a restaurant.",
       "type": "jmespath",
       "query": "opendining.differences.bookings.added[0] != null && opendining.differences.bookings.added[0].partySize == `2`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a calendar event was created for the reservation.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event's notes contain the restaurant's full address.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].restaurantAddress)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event's notes contain the reservation confirmation ID.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].confirmationId)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

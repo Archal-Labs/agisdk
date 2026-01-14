@@ -25,25 +25,25 @@
       "description": "Verify that a hotel booking was successfully created in the Marrisuite application.",
       "type": "jmespath",
       "query": "length(marrisuite.bookingDetailsDiff.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the details of the Marrisuite booking: hotel name is 'Marrisuite', room type is 'King Suite', and location is 'Miami, FL'.",
       "type": "jmespath",
       "query": "marrisuite.bookingDetailsDiff.added[0] | (contains(hotelName, 'Marrisuite') && contains(roomType, 'King Suite') && contains(location, 'Miami, FL'))",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the original 'Our Anniversary' calendar event in GoCalendar was updated to include the hotel's name.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.modified.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Marrisuite')]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.updated.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Marrisuite')]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify that the original 'Our Anniversary' calendar event in GoCalendar was updated to include a booking confirmation number.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.modified.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Confirmation:')]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.updated.values(@)[?contains(title, 'Our Anniversary') && contains(description, 'Confirmation:')]) >= `1`",
+      "expected_value": true
     }
   ],
   "points": 2,

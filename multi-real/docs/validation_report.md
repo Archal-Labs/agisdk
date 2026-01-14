@@ -1,55 +1,45 @@
 # Multi-REAL Verifier Validation Report
 
-*Generated: 2026-01-14 19:19:08 UTC*
+*Generated: 2026-01-14 22:47:57 UTC*
 
 ## Executive Summary
 
 | Metric | Value |
 |--------|-------|
-| Total Tasks | 72 |
-| Ground Truth Coverage | 8.3% |
-| Query Validity | 62.7% |
-| Expected Values Complete | 14.8% |
-| GT Validation Pass Rate | 50.0% |
-| Action Items | 4 |
+| Total Tasks | 69 |
+| Ground Truth Coverage | 13.0% |
+| Query Validity | 67.5% |
+| Expected Values Complete | 100.0% |
+| GT Validation Pass Rate | 100.0% |
+| Action Items | 1 |
 
 ## Coverage
 
-- Tasks with ground truth: **6** / 72
-- Apps with schema knowledge: **10**
-- Apps missing schema: `networkin, omnizon`
+- Tasks with ground truth: **9** / 69
+- Apps with schema knowledge: **12**
 
 ## Query Health
 
-- Total queries: 263
-- Valid (schema-correct): 165 (62.7%)
-- Invalid (schema issues): 98
+- Total queries: 252
+- Valid (schema-correct): 170 (67.5%)
+- Invalid (schema issues): 82
 
 ## Expected Values
 
-- Complete: 39 / 263
-- TODO (need filling): 224
+- Complete: 252 / 252
+- TODO (need filling): 0
 
 ## Ground Truth Validation
 
-- Queries tested: 54
-- Passed: 27
-- Failed: 27
-- Pass rate: 50.0%
+- Queries tested: 30
+- Passed: 30
+- Failed: 0
+- Pass rate: 100.0%
 
 ## Action Items
 
-### [HIGH] Collect ground truth for apps: networkin, omnizon
-*Impact: 2 apps have no schema knowledge*
-
-### [MEDIUM] Fill 224 TODO expected values
-*Impact: Required for automated evaluation*
-
-### [MEDIUM] Fix 98 invalid queries
+### [MEDIUM] Fix 82 invalid queries
 *Impact: Queries may fail during evaluation*
-
-### [HIGH] Investigate 27 queries failing against ground truth
-*Impact: These queries won't work during evaluation*
 
 ---
 

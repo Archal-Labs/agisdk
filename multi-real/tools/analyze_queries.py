@@ -82,8 +82,16 @@ def extract_all_paths(query: str) -> list[str]:
     for match in re.finditer(r"\b(\w+(?:\.\w+)+)", query):
         path = match.group(1)
         # Skip things that look like function calls
-        if not path.startswith(("length", "contains", "values", "keys")):
-            paths.append(path)
+        if path.startswith(("length", "contains", "values", "keys")):
+            continue
+        # Skip email domains (e.g., mycorp.com, gmail.com from email addresses)
+        if re.match(r"^\w+\.(com|org|net|edu|gov|io|co)$", path, re.IGNORECASE):
+            continue
+        # Skip if preceded by @ (part of email address)
+        start = match.start()
+        if start > 0 and query[start - 1] == "@":
+            continue
+        paths.append(path)
     return paths
 
 

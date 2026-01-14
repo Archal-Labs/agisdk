@@ -32,31 +32,31 @@
       "description": "Verify that an email was sent to the financial advisor.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'f.advisor@consult.com')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the sent email's subject indicates an office chair review.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Office Chair Options for Review')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the email content includes at least three product links, indicating chairs were found.",
       "type": "jmespath",
       "query": "length(split(gomail.differences.emails.added[?sent == `true`][0].content, 'http')) >= `4`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a calendar event was added with the correct title.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Make final office chair purchase decision')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the calendar event is scheduled for next Tuesday afternoon and is 1 hour long.",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime && gocalendar.differences.events.added.values(@)[0].end.dateTime && (gocalendar.differences.events.added.values(@)[0].end.dateTime - gocalendar.differences.events.added.values(@)[0].start.dateTime) == `3600000`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

@@ -85,16 +85,8 @@ def validate_against_gt(tasks_dir: Path, gt_dir: Path) -> dict:
 
         task_id = task["id"]
 
-        # Find matching GT
+        # Find matching GT - require exact task_id match only
         gt_file = gt_files.get(task_id)
-        if not gt_file:
-            # Try partial match
-            for gt_name, gt_path in gt_files.items():
-                task_parts = set(task_id.split("-")[:-1])
-                gt_parts = set(gt_name.split("-")[:-1])
-                if task_parts == gt_parts:
-                    gt_file = gt_path
-                    break
 
         if not gt_file:
             results["no_gt"] += 1

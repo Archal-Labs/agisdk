@@ -31,26 +31,26 @@
     {
       "description": "Verify a new job posting for 'Python Data Scientist' was created on TopWork.",
       "type": "jmespath",
-      "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(values(topwork.initialfinaldiff.added.jobs.jobs)[?contains(description || '', 'Python Data Scientist')]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify the posted job on TopWork has an hourly rate within the $70-$90 range.",
       "type": "jmespath",
-      "query": "topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.min >= `70` && topwork.initialfinaldiff.added.jobs.values(@)[0].hourlyRate.max <= `90`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(values(topwork.initialfinaldiff.added.jobs.jobs)[?hourlyRateFrom >= `70` && hourlyRateTo <= `90`]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify an email was sent to 'recruiting.team@startupx.com' with the subject 'New Python Role Live'.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiting.team@startupx.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'New Python Role Live')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true` && to[0] == 'recruiting.team@startupx.com' && subject == 'New Python Role Live']) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify the sent email's content mentions the job posting and Jessica William.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'job is posted') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Jessica William')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gomail.differences.emails.added[?sent == `true` && subject == 'New Python Role Live' && contains(content, 'posted') && contains(content, 'Jessica')]) >= `1`",
+      "expected_value": true
     }
   ],
   "points": 2,

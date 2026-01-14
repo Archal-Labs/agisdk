@@ -32,25 +32,25 @@
       "description": "Verify a flight was booked on FlyUnified to SFO.",
       "type": "jmespath",
       "query": "contains(flyunified.differences.bookedFlights.added[0].destination, 'SFO')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the UDriver pickup location is '1 Hotel San Francisco'.",
       "type": "jmespath",
       "query": "contains(udriver.finalstate.ride.bookedTrip.pickup.address, '1 Hotel San Francisco')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the UDriver dropoff location is '1001 Castro Street'.",
       "type": "jmespath",
       "query": "contains(udriver.finalstate.ride.bookedTrip.destination.address, '1001 Castro Street')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify a calendar event titled 'Ride to Castro' was created.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Ride to Castro')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

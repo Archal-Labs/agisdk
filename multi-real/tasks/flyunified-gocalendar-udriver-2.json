@@ -32,25 +32,25 @@
       "description": "Verify that an UDriverXL trip was booked from 100 Van Ness Ave to 1 Hotel San Francisco.",
       "type": "jmespath",
       "query": "udriver.finalstate.ride.bookedTrip != null && contains(udriver.finalstate.ride.bookedTrip.pickup.address, '100 Van Ness Ave') && contains(udriver.finalstate.ride.bookedTrip.destination.address, '1 Hotel San Francisco')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a one-way flight was booked on FlyUnified from SFO to PDX departing on June 28th.",
       "type": "jmespath",
       "query": "length(flyunified.differences.bookedFlights.added) >= `1` && contains(flyunified.differences.bookedFlights.added[0].destination, 'PDX') && contains(flyunified.differences.bookedFlights.added[0].origin, 'SFO') && contains(flyunified.differences.bookedFlights.added[0].departureDate, '2024-06-28')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a new event named 'Travel to Portland' was created on the calendar.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Travel to Portland')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the 'Travel to Portland' event starts at the UDriver pickup time (4:15 PM) and ends at or after the flight's earliest departure time (7 PM) on June 28th.",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added.values(@)[0] != null && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '2024-06-28T16:15:00') && contains(gocalendar.differences.events.added.values(@)[0].end.dateTime, '2024-06-28T19')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

@@ -32,25 +32,25 @@
       "description": "Verify a table was booked at Foreign Cinema for two people.",
       "type": "jmespath",
       "query": "opendining.differences.bookings.added[?contains(restaurantName, 'Foreign Cinema') && partySize == `2` && date == '2024-10-05' && time == '13:30:00'].restaurantName | length(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the first UDriver trip was booked from 1 Hotel San Francisco to Foreign Cinema at 1:15 PM.",
       "type": "jmespath",
       "query": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, '1 Hotel San Francisco') && contains(destination.address, 'Foreign Cinema') && time == '13:15:00'] | length(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the second UDriver trip was booked from Foreign Cinema to 1 Hotel San Francisco at 3:30 PM.",
       "type": "jmespath",
       "query": "udriver.initialfinaldiff.added.ride.bookedTrips.values(@)[?contains(pickup.address, 'Foreign Cinema') && contains(destination.address, '1 Hotel San Francisco') && time == '15:30:00'] | length(@)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify exactly two UDriver trips were booked.",
       "type": "jmespath",
       "query": "length(udriver.initialfinaldiff.added.ride.bookedTrips)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

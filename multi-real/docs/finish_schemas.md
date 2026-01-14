@@ -1,6 +1,6 @@
 # Multi-REAL Finish JSON Schema Documentation
 
-*Generated: 2026-01-14 16:18 UTC*
+*Generated: 2026-01-14 21:48 UTC*
 
 This document describes the finish JSON schema for each web application.
 Re-run `tools/discover_schemas.py` as you add more ground truth files.
@@ -9,13 +9,11 @@ Re-run `tools/discover_schemas.py` as you add more ground truth files.
 
 | Metric | Value |
 |--------|-------|
-| Total tasks | 72 |
-| Tasks with ground truth | 6 (8%) |
-| Tasks without ground truth | 66 |
+| Total tasks | 69 |
+| Tasks with ground truth | 9 (13%) |
+| Tasks without ground truth | 60 |
 | Apps used in tasks | 12 |
-| Apps with schema knowledge | 10 |
-
-**Apps missing schema (need GT):** `networkin, omnizon`
+| Apps with schema knowledge | 12 |
 
 ### Tasks Needing Ground Truth
 
@@ -23,22 +21,24 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 | Status | Count |
 |--------|-------|
-| ✅ Has GT | 6 |
-| ⚠️ No GT, schema known | 57 |
-| ❌ No GT, missing app schema | 10 |
+| ✅ Has GT | 9 |
+| ⚠️ No GT, schema known | 61 |
+| ❌ No GT, missing app schema | 0 |
 
 ## App Schema Overview
 
 | App | Has `differences` | Has `initialfinaldiff` | App-Specific Diffs | Sources |
 |-----|-------------------|------------------------|-------------------|---------|
 | dashdish | ✅ | ✅ | None | 1 |
-| flyunified | ✅ | ✅ | None | 1 |
-| gocalendar | ✅ | ✅ | None | 1 |
-| gomail | ✅ | ✅ | None | 4 |
+| flyunified | ✅ | ✅ | None | 2 |
+| gocalendar | ✅ | ✅ | None | 2 |
+| gomail | ✅ | ✅ | None | 6 |
 | marrisuite | ❌ | ✅ | bookingDetailsDiff, cancellationDetailsDiff, recentSearchesDiff, roomRequestsDiff | 1 |
+| networkin | ❌ | ✅ | None | 1 |
+| omnizon | ❌ | ✅ | cancelledOrderDetailsDiff, cartDetailsDiff, orderDetailsDiff | 1 |
 | opendining | ✅ | ✅ | None | 1 |
-| staynb | ❌ | ✅ | None | 1 |
-| topwork | ❌ | ✅ | None | 1 |
+| staynb | ❌ | ✅ | None | 2 |
+| topwork | ❌ | ✅ | None | 2 |
 | udriver | ❌ | ✅ | None | 1 |
 | zilloft | ✅ | ✅ | None | 1 |
 
@@ -65,7 +65,7 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 ### flyunified
 
-**Sources:** flyunified-gocalendar-staynb-1.json
+**Sources:** flyunified-gocalendar-staynb-1.json, flyunified-gocalendar-staynb-2.json
 
 **Top-level keys:** `actionhistory, differences, finalstate, initialfinaldiff, initialstate, state`
 
@@ -73,7 +73,7 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 | Path | Type | Has Data | Sample Keys |
 |------|------|----------|-------------|
-| `flyunified.differences.bookedFlights.added` | dict | ✅ | 0, 1 |
+| `flyunified.differences.bookedFlights.added` | dict | ✅ | 0, 1, 2, 3 |
 | `flyunified.differences.bookedFlights.deleted` | dict | ❌ | - |
 | `flyunified.differences.bookedFlights.updated` | dict | ❌ | - |
 | `flyunified.differences.selectedFlightCartIds.added` | dict | ✅ | 0 |
@@ -84,12 +84,13 @@ Tasks without GT but with all app schemas known can still have queries validated
 | `flyunified.differences.purchaseDetails.updated` | dict | ❌ | - |
 | `flyunified.initialfinaldiff.deleted` | dict | ❌ | booking, ui, miles |
 | `flyunified.initialfinaldiff.updated` | dict | ❌ | flightSearch, booking, ui, miles |
+| `flyunified.initialfinaldiff.added` | dict | ❌ | booking, ui, miles |
 
 ---
 
 ### gocalendar
 
-**Sources:** flyunified-gocalendar-staynb-1.json
+**Sources:** flyunified-gocalendar-staynb-1.json, flyunified-gocalendar-staynb-2.json
 
 **Top-level keys:** `actionhistory, differences, finalstate, initialfinaldiff, initialstate, state`
 
@@ -97,7 +98,7 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 | Path | Type | Has Data | Sample Keys |
 |------|------|----------|-------------|
-| `gocalendar.differences.events.added` | dict | ✅ | e789f6b8-298c-4c4b-b530-ba1501e4e708 |
+| `gocalendar.differences.events.added` | dict | ✅ | e789f6b8-298c-4c4b-b530-ba1501e4e708, 2515c670-0620-490b-8791-b6075a011740 |
 | `gocalendar.differences.events.deleted` | dict | ❌ | - |
 | `gocalendar.differences.events.updated` | dict | ❌ | - |
 | `gocalendar.differences.calendars.added` | dict | ❌ | - |
@@ -112,7 +113,7 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 ### gomail
 
-**Sources:** dashdish-gomail-1.json, gomail-marrsuite-1.json, gomail-topwork-3.json, gomail-zilloft-1.json
+**Sources:** dashdish-gomail-1.json, gomail-marrsuite-1.json, gomail-networkin-topwork-1.json, gomail-omnizon-1.json, gomail-topwork-3.json, gomail-zilloft-1.json
 
 **Top-level keys:** `actionhistory, differences, finalstate, initialfinaldiff, initialstate, state`
 
@@ -156,6 +157,47 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 ---
 
+### networkin
+
+**Sources:** gomail-networkin-topwork-1.json
+
+**Top-level keys:** `actionhistory, finalstate, initialfinaldiff, initialstate, state`
+
+**Queryable Diff Paths:**
+
+| Path | Type | Has Data | Sample Keys |
+|------|------|----------|-------------|
+| `networkin.initialfinaldiff.added` | dict | ❌ | jobs, notifications |
+| `networkin.initialfinaldiff.deleted` | dict | ❌ | notifications |
+| `networkin.initialfinaldiff.updated` | dict | ❌ | config, jobs, notifications |
+
+---
+
+### omnizon
+
+**Sources:** gomail-omnizon-1.json
+
+**Top-level keys:** `actionhistory, cancelledOrderDetailsDiff, cartDetailsDiff, finalstate, initialfinaldiff, initialstate, orderDetailsDiff, state`
+
+**Queryable Diff Paths:**
+
+| Path | Type | Has Data | Sample Keys |
+|------|------|----------|-------------|
+| `omnizon.initialfinaldiff.added` | dict | ❌ | order, similarProducts |
+| `omnizon.initialfinaldiff.deleted` | dict | ❌ | cart |
+| `omnizon.initialfinaldiff.updated` | dict | ❌ | cart, ui, filter, router, similarProducts |
+| `omnizon.orderDetailsDiff.added` | dict | ✅ | 0, 1, 2, 3, 4 |
+| `omnizon.orderDetailsDiff.deleted` | dict | ❌ | - |
+| `omnizon.orderDetailsDiff.updated` | dict | ❌ | - |
+| `omnizon.cancelledOrderDetailsDiff.added` | dict | ✅ | 0, 1 |
+| `omnizon.cancelledOrderDetailsDiff.deleted` | dict | ❌ | - |
+| `omnizon.cancelledOrderDetailsDiff.updated` | dict | ❌ | - |
+| `omnizon.cartDetailsDiff.added` | dict | ✅ | 0 |
+| `omnizon.cartDetailsDiff.deleted` | dict | ❌ | - |
+| `omnizon.cartDetailsDiff.updated` | dict | ❌ | - |
+
+---
+
 ### opendining
 
 **Sources:** opendining-udriver-1.json
@@ -182,7 +224,7 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 ### staynb
 
-**Sources:** flyunified-gocalendar-staynb-1.json
+**Sources:** flyunified-gocalendar-staynb-1.json, flyunified-gocalendar-staynb-2.json
 
 **Top-level keys:** `actionhistory, finalstate, initialfinaldiff, initialstate, query, state, url`
 
@@ -198,7 +240,7 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 ### topwork
 
-**Sources:** gomail-topwork-3.json
+**Sources:** gomail-networkin-topwork-1.json, gomail-topwork-3.json
 
 **Top-level keys:** `actionhistory, finalstate, initialfinaldiff, initialstate, state`
 
@@ -206,8 +248,9 @@ Tasks without GT but with all app schemas known can still have queries validated
 
 | Path | Type | Has Data | Sample Keys |
 |------|------|----------|-------------|
-| `topwork.initialfinaldiff.added` | dict | ❌ | jobs |
-| `topwork.initialfinaldiff.updated` | dict | ❌ | config, jobs |
+| `topwork.initialfinaldiff.added` | dict | ❌ | jobs, notifications |
+| `topwork.initialfinaldiff.deleted` | dict | ❌ | notifications |
+| `topwork.initialfinaldiff.updated` | dict | ❌ | config, jobs, notifications |
 
 ---
 

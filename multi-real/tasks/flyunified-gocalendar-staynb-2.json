@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gocalendar-staynb-2",
-  "goal": "I want to see the cherry blossoms in Washington D.C. next year. Find a round-trip flight from Salt Lake City (SLC) to DCA for any 4-day period in the first two weeks of April. Before booking, confirm you can find a StayNB studio apartment with a flexible cancellation policy in the Dupont Circle area for those dates. If both are available, create two separate, tentative events on my GoCalendar: one for the flight and one for the potential stay, titled 'TENTATIVE: DC Flight' and 'TENTATIVE: DC Stay' respectively.",
+  "goal": "We are flying in a candidate, Kenji Tanaka, for an interview. Please book a round-trip flight for him on FlyUnified from Tokyo (HND) to San Jose (SJC), arriving on the morning of November 18th and departing on the evening of November 20th. Also, find and book him a StayNB with a 'dedicated workspace' near our office for those two nights. Finally, schedule a 30-minute meeting on my GoCalendar for November 17th at 10 AM, inviting 'recruiting@mycompany.com', titled 'Finalize Kenji Tanaka Interview Logistics'.",
   "websites": [
     {
       "id": "flyunified",
@@ -29,22 +29,22 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that a tentative calendar event for the DC flight was created.",
+      "description": "Verify a round-trip flight from HND to SJC was booked on FlyUnified.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'TENTATIVE: DC Flight')]) >= `1`",
+      "query": "length(values(flyunified.differences.bookedFlights.added)[?flight.outboundFlight.info.from.destination.code == 'HND' && flight.outboundFlight.info.to.destination.code == 'SJC']) >= `1`",
+      "expected_value": true
+    },
+    {
+      "description": "Verify a StayNB booking was made for Kenji Tanaka for two nights with required features.",
+      "type": "jmespath",
+      "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn, '2023-11-18') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut, '2023-11-20') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'dedicated workspace') && contains(values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].features, 'self check-in')",
       "expected_value": false
     },
     {
-      "description": "Verify that a tentative calendar event for the DC stay was created.",
+      "description": "Verify the GoCalendar meeting 'Finalize Kenji Tanaka Interview Logistics' was scheduled correctly.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'TENTATIVE: DC Stay')]) >= `1`",
+      "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Kenji Tanaka Interview Logistics') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, '2023-11-17T10:00:00') && contains(gocalendar.differences.events.added.values(@)[0].duration, `30`) && contains(gocalendar.differences.events.added.values(@)[0].attendees, 'recruiting@mycompany.com')",
       "expected_value": false
-    },
-    {
-      "description": "Verify that exactly two events were added to the calendar.",
-      "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added)",
-      "expected_value": "TODO: Review - query returns int"
     }
   ],
   "points": 2,

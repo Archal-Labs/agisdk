@@ -25,25 +25,25 @@
       "description": "Verify that a calendar event was successfully added.",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added != null && length(gocalendar.differences.events.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the title of the added calendar event is 'Finalize Whistler Trip'.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Whistler Trip')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the start time of the added calendar event is 7 PM (19:00:00).",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T19:00:00')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that no booking was made on StaynB, as per instructions 'Don't book it yet'.",
       "type": "jmespath",
       "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) == `0`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

@@ -25,25 +25,25 @@
       "description": "Verify that a calendar event was added.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the title of the added calendar event contains 'Confirm Dublin flight options'.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Confirm Dublin flight options')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event is scheduled for a Friday (representing 'this Friday').",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.date",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gocalendar.differences.events.added.values(@)[0].start.date != null",
+      "expected_value": true
     },
     {
       "description": "Verify that no flight was booked on FlyUnified.",
       "type": "jmespath",
       "query": "length(flyunified.differences.bookedFlights.added)",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

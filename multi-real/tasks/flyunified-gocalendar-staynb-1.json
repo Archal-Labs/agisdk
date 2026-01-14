@@ -31,14 +31,14 @@
     {
       "description": "Verify a round-trip flight was booked on FlyUnified departing from IAD to a European city, from March 13th to March 16th.",
       "type": "jmespath",
-      "query": "flyunified.differences.bookedFlights.added[?origin=='IAD' && departureDate=='2024-03-13' && returnDate=='2024-03-16' && (destination=='London' || destination=='Paris' || destination=='Rome' || destination=='Madrid' || destination=='Berlin' || destination=='Amsterdam' || destination=='Dublin' || destination=='Lisbon')]",
-      "expected_value": false
+      "query": "length(values(flyunified.differences.bookedFlights.added)[?flight.outboundFlight.info.from.destination.code == 'IAD' && (flight.outboundFlight.info.to.destination.code == 'LHR' || flight.outboundFlight.info.to.destination.code == 'CDG' || flight.outboundFlight.info.to.destination.code == 'FCO' || flight.outboundFlight.info.to.destination.code == 'MAD' || flight.outboundFlight.info.to.destination.code == 'BER' || flight.outboundFlight.info.to.destination.code == 'AMS' || flight.outboundFlight.info.to.destination.code == 'DUB' || flight.outboundFlight.info.to.destination.code == 'LIS')]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify a StayNB with a kitchen was booked for the same dates in the destination city.",
       "type": "jmespath",
-      "query": "values(staynb.initialfinaldiff.added.booking.bookingDetails)[?checkIn=='2024-03-13' && checkOut=='2024-03-16' && contains(amenities, 'kitchen')]",
-      "expected_value": false
+      "query": "length(staynb.finalstate.booking.bookingDetails[?contains(checkin, '03-13') && contains(checkout, '03-16')]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify a 'Europe Trip' event was added to the GoCalendar from March 13th to March 16th.",

@@ -32,19 +32,19 @@
       "description": "Verify that an email was sent to the correct recipient with the specified subject.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'offsite-planning@mycompany.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Offsite Cost Comparison')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the sent email's content includes cost information for London (flight + lodging).",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'London') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost (London):')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that the sent email's content includes cost information for Berlin (flight + lodging).",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Berlin') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost (Berlin):')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

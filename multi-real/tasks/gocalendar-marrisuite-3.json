@@ -25,25 +25,25 @@
       "description": "Verify a hotel booking was successfully made for the Marrisuite.",
       "type": "jmespath",
       "query": "length(marrisuite.bookingDetailsDiff.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the hotel booking check-in date is April 26th and check-out date is April 28th.",
       "type": "jmespath",
       "query": "marrisuite.bookingDetailsDiff.added[0].checkIn == '2024-04-26' && marrisuite.bookingDetailsDiff.added[0].checkOut == '2024-04-28'",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event 'Spa Appointment' was added for April 27th.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Spa Appointment') && gocalendar.differences.events.added.values(@)[0].start.date == '2024-04-27'",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event starts at 2 PM and ends at 4 PM on April 27th.",
       "type": "jmespath",
       "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime == '2024-04-27T14:00:00' && gocalendar.differences.events.added.values(@)[0].end.dateTime == '2024-04-27T16:00:00'",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

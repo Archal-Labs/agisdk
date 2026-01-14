@@ -25,19 +25,19 @@
       "description": "Verify that a new job posting for 'Python Data Scientist' was created on TopWork.",
       "type": "jmespath",
       "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify that a new reminder event was added to gocalendar.",
       "type": "jmespath",
       "query": "length(gocalendar.differences.events.added) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the calendar reminder's title is 'Check Python role applicants' and it is scheduled for 10 AM.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Check Python role applicants') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T10:00:00')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

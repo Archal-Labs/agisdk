@@ -30,14 +30,14 @@
     {
       "description": "Verify an email was sent to helena.v@mycorp.com.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com']) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "query": "length(values(gomail.initialfinaldiff.added.email.emails || `{}`)[?sent == `true` && contains(to, 'helena.v@mycorp.com')]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify the sent email to Helena contains keywords 'withdrawal' and 'salary' in its content.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true` && recipient == 'helena.v@mycorp.com' && contains(content, 'withdrawal') && contains(content, 'salary')]) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "query": "length(values(gomail.initialfinaldiff.added.email.emails || `{}`)[?sent == `true` && contains(to, 'helena.v@mycorp.com') && contains(content, 'withdrawal') && contains(content, 'salary')]) >= `1`",
+      "expected_value": true
     }
   ],
   "points": 2,

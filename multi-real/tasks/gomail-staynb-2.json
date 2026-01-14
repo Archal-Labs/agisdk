@@ -25,19 +25,19 @@
       "description": "Verify a new StaynB wishlist named 'Canadian Rockies Trip' was created.",
       "type": "jmespath",
       "query": "length(values(staynb.initialfinaldiff.added.wishlist.wishlists || `{}`)[?name=='Canadian Rockies Trip']) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the 'Tidal Getaway' property was added to the 'Canadian Rockies Trip' wishlist in StaynB.",
       "type": "jmespath",
       "query": "length(values(staynb.initialfinaldiff.added.wishlist.items || `{}`)[?propertyName=='Tidal Getaway' && wishlistName=='Canadian Rockies Trip']) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify an email was sent to Leo (leo.g@workplace.net) sharing the 'Canadian Rockies Trip' wishlist.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true` && contains(recipient, 'leo.g@workplace.net') && (contains(subject, 'Canadian Rockies Trip') || contains(content, 'Canadian Rockies Trip'))]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

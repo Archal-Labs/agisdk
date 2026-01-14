@@ -24,20 +24,20 @@
     {
       "description": "Verify that the 'Recruiting Pipeline Review' event exists in the final state and has updated notes.",
       "type": "jmespath",
-      "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && notes != null && notes != '']) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && notes != null && notes != '']) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify that the note attached to the 'Recruiting Pipeline Review' event contains a reference to 'TopWork'.",
       "type": "jmespath",
-      "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'TopWork')]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'TopWork')]) >= `1`",
+      "expected_value": true
     },
     {
       "description": "Verify that the note mentions the specific job role 'Modern React E-Commerce Website' for which the candidate applied.",
       "type": "jmespath",
-      "query": "length(gocalendar.finalstate.events | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'Modern React E-Commerce Website')]) >= `1`",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'Modern React E-Commerce Website')]) >= `1`",
+      "expected_value": true
     }
   ],
   "points": 2,

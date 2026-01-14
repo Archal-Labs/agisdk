@@ -31,26 +31,26 @@
     {
       "description": "Verify a calendar event was created with the correct title.",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].title",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "query": "gocalendar.differences.events.added.values(@)[0].title != null",
+      "expected_value": true
     },
     {
       "description": "Verify the calendar event description contains at least one 'http' link, indicating Zilloft properties were pasted.",
       "type": "jmespath",
       "query": "contains(gocalendar.differences.events.added.values(@)[0].description, 'http')",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify an email was sent to the correct recipient with the specified subject.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     },
     {
       "description": "Verify the subject of the sent email is correct.",
       "type": "jmespath",
       "query": "gomail.differences.emails.added[?sent == `true`][0].subject",
-      "expected_value": "TODO: Add expected value after checking /finish JSON"
+      "expected_value": true
     }
   ],
   "points": 2,

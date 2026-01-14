@@ -25,25 +25,25 @@
       "description": "Verify that an email has been sent.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "expected_value": true
     },
     {
       "description": "Verify the recipient of the sent email is 'recruiter.main@mycorp.com'.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'recruiter.main@mycorp.com')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the subject of the sent email is 'Potential Junior Role Spec'.",
       "type": "jmespath",
       "query": "contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Potential Junior Role Spec')",
-      "expected_value": "TODO: Query error - In function contains(), invalid type for value: No"
+      "expected_value": true
     },
     {
       "description": "Verify the email content is not empty, implying the job description was copied.",
       "type": "jmespath",
       "query": "length(gomail.differences.emails.added[?sent == `true`][0].content) > `0`",
-      "expected_value": "TODO: Query error - In function length(), invalid type for value: None"
+      "expected_value": true
     }
   ],
   "points": 2,
