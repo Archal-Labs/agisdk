@@ -4,7 +4,6 @@ Multi-REAL Benchmark Harness
 Wraps the core REAL harness to run multi-app benchmark tasks.
 """
 
-import concurrent.futures
 import jmespath
 import json
 import logging
@@ -482,13 +481,16 @@ class MultiRealHarness:
         eval_details["confidence"] = "medium"
         return False, 0.0, eval_details
 
-    def _run_experiment_with_timeout(
+    def _run_experiment_with_monitoring(
         self,
         exp_args: ExpArgs,
         task_id: str,
     ) -> tuple[bool, str | None]:
         """
-        Run experiment with timeout and progress monitoring.
+        Run experiment with progress monitoring.
+
+        Note: We can't use threading for timeout because Playwright uses greenlets
+        and must run on the same thread where it was initialized.
 
         Returns: (success, error_message)
         """
@@ -499,24 +501,33 @@ class MultiRealHarness:
             stall_timeout=self.stall_timeout,
         )
 
-        def run_experiment():
-            exp_args.run()
-            return True
-
         monitor.start()
+        start_time = time.time()
         try:
-            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
-                future = executor.submit(run_experiment)
-                try:
-                    future.result(timeout=self.task_timeout)
-                    return True, None
-                except concurrent.futures.TimeoutError:
-                    error_msg = (
-                        f"Task timed out after {self.task_timeout}s. "
-                        f"Last step: {monitor._last_step}"
-                    )
-                    logger.error(f"[{task_id}] {error_msg}")
-                    return False, error_msg
+            # Run directly on main thread (required for Playwright)
+            exp_args.run()
+
+            # Check if we exceeded soft timeout (for logging purposes)
+            elapsed = time.time() - start_time
+            if elapsed > self.task_timeout:
+                logger.warning(
+                    f"[{task_id}] Task completed but exceeded timeout "
+                    f"({elapsed:.0f}s > {self.task_timeout}s)"
+                )
+
+            return True, None
+
+        except KeyboardInterrupt:
+            # Allow manual interruption
+            error_msg = f"Task interrupted by user after {time.time() - start_time:.0f}s"
+            logger.warning(f"[{task_id}] {error_msg}")
+            return False, error_msg
+
+        except Exception as e:
+            error_msg = str(e)
+            logger.error(f"[{task_id}] Experiment error: {error_msg}")
+            return False, error_msg
+
         finally:
             monitor.stop()
 
@@ -560,23 +571,23 @@ class MultiRealHarness:
                 # Store exp_dir for later
                 result.exp_dir = str(exp_args.exp_dir)
 
-                # Run the experiment with timeout and monitoring
+                # Run the experiment with monitoring
                 logger.info(
                     f"[{task.id}] Starting experiment "
                     f"(attempt {attempt + 1}/{self.retry_config.max_retries + 1})"
                 )
-                success, timeout_error = self._run_experiment_with_timeout(
+                success, run_error = self._run_experiment_with_monitoring(
                     exp_args, task.id
                 )
 
-                if timeout_error:
-                    last_error = timeout_error
-                    if is_retryable_error(timeout_error):
+                if run_error:
+                    last_error = run_error
+                    if is_retryable_error(run_error):
                         attempt += 1
                         continue
                     else:
-                        # Non-retryable timeout
-                        result.error = timeout_error
+                        # Non-retryable error
+                        result.error = run_error
                         break
 
                 # Load results from summary_info.json
