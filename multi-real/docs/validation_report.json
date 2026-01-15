@@ -1,8 +1,8 @@
 {
-  "generated_at": "2026-01-14T22:47:57.838548+00:00",
+  "generated_at": "2026-01-15T00:59:46.812573+00:00",
   "summary": {
-    "total_tasks": 69,
-    "gt_coverage": "13.0%",
+    "total_tasks": 64,
+    "gt_coverage": "14.1%",
     "query_validity": "67.5%",
     "expected_values_complete": "100.0%",
     "gt_pass_rate": "100.0%",
@@ -11,7 +11,7 @@
   "coverage": {
     "tasks_with_gt": 9,
     "tasks_without_gt": 60,
-    "gt_percentage": 13.0,
+    "gt_percentage": 14.1,
     "apps_with_schema": 12,
     "apps_missing_schema": []
   },
@@ -22,17 +22,17 @@
     "validity_percentage": 67.5
   },
   "expected_values": {
-    "total_evals": 252,
-    "complete": 252,
+    "total_evals": 233,
+    "complete": 233,
     "todo": 0,
     "completion_percentage": 100.0
   },
   "ground_truth_validation": {
-    "queries_tested": 30,
-    "passed": 30,
+    "queries_tested": 49,
+    "passed": 49,
     "failed": 0,
     "pass_rate": 100.0,
-    "tasks_without_gt": 61
+    "tasks_without_gt": 51
   },
   "action_items": [
     {

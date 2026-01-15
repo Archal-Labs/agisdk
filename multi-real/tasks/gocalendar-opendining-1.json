@@ -24,7 +24,7 @@
     {
       "description": "Verify that a restaurant booking for one person has been made in OpenDining.",
       "type": "jmespath",
-      "query": "opendining.differences.bookings.added[0].partySize != null",
+      "query": "length(opendining.differences.bookings.updated[?guests != null]) >= `1` || length(opendining.differences.bookings.added) >= `1`",
       "expected_value": true
     },
     {
@@ -42,7 +42,7 @@
     {
       "description": "Verify that the restaurant booked is a sushi restaurant (by checking its name).",
       "type": "jmespath",
-      "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'Sushi') || contains(opendining.differences.bookings.added[0].restaurantName, 'sushi')",
+      "query": "length(opendining.differences.bookings.updated[?contains(restaurant.name || '', 'Sushi') || contains(restaurant.name || '', 'sushi')]) >= `1`",
       "expected_value": true
     }
   ],

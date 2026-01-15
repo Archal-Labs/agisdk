@@ -1,13 +1,13 @@
 # Multi-REAL Verifier Validation Report
 
-*Generated: 2026-01-14 22:47:57 UTC*
+*Generated: 2026-01-15 00:59:46 UTC*
 
 ## Executive Summary
 
 | Metric | Value |
 |--------|-------|
-| Total Tasks | 69 |
-| Ground Truth Coverage | 13.0% |
+| Total Tasks | 64 |
+| Ground Truth Coverage | 14.1% |
 | Query Validity | 67.5% |
 | Expected Values Complete | 100.0% |
 | GT Validation Pass Rate | 100.0% |
@@ -26,13 +26,13 @@
 
 ## Expected Values
 
-- Complete: 252 / 252
+- Complete: 233 / 233
 - TODO (need filling): 0
 
 ## Ground Truth Validation
 
-- Queries tested: 30
-- Passed: 30
+- Queries tested: 49
+- Passed: 49
 - Failed: 0
 - Pass rate: 100.0%
 

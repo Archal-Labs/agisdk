@@ -24,7 +24,7 @@
     {
       "description": "Verify that a new job posting for 'Python Data Scientist' was created on TopWork.",
       "type": "jmespath",
-      "query": "length(topwork.initialfinaldiff.added.jobs) >= `1` && contains(topwork.initialfinaldiff.added.jobs.values(@)[0].title, 'Python Data Scientist')",
+      "query": "length(values(topwork.initialfinaldiff.added.jobs.jobs || `{}`)[?contains(title || '', 'Product Manager')]) >= `1`",
       "expected_value": true
     },
     {

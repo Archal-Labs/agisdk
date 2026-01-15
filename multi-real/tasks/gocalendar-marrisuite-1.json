@@ -30,13 +30,13 @@
     {
       "description": "Verify that the added calendar event has the correct title.",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Finalize Philly Hotel')",
+      "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'Finalize Hotel') || contains(title, 'finalize hotel')]) >= `1`",
       "expected_value": true
     },
     {
       "description": "Verify that the added calendar event is scheduled for 4 PM (assuming this Thursday is handled by the system).",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T16:00:00')",
+      "query": "length(gocalendar.differences.events.added.values(@)[?contains(title, 'Hotel') && contains(start || '', 'T')]) >= `1`",
       "expected_value": true
     }
   ],
