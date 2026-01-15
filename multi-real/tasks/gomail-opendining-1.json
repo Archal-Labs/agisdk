@@ -1,6 +1,6 @@
 {
   "id": "gomail-opendining-1",
-  "goal": "Find my upcoming reservation at 'La Trattoria' in OpenDining and forward the details to my assistant at chloe.b@gomail.com so she can arrange my transport. The subject should be 'Dinner Reservation Details'.",
+  "goal": "Make an upcoming reservation at 'La Trattoria' in OpenDining for 6 PM on Friday for three people and forward the details to my assistant at chloe.b@gomail.com so she can arrange my transport. The subject should be 'Dinner Reservation Details'.",
   "websites": [
     {
       "id": "gomail",
