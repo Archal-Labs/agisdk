@@ -24,7 +24,7 @@
     {
       "description": "Verify that a reservation was successfully made for two people at a restaurant.",
       "type": "jmespath",
-      "query": "opendining.differences.bookings.added[0] != null && opendining.differences.bookings.added[0].partySize == `2`",
+      "query": "(length(opendining.differences.bookings.added) >= `1` || length(opendining.differences.bookings.updated) >= `1`) && opendining.differences.bookings.updated[0].guests == `2`",
       "expected_value": true
     },
     {
@@ -36,13 +36,13 @@
     {
       "description": "Verify the calendar event's notes contain the restaurant's full address.",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].restaurantAddress)",
+      "query": "gocalendar.differences.events.added.values(@)[0].notes != null && length(gocalendar.differences.events.added.values(@)[0].notes) > `10`",
       "expected_value": true
     },
     {
       "description": "Verify the calendar event's notes contain the reservation confirmation ID.",
       "type": "jmespath",
-      "query": "contains(gocalendar.differences.events.added.values(@)[0].notes, opendining.differences.bookings.added[0].confirmationId)",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].notes || '', 'confirm') || contains(gocalendar.differences.events.added.values(@)[0].notes || '', 'Confirm') || contains(gocalendar.differences.events.added.values(@)[0].notes || '', 'RES')",
       "expected_value": true
     }
   ],

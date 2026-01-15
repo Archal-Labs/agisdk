@@ -31,7 +31,7 @@
     {
       "description": "Verify a dinner reservation was successfully made at 'Taco Loco' for 3 people.",
       "type": "jmespath",
-      "query": "length(opendining.differences.bookings.added) >= `1` && contains(opendining.differences.bookings.added[0].restaurantName, 'Taco Loco') && opendining.differences.bookings.added[0].partySize >= `3`",
+      "query": "length(opendining.differences.bookings.added) >= `1` && length(opendining.differences.bookings.updated[?contains(restaurant.name || '', 'Taco Loco')]) >= `1` || length(opendining.differences.bookings.added[?contains(restaurant.name || '', 'Taco Loco')]) >= `1` && opendining.differences.bookings.updated[0].guests >= `3`",
       "expected_value": true
     },
     {

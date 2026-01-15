@@ -43,7 +43,7 @@
     {
       "description": "Verify that two emails were sent to 'trip.archive@gomail.com' with the subject 'Iceland Logistics Confirmed', and that at least one email contains flight details and at least one contains hotel details.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `2` && all(gomail.differences.emails.added[?sent == `true`][*].recipient, &contains(@, 'trip.archive@gomail.com')) && all(gomail.differences.emails.added[?sent == `true`][*].subject, &contains(@, 'Iceland Logistics Confirmed')) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'flight') || contains(content, 'JFK') || contains(content, 'KEF')]) >= `1`) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'StaynB') || contains(content, 'hotel') || contains(content, 'Mi\u00f0borg')]) >= `1`)",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `2` && all(gomail.differences.emails.added[?sent == `true`][*].to[0], &contains(@, 'trip.archive@gomail.com')) && all(gomail.differences.emails.added[?sent == `true`][*].subject, &contains(@, 'Iceland Logistics Confirmed')) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'flight') || contains(content, 'JFK') || contains(content, 'KEF')]) >= `1`) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'StaynB') || contains(content, 'hotel') || contains(content, 'Mi\u00f0borg')]) >= `1`)",
       "expected_value": true
     }
   ],

@@ -36,7 +36,7 @@
     {
       "description": "Verify an email draft exists in Gomail, addressed to 'finance.dept@mycompany.co' with the subject 'Lunch Expense Estimate'.",
       "type": "jmespath",
-      "query": "gomail.differences.emails.added[?draft == `true`][0] != null && contains(gomail.differences.emails.added[?draft == `true`][0].recipient, 'finance.dept@mycompany.co') && contains(gomail.differences.emails.added[?draft == `true`][0].subject, 'Lunch Expense Estimate')",
+      "query": "gomail.differences.emails.added[?draft == `true`][0] != null && contains(gomail.differences.emails.added[?draft == `true`][0].to[0] || '', 'finance.dept@mycompany.co') && contains(gomail.differences.emails.added[?draft == `true`][0].subject, 'Lunch Expense Estimate')",
       "expected_value": false
     },
     {

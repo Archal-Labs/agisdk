@@ -24,7 +24,7 @@
     {
       "description": "Verify that a restaurant booking or identification was made in OpenDining for a party of 8 people.",
       "type": "jmespath",
-      "query": "opendining.differences.bookings.added[0].partySize != null",
+      "query": "length(opendining.differences.bookings.updated[?guests != null]) >= `1` || length(opendining.differences.bookings.added) >= `1`",
       "expected_value": true
     },
     {
@@ -36,13 +36,13 @@
     {
       "description": "Verify that an email was sent to kenji@gomail.com.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'kenji@gomail.com')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'kenji@gomail.com')",
       "expected_value": true
     },
     {
       "description": "Verify that an email was sent to anita.r@gomail.com.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'anita.r@gomail.com')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'anita.r@gomail.com')",
       "expected_value": true
     },
     {

@@ -37,7 +37,7 @@
     {
       "description": "Verify an email was sent to anita.sharma@clientcorp.com with the subject 'Travel Proposal: Tokyo Meeting'.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'anya.sharma@clientcorp.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Travel Proposal: Tokyo Meeting')",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'anya.sharma@clientcorp.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Travel Proposal: Tokyo Meeting')",
       "expected_value": true
     },
     {

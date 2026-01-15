@@ -37,7 +37,7 @@
     {
       "description": "Verify the email recipient, CC, and subject.",
       "type": "jmespath",
-      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient == 'leila.h@startupdesign.io' && contains(gomail.differences.emails.added[?sent == `true`][0].cc, 'hr-onboarding@startupdesign.io') && gomail.differences.emails.added[?sent == `true`][0].subject == 'Welcome Gift!'",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].to[0] == 'leila.h@startupdesign.io' && contains(gomail.differences.emails.added[?sent == `true`][0].cc, 'hr-onboarding@startupdesign.io') && gomail.differences.emails.added[?sent == `true`][0].subject == 'Welcome Gift!'",
       "expected_value": true
     },
     {

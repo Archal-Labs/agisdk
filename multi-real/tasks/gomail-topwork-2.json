@@ -30,7 +30,7 @@
     {
       "description": "Verify the email was sent to the correct recipient.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'social.media.team@mycorp.com')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'social.media.team@mycorp.com')",
       "expected_value": true
     },
     {

@@ -24,7 +24,7 @@
     {
       "description": "Verify a restaurant reservation was successfully made on OpenDining.",
       "type": "jmespath",
-      "query": "opendining.differences.bookings.added[0] != null",
+      "query": "(length(opendining.differences.bookings.added) >= `1` || length(opendining.differences.bookings.updated) >= `1`)",
       "expected_value": true
     },
     {

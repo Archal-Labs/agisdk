@@ -49,7 +49,7 @@
     {
       "description": "Verify the sent email's subject and recipient.",
       "type": "jmespath",
-      "query": "gomail.differences.emails.added[?sent == `true`][0].subject == 'Weekend Open House Itinerary' && gomail.differences.emails.added[?sent == `true`][0].recipient == 'family.updates@gomail.com'",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].subject == 'Weekend Open House Itinerary' && gomail.differences.emails.added[?sent == `true`][0].to[0] == 'family.updates@gomail.com'",
       "expected_value": true
     }
   ],

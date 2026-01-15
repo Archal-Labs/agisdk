@@ -30,7 +30,7 @@
     {
       "description": "Verify the recipient of the sent email is 'tom.h@mycorp.com'.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'tom.h@mycorp.com')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'tom.h@mycorp.com')",
       "expected_value": true
     },
     {

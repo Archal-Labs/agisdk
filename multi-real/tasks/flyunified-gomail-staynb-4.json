@@ -43,7 +43,7 @@
     {
       "description": "Verify an email is sent to 'montreal.meetup.planning@gomail.com' with the subject 'Montreal Plan' and detailing flight and lodging costs.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'montreal.meetup.planning@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Montreal Plan') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'My flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Their flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Lodging cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost:')",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'montreal.meetup.planning@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Montreal Plan') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'My flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Their flight cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Lodging cost:') && contains(gomail.differences.emails.added[?sent == `true`][0].content, 'Total cost:')",
       "expected_value": true
     }
   ],

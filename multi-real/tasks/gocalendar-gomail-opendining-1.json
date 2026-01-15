@@ -37,7 +37,7 @@
     {
       "description": "Verify an email was sent to 'alex.chen@gomail.com'.",
       "type": "jmespath",
-      "query": "gomail.differences.emails.added[?sent == `true` && recipient == 'alex.chen@gomail.com'].recipient",
+      "query": "gomail.differences.emails.added[?sent == `true` && contains(to[0] || '', 'alex.chen@gomail.com')].to[0]",
       "expected_value": true
     },
     {

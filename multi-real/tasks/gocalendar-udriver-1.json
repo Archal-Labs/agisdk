@@ -42,7 +42,7 @@
     {
       "description": "Verify the meeting event has defined start and end times, indicating a planned duration and adherence to after 2 PM constraint.",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[0].end.dateTime != null",
+      "query": "gocalendar.differences.events.added.values(@)[0].start != null && gocalendar.differences.events.added.values(@)[0].end != null",
       "expected_value": true
     }
   ],

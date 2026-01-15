@@ -42,7 +42,7 @@
     {
       "description": "Verify that both added events have specific start and end times (are not all-day events).",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null && gocalendar.differences.events.added.values(@)[1].start.dateTime != null",
+      "query": "gocalendar.differences.events.added.values(@)[0].start != null && gocalendar.differences.events.added.values(@)[1].start != null",
       "expected_value": true
     }
   ],

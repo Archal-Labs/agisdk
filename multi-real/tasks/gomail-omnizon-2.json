@@ -30,7 +30,7 @@
     {
       "description": "Verify the recipient and subject of the sent email.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'my.ideas@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Gift Options')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'my.ideas@gomail.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Gift Options')",
       "expected_value": false
     },
     {

@@ -37,7 +37,7 @@
     {
       "description": "Verify an email draft is created for the relocation specialist with the correct recipient, subject, and body content including the property address.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1` && contains(gomail.differences.emails.added[?draft == `true`][0].recipient, 'relocation.specialist@gomail.com') && contains(gomail.differences.emails.added[?draft == `true`][0].subject, 'Potential SD Property') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'Found a promising option. I''ve scheduled a time for a virtual tour. Please see the details and let me know if you can get in touch with the listing agent.') && (contains(gomail.differences.emails.added[?draft == `true`][0].content, 'San Diego') || gomail.differences.emails.added[?draft == `true`][0].content | contains(@, ' CA '))",
+      "query": "length(gomail.differences.emails.added[?draft == `true`]) >= `1` && contains(gomail.differences.emails.added[?draft == `true`][0].to[0] || '', 'relocation.specialist@gomail.com') && contains(gomail.differences.emails.added[?draft == `true`][0].subject, 'Potential SD Property') && contains(gomail.differences.emails.added[?draft == `true`][0].content, 'Found a promising option. I''ve scheduled a time for a virtual tour. Please see the details and let me know if you can get in touch with the listing agent.') && (contains(gomail.differences.emails.added[?draft == `true`][0].content, 'San Diego') || gomail.differences.emails.added[?draft == `true`][0].content | contains(@, ' CA '))",
       "expected_value": true
     }
   ],

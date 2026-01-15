@@ -36,7 +36,7 @@
     {
       "description": "Verify the sent email's recipient is the travel agent.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'firstclass.travel@gomail.com')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'firstclass.travel@gomail.com')",
       "expected_value": true
     },
     {

@@ -31,7 +31,7 @@
     {
       "description": "Verify that an email was sent to the correct recipient with the specified subject.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'offsite-planning@mycompany.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Offsite Cost Comparison')",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'offsite-planning@mycompany.com') && contains(gomail.differences.emails.added[?sent == `true`][0].subject, 'Offsite Cost Comparison')",
       "expected_value": true
     },
     {

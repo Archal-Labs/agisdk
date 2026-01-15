@@ -24,7 +24,7 @@
     {
       "description": "Verify an email was sent to the hiring committee.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'hiring.committee@mycorp.com')",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `1` && contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'hiring.committee@mycorp.com')",
       "expected_value": true
     },
     {

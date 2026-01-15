@@ -36,7 +36,7 @@
     {
       "description": "Verify the start date and time of the calendar event. (This Saturday at 2 PM)",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
+      "query": "gocalendar.differences.events.added.values(@)[0].start != null",
       "expected_value": true
     },
     {

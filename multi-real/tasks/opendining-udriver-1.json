@@ -42,7 +42,7 @@
     {
       "description": "Verify the OpenDining reservation has the correct party size and time.",
       "type": "jmespath",
-      "query": "opendining.differences.bookings.added[0].partySize == `3` && contains(opendining.differences.bookings.added[0].date, '20:30')",
+      "query": "opendining.differences.bookings.added[0].partySize == `3` && length(opendining.differences.bookings.updated[?contains(date || '', '20:30')]) >= `1`",
       "expected_value": false
     }
   ],

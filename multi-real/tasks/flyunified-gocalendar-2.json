@@ -36,7 +36,7 @@
     {
       "description": "Verify the exact start time of the calendar event, which should be 90 minutes before the flight's scheduled arrival.",
       "type": "jmespath",
-      "query": "gocalendar.differences.events.added.values(@)[0].start.dateTime != null",
+      "query": "gocalendar.differences.events.added.values(@)[0].start != null",
       "expected_value": true
     }
   ],

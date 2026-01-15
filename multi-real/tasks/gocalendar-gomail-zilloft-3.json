@@ -43,7 +43,7 @@
     {
       "description": "Verify an email was sent to the correct recipient with the specified subject.",
       "type": "jmespath",
-      "query": "gomail.differences.emails.added[?sent == `true`][0].recipient",
+      "query": "gomail.differences.emails.added[?sent == `true`][0].to[0]",
       "expected_value": true
     },
     {

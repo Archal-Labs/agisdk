@@ -24,7 +24,7 @@
     {
       "description": "Verify that an email was sent to the finance department.",
       "type": "jmespath",
-      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].recipient, 'finance.dept@corporate.com')",
+      "query": "contains(gomail.differences.emails.added[?sent == `true`][0].to[0] || '', 'finance.dept@corporate.com')",
       "expected_value": true
     },
     {
