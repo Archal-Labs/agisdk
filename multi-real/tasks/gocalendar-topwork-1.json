@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-topwork-1",
-  "goal": "I have a weekly 'Recruiting Pipeline Review' on my calendar every Wednesday at 9 AM. For the upcoming meeting, find the TopWork profile for a candidate who was shortlisted who applied for the 'Modern React E-Commerce Website' contractor role and attach it as a note to this week's event.",
+  "goal": "Check the 'WordPress Blog Website' job posting on TopWork to see how many people have applied. If there are fewer than 5 applicants, block out a 1-hour slot on my calendar for this Friday at 2 PM with the title 'Strategize Job Promotion'. Otherwise, do nothing.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,21 +22,21 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that the 'Recruiting Pipeline Review' event exists in the final state and has updated notes.",
+      "description": "Verify that a calendar event for 'Strategize Job Promotion' was created IF the applicant count for 'WordPress Blog Website' job was less than 5, or that no event was created otherwise. This evaluates the conditional logic based on the TopWork check.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && notes != null && notes != '']) >= `1`",
+      "query": "length(gocalendar.differences.events.added)",
       "expected_value": true
     },
     {
-      "description": "Verify that the note attached to the 'Recruiting Pipeline Review' event contains a reference to 'TopWork'.",
+      "description": "Verify the title of the created calendar event is 'Strategize Job Promotion', if an event was created.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'TopWork')]) >= `1`",
+      "query": "gocalendar.differences.events.added.values(@)[0] | contains(title, 'Strategize Job Promotion')",
       "expected_value": true
     },
     {
-      "description": "Verify that the note mentions the specific job role 'Modern React E-Commerce Website' for which the candidate applied.",
+      "description": "Verify the created calendar event starts at 2 PM and is 1 hour long (ends at 3 PM) on 'this Friday', if an event was created. Note: 'this Friday' depends on the execution date.",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added | [?contains(title, 'Recruiting Pipeline Review') && contains(notes, 'Modern React E-Commerce Website')]) >= `1`",
+      "query": "gocalendar.differences.events.added.values(@)[0] | (contains(start.dateTime, 'T14:00:00') && contains(end.dateTime, 'T15:00:00'))",
       "expected_value": true
     }
   ],
