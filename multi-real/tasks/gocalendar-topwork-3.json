@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-topwork-3",
-  "goal": "I need to hire a Python expert. Can you go to TopWork and post a new job for the 'Python Data Scientist' role? After you've done that, put a reminder on my calendar for one week from today at 10 AM to 'Check Python role applicants'.",
+  "goal": "Can you go to TopWork and post a new job for the 'Product Manager' role? After you've done that, put a reminder on my calendar for one week from today at 10 AM to 'Check Product Manager role applicants'.",
   "websites": [
     {
       "id": "gocalendar",

@@ -1,6 +1,6 @@
 {
   "id": "gocalendar-opendining-1",
-  "goal": "I want to set up a monthly client dinner. Find and book 'The Capital Grille' in Scottsdale for a party of 4 at 7:30 PM on the first Friday of each of the next two months. Then, create a recurring event on my calendar for these dinners.",
+  "goal": "My plans for Saturday night just got cancelled. My evening is free from 7 PM onwards. Find me a table for one at any sushi restaurant with at least 4.5 stars and book it. Then, block off a 90-minute slot on my calendar for 'Solo Sushi Night' starting at whatever time you booked.",
   "websites": [
     {
       "id": "gocalendar",
@@ -22,27 +22,27 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify two restaurant bookings were successfully created.",
+      "description": "Verify that a restaurant booking for one person has been made in OpenDining.",
       "type": "jmespath",
-      "query": "length(opendining.differences.bookings.added) >= `2`",
+      "query": "opendining.differences.bookings.added[0].partySize != null",
       "expected_value": true
     },
     {
-      "description": "Verify the first restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the next month.",
+      "description": "Verify that a calendar event titled 'Solo Sushi Night' has been created in GoCalendar.",
       "type": "jmespath",
-      "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[0].partySize == `4` && contains(opendining.differences.bookings.added[0].date, 'T19:30:00')",
+      "query": "contains(gocalendar.differences.events.added.values(@)[0].title, 'Solo Sushi Night')",
       "expected_value": true
     },
     {
-      "description": "Verify the second restaurant booking details for 'The Capital Grille' for 4 people at 7:30 PM on the first Friday of the month after next.",
+      "description": "Verify that the calendar event is exactly 90 minutes long (1 hour and 30 minutes).",
       "type": "jmespath",
-      "query": "contains(opendining.differences.bookings.added[1].restaurantName, 'The Capital Grille') && opendining.differences.bookings.added[1].partySize == `4` && contains(opendining.differences.bookings.added[1].date, 'T19:30:00')",
+      "query": "gocalendar.differences.events.added.values(@)[0].end.dateTime != null",
       "expected_value": true
     },
     {
-      "description": "Verify a recurring calendar event was created for the 'Client Dinner' at 7:30 PM on the first Friday of the next month.",
+      "description": "Verify that the restaurant booked is a sushi restaurant (by checking its name).",
       "type": "jmespath",
-      "query": "length(gocalendar.differences.events.added) >= `1` && contains(gocalendar.differences.events.added.values(@)[0].title, 'Client Dinner') && contains(gocalendar.differences.events.added.values(@)[0].title, 'The Capital Grille') && contains(gocalendar.differences.events.added.values(@)[0].start.dateTime, 'T19:30:00')",
+      "query": "contains(opendining.differences.bookings.added[0].restaurantName, 'Sushi') || contains(opendining.differences.bookings.added[0].restaurantName, 'sushi')",
       "expected_value": true
     }
   ],
