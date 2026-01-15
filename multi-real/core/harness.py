@@ -4,20 +4,25 @@ Multi-REAL Benchmark Harness
 Wraps the core REAL harness to run multi-app benchmark tasks.
 """
 
+import concurrent.futures
+import jmespath
 import json
 import logging
 import os
+import re
 import sys
+import threading
+import time
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
+from typing import Callable
 
 # Add multi-real and src to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 sys.path.insert(0, str(Path(__file__).parent.parent.parent / "src"))
 
 from agisdk.REAL.browsergym.experiments.loop import EnvArgs, ExpArgs
-from agisdk.REAL.browsergym.webclones.evaluate import WebCloneEvaluator
 from agisdk.REAL.demo_agent.basic_agent import DemoAgentArgs
 
 from core.registry import MultiRealTask, registry
@@ -32,6 +37,146 @@ except (ImportError, AttributeError):
     HybridValidator = None
 
 logger = logging.getLogger(__name__)
+
+
+# Retry configuration
+RETRYABLE_ERRORS = [
+    "InternalServerError",
+    "500",
+    "502",
+    "503",
+    "504",
+    "APIError",
+    "RateLimitError",
+    "Timeout",
+    "ConnectionError",
+    "overloaded",
+]
+
+
+@dataclass
+class RetryConfig:
+    """Configuration for retry behavior."""
+    max_retries: int = 3
+    base_delay: float = 5.0  # seconds
+    max_delay: float = 60.0  # seconds
+    exponential_base: float = 2.0
+
+
+def is_retryable_error(error: str | Exception) -> bool:
+    """Check if an error is retryable (API errors, rate limits, etc.)."""
+    error_str = str(error).lower()
+    for pattern in RETRYABLE_ERRORS:
+        if pattern.lower() in error_str:
+            return True
+    return False
+
+
+def calculate_retry_delay(attempt: int, config: RetryConfig) -> float:
+    """Calculate delay before next retry with exponential backoff."""
+    delay = config.base_delay * (config.exponential_base ** attempt)
+    return min(delay, config.max_delay)
+
+
+class ProgressMonitor:
+    """Monitor experiment progress by watching the experiment directory."""
+
+    def __init__(
+        self,
+        exp_dir: Path,
+        task_id: str,
+        check_interval: float = 5.0,
+        stall_timeout: float = 300.0,  # 5 minutes without progress = stall
+    ):
+        self.exp_dir = Path(exp_dir)
+        self.task_id = task_id
+        self.check_interval = check_interval
+        self.stall_timeout = stall_timeout
+        self._stop_event = threading.Event()
+        self._thread: threading.Thread | None = None
+        self._last_step = -1
+        self._last_progress_time = time.time()
+        self._stalled = False
+
+    def start(self) -> None:
+        """Start monitoring in a background thread."""
+        self._stop_event.clear()
+        self._last_progress_time = time.time()
+        self._thread = threading.Thread(target=self._monitor_loop, daemon=True)
+        self._thread.start()
+
+    def stop(self) -> None:
+        """Stop monitoring."""
+        self._stop_event.set()
+        if self._thread:
+            self._thread.join(timeout=2.0)
+
+    def is_stalled(self) -> bool:
+        """Check if the experiment appears to be stalled."""
+        return self._stalled
+
+    def _monitor_loop(self) -> None:
+        """Main monitoring loop."""
+        while not self._stop_event.is_set():
+            try:
+                current_step = self._get_current_step()
+                current_time = time.time()
+
+                if current_step > self._last_step:
+                    # Progress was made
+                    elapsed = current_time - self._last_progress_time
+                    logger.info(
+                        f"[{self.task_id}] Step {current_step} "
+                        f"(+{elapsed:.1f}s since last step)"
+                    )
+                    self._last_step = current_step
+                    self._last_progress_time = current_time
+                    self._stalled = False
+                else:
+                    # Check for stall
+                    time_since_progress = current_time - self._last_progress_time
+                    if time_since_progress > self.stall_timeout:
+                        if not self._stalled:
+                            logger.warning(
+                                f"[{self.task_id}] STALL DETECTED: "
+                                f"No progress for {time_since_progress:.0f}s "
+                                f"(stuck at step {self._last_step})"
+                            )
+                            self._stalled = True
+                    elif time_since_progress > 60:
+                        # Warn at 1 minute
+                        logger.info(
+                            f"[{self.task_id}] Waiting... "
+                            f"{time_since_progress:.0f}s at step {self._last_step}"
+                        )
+
+            except Exception as e:
+                logger.debug(f"Monitor error: {e}")
+
+            self._stop_event.wait(self.check_interval)
+
+    def _get_current_step(self) -> int:
+        """Get the current step number from experiment directory."""
+        if not self.exp_dir.exists():
+            return -1
+
+        # Look for step_*.pkl.gz files
+        step_files = list(self.exp_dir.glob("step_*.pkl.gz"))
+        if not step_files:
+            # Also check for screenshot files as backup
+            step_files = list(self.exp_dir.glob("screenshot_step_*.png"))
+
+        if not step_files:
+            return 0
+
+        # Extract step numbers
+        steps = []
+        for f in step_files:
+            match = re.search(r"step_(\d+)", f.name)
+            if match:
+                steps.append(int(match.group(1)))
+
+        return max(steps) if steps else 0
 
 
 @dataclass
@@ -58,6 +203,9 @@ class MultiRealResult:
     finish_state: dict = field(default_factory=dict)
     error: str | None = None
 
+    # Retry tracking
+    retry_count: int = 0
+
     # Timestamps
     started_at: str = ""
     completed_at: str = ""
@@ -81,6 +229,7 @@ class MultiRealResult:
             "total_cost": self.total_cost,
             "finish_state": self.finish_state,
             "error": self.error,
+            "retry_count": self.retry_count,
             "started_at": self.started_at,
             "completed_at": self.completed_at,
             "exp_dir": self.exp_dir,
@@ -96,6 +245,10 @@ class MultiRealHarness:
         results_dir: Path | None = None,
         headless: bool = True,
         use_hybrid_eval: bool = True,
+        retry_config: RetryConfig | None = None,
+        task_timeout: float = 1800.0,  # 30 minutes default
+        stall_timeout: float = 300.0,  # 5 minutes without progress = stall
+        progress_check_interval: float = 10.0,
     ):
         self.model_config = model_config
         self.results_dir = results_dir or Path(__file__).parent.parent / "results" / "raw"
@@ -103,10 +256,59 @@ class MultiRealHarness:
         self.headless = headless
         self.use_hybrid_eval = use_hybrid_eval and HYBRID_VALIDATOR_AVAILABLE
 
+        # Retry and timeout configuration
+        self.retry_config = retry_config or RetryConfig()
+        self.task_timeout = task_timeout
+        self.stall_timeout = stall_timeout
+        self.progress_check_interval = progress_check_interval
+
         if self.use_hybrid_eval:
-            self.hybrid_validator = HybridValidator()
+            # HybridValidator needs Anthropic API key for LLM judging
+            anthropic_api_key = self._get_anthropic_api_key()
+            if anthropic_api_key:
+                try:
+                    self.hybrid_validator = HybridValidator(api_key=anthropic_api_key)
+                except Exception as e:
+                    logger.warning(f"Failed to initialize HybridValidator: {e}. Hybrid evaluation disabled.")
+                    self.use_hybrid_eval = False
+                    self.hybrid_validator = None
+            else:
+                logger.warning(
+                    "ANTHROPIC_API_KEY not available. Hybrid evaluation disabled. "
+                    "Set ANTHROPIC_API_KEY environment variable or use an Anthropic model."
+                )
+                self.use_hybrid_eval = False
+                self.hybrid_validator = None
         elif use_hybrid_eval and not HYBRID_VALIDATOR_AVAILABLE:
             logger.warning("HybridValidator not available. Hybrid evaluation disabled.")
+            self.hybrid_validator = None
+        else:
+            self.hybrid_validator = None
+
+    def _get_anthropic_api_key(self) -> str | None:
+        """
+        Get Anthropic API key from environment or model config.
+        
+        Returns:
+            API key string if found, None otherwise
+        """
+        # First, try ANTHROPIC_API_KEY environment variable
+        api_key = os.environ.get("ANTHROPIC_API_KEY")
+        if api_key:
+            return api_key
+        
+        # If model is Anthropic, try to get from model config
+        if self.model_config.provider == ModelProvider.ANTHROPIC:
+            # Try environment variable specified in config
+            api_key = os.environ.get(self.model_config.api_key_env)
+            if api_key:
+                return api_key
+            
+            # If api_key_env looks like an actual key (starts with sk-ant-), use it directly
+            if self.model_config.api_key_env.startswith("sk-ant-"):
+                return self.model_config.api_key_env
+        
+        return None
 
     def _create_agent_args(self) -> DemoAgentArgs:
         """Create agent args from model config.
@@ -181,8 +383,6 @@ class MultiRealHarness:
         jmespath_results = []
         all_passed = True
 
-        evaluator = WebCloneEvaluator(task.evals)
-
         for eval_item in task.evals:
             if eval_item.get("type") != "jmespath":
                 continue
@@ -191,8 +391,8 @@ class MultiRealHarness:
             expected = eval_item.get("expected_value")
 
             try:
-                # Use the evaluator's jmespath_verify method
-                actual = evaluator.jmespath_search(query, finish_state)
+                # Use jmespath directly to evaluate the query
+                actual = jmespath.search(query, finish_state)
 
                 # Check if it matches expected
                 if expected is None:
@@ -252,7 +452,7 @@ class MultiRealHarness:
             return True, float(task.points), eval_details
 
         # If JMESPath fails and hybrid is enabled, try LLM judge
-        if self.use_hybrid_eval:
+        if self.use_hybrid_eval and self.hybrid_validator:
             try:
                 llm_results = self.hybrid_validator.evaluate(
                     task_goal=task.goal,
@@ -282,8 +482,46 @@ class MultiRealHarness:
         eval_details["confidence"] = "medium"
         return False, 0.0, eval_details
 
+    def _run_experiment_with_timeout(
+        self,
+        exp_args: ExpArgs,
+        task_id: str,
+    ) -> tuple[bool, str | None]:
+        """
+        Run experiment with timeout and progress monitoring.
+
+        Returns: (success, error_message)
+        """
+        monitor = ProgressMonitor(
+            exp_dir=exp_args.exp_dir,
+            task_id=task_id,
+            check_interval=self.progress_check_interval,
+            stall_timeout=self.stall_timeout,
+        )
+
+        def run_experiment():
+            exp_args.run()
+            return True
+
+        monitor.start()
+        try:
+            with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
+                future = executor.submit(run_experiment)
+                try:
+                    future.result(timeout=self.task_timeout)
+                    return True, None
+                except concurrent.futures.TimeoutError:
+                    error_msg = (
+                        f"Task timed out after {self.task_timeout}s. "
+                        f"Last step: {monitor._last_step}"
+                    )
+                    logger.error(f"[{task_id}] {error_msg}")
+                    return False, error_msg
+        finally:
+            monitor.stop()
+
     def run_task(self, task: MultiRealTask) -> MultiRealResult:
-        """Run a single task and return results."""
+        """Run a single task with retries and return results."""
         started_at = datetime.now().isoformat()
         result = MultiRealResult(
             task_id=task.prefixed_id,
@@ -293,77 +531,134 @@ class MultiRealHarness:
             started_at=started_at,
         )
 
-        try:
-            # Create agent and environment args
-            agent_args = self._create_agent_args()
-            env_args = self._create_env_args(task)
+        last_error: str | None = None
+        attempt = 0
 
-            # Create experiment args
-            exp_args = ExpArgs(
-                agent_args=agent_args,
-                env_args=env_args,
-            )
+        while attempt <= self.retry_config.max_retries:
+            if attempt > 0:
+                delay = calculate_retry_delay(attempt - 1, self.retry_config)
+                logger.info(
+                    f"[{task.id}] Retry {attempt}/{self.retry_config.max_retries} "
+                    f"after {delay:.1f}s delay..."
+                )
+                time.sleep(delay)
 
-            # Prepare experiment (creates directory, saves args)
-            exp_args.prepare(exp_root=self.results_dir / task.id)
+            try:
+                # Create agent and environment args
+                agent_args = self._create_agent_args()
+                env_args = self._create_env_args(task)
 
-            # Store exp_dir for later
-            result.exp_dir = str(exp_args.exp_dir)
+                # Create experiment args
+                exp_args = ExpArgs(
+                    agent_args=agent_args,
+                    env_args=env_args,
+                )
 
-            # Run the experiment (saves results to disk)
-            logger.info(f"Running experiment for {task.prefixed_id}")
-            exp_args.run()
+                # Prepare experiment (creates directory, saves args)
+                exp_args.prepare(exp_root=self.results_dir / task.id)
 
-            # Load results from summary_info.json
-            summary_path = exp_args.exp_dir / "summary_info.json"
-            if not summary_path.exists():
-                raise FileNotFoundError(f"summary_info.json not found at {summary_path}")
+                # Store exp_dir for later
+                result.exp_dir = str(exp_args.exp_dir)
 
-            with open(summary_path) as f:
-                summary_info = json.load(f)
+                # Run the experiment with timeout and monitoring
+                logger.info(
+                    f"[{task.id}] Starting experiment "
+                    f"(attempt {attempt + 1}/{self.retry_config.max_retries + 1})"
+                )
+                success, timeout_error = self._run_experiment_with_timeout(
+                    exp_args, task.id
+                )
 
-            # Extract finish state
-            finish_state = summary_info.get("finish_state", {})
-            result.finish_state = finish_state
+                if timeout_error:
+                    last_error = timeout_error
+                    if is_retryable_error(timeout_error):
+                        attempt += 1
+                        continue
+                    else:
+                        # Non-retryable timeout
+                        result.error = timeout_error
+                        break
 
-            # Extract metadata
-            result.elapsed_time = summary_info.get("stats.elapsed_time", 0.0)
-            result.num_steps = summary_info.get("n_steps", 0)
+                # Load results from summary_info.json
+                summary_path = exp_args.exp_dir / "summary_info.json"
+                if not summary_path.exists():
+                    raise FileNotFoundError(f"summary_info.json not found at {summary_path}")
 
-            # Extract token usage and calculate cost
-            input_tokens = summary_info.get("stats.cum_input_token", 0)
-            output_tokens = summary_info.get("stats.cum_output_token", 0)
-            result.total_tokens = input_tokens + output_tokens
-            result.total_cost = (
-                input_tokens * self.model_config.input_price_per_1k / 1000 +
-                output_tokens * self.model_config.output_price_per_1k / 1000
-            )
+                with open(summary_path) as f:
+                    summary_info = json.load(f)
 
-            # Check if there was an error
-            if summary_info.get("err_msg"):
-                result.error = summary_info["err_msg"]
-                logger.warning(f"Task failed with error: {result.error}")
+                # Extract finish state
+                finish_state = summary_info.get("finish_state", {})
+                result.finish_state = finish_state
 
-            # Evaluate with hybrid validator
-            if finish_state:
-                success, score, eval_details = self._evaluate_with_hybrid(task, finish_state)
-                result.success = success
-                result.score = score
-                result.jmespath_results = eval_details["jmespath_results"]
-                result.llm_judge_results = eval_details.get("llm_judge_results")
-                result.eval_method = eval_details["eval_method"]
-                result.confidence = eval_details["confidence"]
-            else:
-                logger.warning(f"No finish state available for {task.prefixed_id}")
-                result.success = False
-                result.score = 0.0
-                result.confidence = "low"
+                # Extract metadata
+                result.elapsed_time = summary_info.get("stats.elapsed_time", 0.0)
+                result.num_steps = summary_info.get("n_steps", 0)
 
-        except Exception as e:
-            logger.exception(f"Error running task {task.id}")
-            result.error = str(e)
-            result.success = False
-            result.score = 0.0
+                # Extract token usage and calculate cost
+                input_tokens = summary_info.get("stats.cum_input_token", 0)
+                output_tokens = summary_info.get("stats.cum_output_token", 0)
+                result.total_tokens = input_tokens + output_tokens
+                result.total_cost = (
+                    input_tokens * self.model_config.input_price_per_1k / 1000 +
+                    output_tokens * self.model_config.output_price_per_1k / 1000
+                )
+
+                # Check if there was an error in the experiment
+                err_msg = summary_info.get("err_msg")
+                if err_msg:
+                    logger.warning(f"[{task.id}] Experiment error: {err_msg}")
+                    if is_retryable_error(err_msg):
+                        last_error = err_msg
+                        attempt += 1
+                        continue
+                    else:
+                        result.error = err_msg
+
+                # Evaluate with hybrid validator
+                if finish_state:
+                    eval_success, score, eval_details = self._evaluate_with_hybrid(task, finish_state)
+                    result.success = eval_success
+                    result.score = score
+                    result.jmespath_results = eval_details["jmespath_results"]
+                    result.llm_judge_results = eval_details.get("llm_judge_results")
+                    result.eval_method = eval_details["eval_method"]
+                    result.confidence = eval_details["confidence"]
+                else:
+                    logger.warning(f"[{task.id}] No finish state available")
+                    result.success = False
+                    result.score = 0.0
+                    result.confidence = "low"
+
+                # Success - exit retry loop
+                result.retry_count = attempt
+                logger.info(
+                    f"[{task.id}] Completed in {result.num_steps} steps, "
+                    f"{result.elapsed_time:.1f}s"
+                    + (f" (after {attempt} retries)" if attempt > 0 else "")
+                )
+                break
+
+            except Exception as e:
+                error_str = str(e)
+                logger.warning(f"[{task.id}] Exception: {error_str}")
+
+                if is_retryable_error(e):
+                    last_error = error_str
+                    attempt += 1
+                    continue
+                else:
+                    # Non-retryable error
+                    logger.exception(f"[{task.id}] Non-retryable error")
+                    result.error = error_str
+                    result.success = False
+                    result.score = 0.0
+                    break
+
+        # If we exhausted retries, set the last error
+        if attempt > self.retry_config.max_retries and last_error:
+            result.error = f"Failed after {self.retry_config.max_retries + 1} attempts. Last error: {last_error}"
+            logger.error(f"[{task.id}] {result.error}")
 
         result.completed_at = datetime.now().isoformat()
         return result
@@ -377,22 +672,67 @@ class MultiRealHarness:
         tasks = tasks or list(registry.all())
         results = []
 
-        logger.info(f"Running {len(tasks)} tasks with {self.model_config.name}")
+        total_tasks = len(tasks)
+        start_time = time.time()
+
+        logger.info("=" * 60)
+        logger.info(f"Multi-REAL Benchmark Run")
+        logger.info(f"Model: {self.model_config.name}")
+        logger.info(f"Tasks: {total_tasks}")
+        logger.info(f"Timeout: {self.task_timeout}s per task")
+        logger.info(f"Retries: {self.retry_config.max_retries}")
+        logger.info("=" * 60)
 
         for i, task in enumerate(tasks):
-            logger.info(f"Task {i+1}/{len(tasks)}: {task.prefixed_id}")
+            task_start = time.time()
+            logger.info("")
+            logger.info(f"[{i+1}/{total_tasks}] Starting: {task.prefixed_id}")
+            logger.info("-" * 40)
+
             result = self.run_task(task)
             results.append(result)
 
             if save_results:
                 self._save_result(result)
 
-            # Log progress
-            status = "PASS" if result.success else "FAIL"
+            # Log result
+            task_elapsed = time.time() - task_start
+            status = "✓ PASS" if result.success else "✗ FAIL"
+            logger.info(f"[{i+1}/{total_tasks}] {status}: {task.id}")
             logger.info(
-                f"  {status} (score={result.score}, confidence={result.confidence}, "
-                f"method={result.eval_method})"
+                f"    Score: {result.score}, Confidence: {result.confidence}, "
+                f"Method: {result.eval_method}"
             )
+            logger.info(f"    Steps: {result.num_steps}, Time: {task_elapsed:.1f}s")
+            if result.error:
+                logger.info(f"    Error: {result.error[:100]}...")
+
+            # Running summary
+            passed = sum(1 for r in results if r.success)
+            logger.info(f"    Running: {passed}/{len(results)} passed")
+
+        # Final summary
+        total_elapsed = time.time() - start_time
+        total_passed = sum(1 for r in results if r.success)
+        total_score = sum(r.score for r in results)
+        max_score = sum(task.points for task in tasks)
+
+        logger.info("")
+        logger.info("=" * 60)
+        logger.info("BENCHMARK COMPLETE")
+        logger.info("=" * 60)
+        logger.info(f"Total Time: {total_elapsed:.1f}s ({total_elapsed/60:.1f} minutes)")
+        logger.info(f"Tasks Passed: {total_passed}/{total_tasks} ({100*total_passed/total_tasks:.1f}%)")
+        logger.info(f"Total Score: {total_score}/{max_score}")
+        logger.info("")
+
+        # List failures
+        failures = [r for r in results if not r.success]
+        if failures:
+            logger.info(f"Failed tasks ({len(failures)}):")
+            for r in failures:
+                error_summary = (r.error[:50] + "...") if r.error and len(r.error) > 50 else r.error
+                logger.info(f"  - {r.task_id}: {error_summary or 'evaluation failed'}")
 
         return results
 
