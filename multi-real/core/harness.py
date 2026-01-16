@@ -4,10 +4,14 @@ Multi-REAL Benchmark Harness
 Wraps the core REAL harness to run multi-app benchmark tasks.
 """
 
+import base64
+import gzip
+import io
 import jmespath
 import json
 import logging
 import os
+import pickle
 import re
 import sys
 import threading
@@ -25,7 +29,7 @@ from agisdk.REAL.browsergym.experiments.loop import EnvArgs, ExpArgs
 from agisdk.REAL.demo_agent.basic_agent import DemoAgentArgs
 
 from core.registry import MultiRealTask, registry
-from model_configs.schema import ModelConfig, ModelProvider
+from model_configs.schema import ModelConfig
 
 # HybridValidator import
 try:
@@ -262,20 +266,14 @@ class MultiRealHarness:
         self.progress_check_interval = progress_check_interval
 
         if self.use_hybrid_eval:
-            # HybridValidator needs Anthropic API key for LLM judging
-            anthropic_api_key = self._get_anthropic_api_key()
-            if anthropic_api_key:
-                try:
-                    self.hybrid_validator = HybridValidator(api_key=anthropic_api_key)
-                except Exception as e:
-                    logger.warning(f"Failed to initialize HybridValidator: {e}. Hybrid evaluation disabled.")
-                    self.use_hybrid_eval = False
-                    self.hybrid_validator = None
-            else:
-                logger.warning(
-                    "ANTHROPIC_API_KEY not available. Hybrid evaluation disabled. "
-                    "Set ANTHROPIC_API_KEY environment variable or use an Anthropic model."
-                )
+            # HybridValidator uses Gemini 2.5 Pro via Vertex AI
+            # Authentication is handled via gcloud auth (Application Default Credentials)
+            try:
+                self.hybrid_validator = HybridValidator()
+                logger.info("HybridValidator initialized with Gemini 2.5 Pro via Vertex AI")
+            except Exception as e:
+                logger.warning(f"Failed to initialize HybridValidator: {e}. Hybrid evaluation disabled.")
+                logger.warning("Ensure you've run 'gcloud auth application-default login'")
                 self.use_hybrid_eval = False
                 self.hybrid_validator = None
         elif use_hybrid_eval and not HYBRID_VALIDATOR_AVAILABLE:
@@ -283,31 +281,6 @@ class MultiRealHarness:
             self.hybrid_validator = None
         else:
             self.hybrid_validator = None
-
-    def _get_anthropic_api_key(self) -> str | None:
-        """
-        Get Anthropic API key from environment or model config.
-        
-        Returns:
-            API key string if found, None otherwise
-        """
-        # First, try ANTHROPIC_API_KEY environment variable
-        api_key = os.environ.get("ANTHROPIC_API_KEY")
-        if api_key:
-            return api_key
-        
-        # If model is Anthropic, try to get from model config
-        if self.model_config.provider == ModelProvider.ANTHROPIC:
-            # Try environment variable specified in config
-            api_key = os.environ.get(self.model_config.api_key_env)
-            if api_key:
-                return api_key
-            
-            # If api_key_env looks like an actual key (starts with sk-ant-), use it directly
-            if self.model_config.api_key_env.startswith("sk-ant-"):
-                return self.model_config.api_key_env
-        
-        return None
 
     def _create_agent_args(self) -> DemoAgentArgs:
         """Create agent args from model config.
@@ -430,9 +403,17 @@ class MultiRealHarness:
         self,
         task: MultiRealTask,
         finish_state: dict,
+        screenshots: list[tuple[str, str]] | None = None,
+        axtree_txt: str | None = None,
     ) -> tuple[bool, float, dict]:
         """
         Evaluate task result using hybrid JMESPath + LLM judge.
+
+        Args:
+            task: The task being evaluated
+            finish_state: The final state JSON from /finish endpoints
+            screenshots: Optional list of (app_name, base64_data_url) for vision eval
+            axtree_txt: Optional accessibility tree text for vision eval
 
         Returns: (success, score, eval_details)
         """
@@ -453,24 +434,41 @@ class MultiRealHarness:
         # If JMESPath fails and hybrid is enabled, try LLM judge
         if self.use_hybrid_eval and self.hybrid_validator:
             try:
-                llm_results = self.hybrid_validator.evaluate(
-                    task_goal=task.goal,
-                    finish_state=finish_state,
-                    evals=task.evals,
-                )
+                # Prefer vision evaluation if screenshots are available
+                if screenshots:
+                    logger.info(f"Using LLM vision evaluation with {len(screenshots)} screenshot(s)")
+                    llm_results = self.hybrid_validator.evaluate_with_vision(
+                        task_goal=task.goal,
+                        screenshots=screenshots,
+                        axtree_txt=axtree_txt,
+                        evals=task.evals,
+                        finish_state=finish_state,
+                    )
+                    eval_details["eval_method_detail"] = "llm_vision"
+                else:
+                    # Fall back to text-only evaluation
+                    logger.info("Using LLM text-only evaluation (no screenshots available)")
+                    llm_results = self.hybrid_validator.evaluate(
+                        task_goal=task.goal,
+                        finish_state=finish_state,
+                        evals=task.evals,
+                    )
+                    eval_details["eval_method_detail"] = "llm_text"
+
                 eval_details["llm_judge_results"] = llm_results
 
                 llm_passed = llm_results.get("overall_pass", False)
+                llm_confidence = llm_results.get("confidence", 0.5)
 
                 if llm_passed:
                     # JMESPath failed but LLM passed - likely query bug
                     eval_details["eval_method"] = "llm_judge"
-                    eval_details["confidence"] = "medium"
+                    eval_details["confidence"] = "medium" if llm_confidence >= 0.7 else "low"
                     return True, float(task.points), eval_details
                 else:
                     # Both failed - high confidence failure
                     eval_details["eval_method"] = "hybrid"
-                    eval_details["confidence"] = "high"
+                    eval_details["confidence"] = "high" if llm_confidence >= 0.7 else "medium"
                     return False, 0.0, eval_details
 
             except Exception as e:
@@ -480,6 +478,111 @@ class MultiRealHarness:
         # JMESPath failed, no hybrid or hybrid failed - medium confidence
         eval_details["confidence"] = "medium"
         return False, 0.0, eval_details
+
+    def _update_summary_with_eval_results(
+        self,
+        summary_path: Path,
+        result: MultiRealResult,
+        task: MultiRealTask,
+    ) -> None:
+        """
+        Update summary_info.json with evaluation results and remove bulky finish_state.
+
+        This makes the summary file much more useful for debugging by showing
+        which queries passed/failed instead of just the raw state.
+        """
+        try:
+            with open(summary_path) as f:
+                summary_info = json.load(f)
+
+            # Remove the bulky finish_state (it's already in finish_state.json)
+            summary_info.pop("finish_state", None)
+
+            # Add evaluation results
+            summary_info["eval_results"] = {
+                "success": result.success,
+                "score": result.score,
+                "eval_method": result.eval_method,
+                "confidence": result.confidence,
+                "queries": result.jmespath_results,
+                "llm_judge": result.llm_judge_results,
+            }
+
+            # Add task metadata for context
+            summary_info["task"] = {
+                "id": task.prefixed_id,
+                "goal": task.goal,
+                "websites": task.website_ids,
+                "points": task.points,
+            }
+
+            # Add a summary line for quick viewing
+            passed = sum(1 for q in result.jmespath_results if q.get("passed"))
+            total = len(result.jmespath_results)
+            summary_info["eval_summary"] = f"{passed}/{total} queries passed"
+
+            with open(summary_path, "w") as f:
+                json.dump(summary_info, f, indent=2)
+
+            logger.debug(f"Updated summary_info.json with eval results: {passed}/{total} passed")
+
+        except Exception as e:
+            logger.warning(f"Failed to update summary_info.json with eval results: {e}")
+
+    def _extract_final_step_data(
+        self,
+        exp_dir: Path,
+    ) -> tuple[list[tuple[str, str]], str | None]:
+        """
+        Extract screenshot and axtree from the final step for LLM vision evaluation.
+
+        Returns:
+            (screenshots, axtree_txt) where:
+            - screenshots: list of (app_name, base64_data_url) tuples
+            - axtree_txt: formatted accessibility tree text or None
+        """
+        screenshots: list[tuple[str, str]] = []
+        axtree_txt: str | None = None
+
+        try:
+            # Find the last step file
+            step_files = sorted(exp_dir.glob("step_*.pkl.gz"))
+            if not step_files:
+                logger.warning("No step files found for vision evaluation")
+                return screenshots, axtree_txt
+
+            last_step_file = step_files[-1]
+            logger.debug(f"Loading final step from {last_step_file}")
+
+            with gzip.open(last_step_file, "rb") as f:
+                step_info = pickle.load(f)
+
+            # Extract screenshot
+            if step_info.obs and "screenshot" in step_info.obs:
+                screenshot_array = step_info.obs["screenshot"]
+                # Convert numpy array to base64
+                from PIL import Image
+                img = Image.fromarray(screenshot_array)
+                buffer = io.BytesIO()
+                img.save(buffer, format="PNG")
+                base64_data = base64.b64encode(buffer.getvalue()).decode("utf-8")
+                screenshots.append(("final_state", f"data:image/png;base64,{base64_data}"))
+                logger.debug("Extracted final screenshot for vision evaluation")
+
+            # Extract axtree
+            if step_info.obs and "axtree_object" in step_info.obs:
+                axtree_obj = step_info.obs["axtree_object"]
+                if isinstance(axtree_obj, dict):
+                    # Format the axtree as text
+                    axtree_txt = json.dumps(axtree_obj, indent=2)[:20000]  # Truncate if too long
+                elif isinstance(axtree_obj, str):
+                    axtree_txt = axtree_obj[:20000]
+                logger.debug("Extracted axtree for vision evaluation")
+
+        except Exception as e:
+            logger.warning(f"Failed to extract final step data: {e}")
+
+        return screenshots, axtree_txt
 
     def _run_experiment_with_monitoring(
         self,
@@ -560,9 +663,12 @@ class MultiRealHarness:
                 env_args = self._create_env_args(task)
 
                 # Create experiment args
+                # Enable screenshot and step saving for LLM vision evaluation
                 exp_args = ExpArgs(
                     agent_args=agent_args,
                     env_args=env_args,
+                    save_screenshot=True,
+                    save_step_info_pkl=True,
                 )
 
                 # Prepare experiment (creates directory, saves args)
@@ -626,9 +732,14 @@ class MultiRealHarness:
                     else:
                         result.error = err_msg
 
+                # Extract screenshots and axtree for LLM vision evaluation
+                screenshots, axtree_txt = self._extract_final_step_data(exp_args.exp_dir)
+
                 # Evaluate with hybrid validator
                 if finish_state:
-                    eval_success, score, eval_details = self._evaluate_with_hybrid(task, finish_state)
+                    eval_success, score, eval_details = self._evaluate_with_hybrid(
+                        task, finish_state, screenshots=screenshots, axtree_txt=axtree_txt
+                    )
                     result.success = eval_success
                     result.score = score
                     result.jmespath_results = eval_details["jmespath_results"]
@@ -640,6 +751,9 @@ class MultiRealHarness:
                     result.success = False
                     result.score = 0.0
                     result.confidence = "low"
+
+                # Update summary_info.json with evaluation results (remove bulky finish_state)
+                self._update_summary_with_eval_results(summary_path, result, task)
 
                 # Success - exit retry loop
                 result.retry_count = attempt

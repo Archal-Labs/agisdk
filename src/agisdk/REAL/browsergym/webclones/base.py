@@ -221,7 +221,20 @@ class AbstractWebCloneTask(AbstractBrowserTask):
         self.page.bring_to_front()
         self.page.goto(self.url)
 
-        return self.goal, {"websites": [w.id for w in self.websites]}
+        # For multi-app tasks, augment the goal with website URLs and navigation instructions
+        # so the agent knows how to switch between websites
+        goal_to_return = self.goal
+        if self.is_multi_app:
+            website_info = "\n\nAvailable websites for this task:\n"
+            for website in self.websites:
+                name = website.name or website.id
+                similar = f" (similar to {website.similarTo})" if website.similarTo else ""
+                website_info += f"- {name}{similar}: {website.url}\n"
+            website_info += "\nTo switch between websites, use the goto(url) action. "
+            website_info += "For example: goto('https://real-gomail.vercel.app')"
+            goal_to_return = self.goal + website_info
+
+        return goal_to_return, {"websites": [w.id for w in self.websites]}
 
     def teardown(self) -> None:
         """Close all browser pages including background pages for all websites."""
@@ -445,7 +458,13 @@ class AbstractWebCloneTask(AbstractBrowserTask):
         # Treat model response as a challenge solution submission
         assistant_messages = [m for m in chat_messages if m["role"] == "assistant"]
         model_response = assistant_messages[-1]["message"]
-        if len(assistant_messages) > 1:
+
+        # Determine termination threshold based on task type
+        # First assistant message is the greeting, so:
+        # - Single-app: terminate after 1 agent message (len > 1)
+        # - Multi-app: terminate after 2 agent messages (len > 2) to allow navigation communication
+        termination_threshold = 2 if self.is_multi_app else 1
+        if len(assistant_messages) > termination_threshold:
             done = True
         logger.debug(
             f"Validation called. done={done}, leaderboard_run={getattr(self, 'run_id', '0')}"

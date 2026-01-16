@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gomail-staynb-4",
-  "goal": "My friend and I want to meet in Montreal for a vacation. I'll be flying from Miami (MIA) and they will be flying from Vancouver (YVR). We both want to arrive on July 10th. Find the cheapest one-way flight for me and the cheapest one-way for them. Then, find a StaynB for 2 guests with at least two beds that is available for 5 nights, starting July 10th. Once you have all three costs (my flight, their flight, 5 nights lodging), send an email to 'montreal.meetup.planning@gomail.com' with the subject 'Montreal Plan'. The email should detail each cost component and the final total.",
+  "goal": "My friend and I want to meet in Montreal for a vacation. I'll be flying from Miami (MIA) and they will be flying from Vancouver (YVR). We both want to arrive on August 10th. Find the cheapest one-way flight for me and the cheapest one-way for them. Then, find a StaynB for 2 guests with at least two beds that is available for 5 nights, starting August 10th. Once you have all three costs (my flight, their flight, 5 nights lodging), send an email to 'montreal.meetup.planning@gomail.com' with the subject 'Montreal Plan'. The email should detail each cost component and the final total.",
   "websites": [
     {
       "id": "flyunified",
@@ -29,13 +29,13 @@
   "possible": true,
   "evals": [
     {
-      "description": "Verify that two flights are booked, originating from MIA and YVR, both departing on July 10th to Montreal (YUL).",
+      "description": "Verify that two flights are booked, originating from MIA and YVR, both departing on August 10th to Montreal (YUL).",
       "type": "jmespath",
       "query": "length(flyunified.differences.bookedFlights.added) >= `2` && contains(flyunified.differences.bookedFlights[*].origin, 'MIA') && contains(flyunified.differences.bookedFlights[*].origin, 'YVR') && contains(flyunified.differences.bookedFlights[*].destination, 'YUL') && flyunified.differences.bookedFlights.added[?departureDate=='2024-07-10'] | length(@) >= `2`",
       "expected_value": true
     },
     {
-      "description": "Verify that a StaynB booking is made for 5 nights, starting on July 10th (check-out July 15th).",
+      "description": "Verify that a StaynB booking is made for 5 nights, starting on August 10th (check-out August 15th).",
       "type": "jmespath",
       "query": "length(values(staynb.initialfinaldiff.added.booking.bookingDetails || `{}`)) >= `1` && values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkIn == '2024-07-10' && values(staynb.initialfinaldiff.added.booking.bookingDetails)[0].checkOut == '2024-07-15'",
       "expected_value": true

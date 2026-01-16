@@ -13,7 +13,7 @@ LLM-based validation (fallback). It provides the best of both approaches:
 Class Usage:
     from hybrid_validator import HybridValidator
 
-    validator = HybridValidator(llm_model="claude-sonnet-4-20250514")
+    validator = HybridValidator()  # Uses Gemini 2.5 Pro via Vertex AI
     result = validator.evaluate(
         task_goal="Book a restaurant...",
         finish_state={...},
@@ -28,10 +28,11 @@ CLI Usage:
     uv run python multi-real/hybrid_validator.py --task gomail-topwork-1 --finish-json multi-real/final_states/openai/gomail-topwork-1.json
 
     # Use LLM fallback for uncertain cases
-    uv run python multi-real/hybrid_validator.py --finish-jsons-dir multi-real/final_states/openai --use-llm-fallback --model claude-opus-4
+    uv run python multi-real/hybrid_validator.py --finish-jsons-dir multi-real/final_states/openai --use-llm-fallback
 """
 
 import argparse
+import base64
 import jmespath
 import json
 import os
@@ -48,6 +49,9 @@ class HybridValidator:
     """
     Hybrid evaluation combining deterministic JMESPath with LLM-as-judge.
 
+    Uses Gemini 2.5 Pro via Vertex AI for LLM evaluation.
+    Authentication is handled via Application Default Credentials (gcloud auth).
+
     Strategy:
     1. JMESPath passes → High confidence success
     2. JMESPath fails + LLM passes → Medium confidence success (likely query bug)
@@ -56,25 +60,35 @@ class HybridValidator:
 
     def __init__(
         self,
-        llm_model: str = "claude-sonnet-4-20250514",
-        api_key: str | None = None,
+        project_id: str | None = None,
+        location: str = "us-central1",
+        llm_model: str = "gemini-2.5-pro-preview-05-06",
     ):
+        """
+        Initialize the HybridValidator with Gemini via Vertex AI.
+
+        Args:
+            project_id: GCP project ID. If None, uses GOOGLE_CLOUD_PROJECT env var
+                        or attempts to infer from gcloud config.
+            location: GCP region for Vertex AI (default: us-central1).
+            llm_model: Gemini model ID (default: gemini-2.5-pro-preview-05-06).
+        """
         self.llm_model = llm_model
-        self.api_key = api_key or os.environ.get("ANTHROPIC_API_KEY")
+        self.location = location
+        self.project_id = project_id or os.environ.get("GOOGLE_CLOUD_PROJECT")
 
-        if not self.api_key:
-            raise ValueError(
-                "ANTHROPIC_API_KEY environment variable not set and no api_key provided"
-            )
-
-        # Lazy import anthropic
+        # Lazy import vertexai
         try:
-            import anthropic
-            self.client = anthropic.Anthropic(api_key=self.api_key)
+            import vertexai
+            from vertexai.generative_models import GenerativeModel
         except ImportError:
             raise ImportError(
-                "anthropic package not installed. Install with: pip install anthropic"
+                "google-cloud-aiplatform not installed. Install with: pip install google-cloud-aiplatform"
             )
+
+        # Initialize Vertex AI - uses Application Default Credentials from gcloud auth
+        vertexai.init(project=self.project_id, location=self.location)
+        self.model = GenerativeModel(self.llm_model)
 
     def evaluate(
         self,
@@ -100,15 +114,19 @@ class HybridValidator:
         # Build evaluation prompt
         prompt = self._build_evaluation_prompt(task_goal, finish_state, evals)
 
-        # Call LLM
+        # Call Gemini via Vertex AI
         try:
-            response = self.client.messages.create(
-                model=self.llm_model,
-                max_tokens=2048,
-                messages=[{"role": "user", "content": prompt}],
+            from vertexai.generative_models import GenerationConfig
+
+            response = self.model.generate_content(
+                prompt,
+                generation_config=GenerationConfig(
+                    max_output_tokens=2048,
+                    temperature=0.0,
+                ),
             )
 
-            response_text = response.content[0].text
+            response_text = response.text
         except Exception as e:
             # If LLM call fails, return failure with low confidence
             return {
@@ -199,20 +217,24 @@ IMPORTANT:
             - reasoning: str
             - confidence: float (0.0-1.0)
         """
-        # Build evaluation prompt with vision content
-        prompt_content = self._build_vision_evaluation_prompt(
+        # Build evaluation prompt with vision content for Gemini
+        prompt_content = self._build_vision_evaluation_prompt_gemini(
             task_goal, screenshots, axtree_txt, evals, finish_state
         )
 
-        # Call LLM with vision
+        # Call Gemini with vision
         try:
-            response = self.client.messages.create(
-                model=self.llm_model,
-                max_tokens=2048,
-                messages=[{"role": "user", "content": prompt_content}],
+            from vertexai.generative_models import GenerationConfig
+
+            response = self.model.generate_content(
+                prompt_content,
+                generation_config=GenerationConfig(
+                    max_output_tokens=2048,
+                    temperature=0.0,
+                ),
             )
 
-            response_text = response.content[0].text
+            response_text = response.text
         except Exception as e:
             return {
                 "overall_pass": False,
@@ -337,6 +359,112 @@ IMPORTANT:
                         "data": base64_url,
                     }
                 })
+
+        return content
+
+    def _build_vision_evaluation_prompt_gemini(
+        self,
+        task_goal: str,
+        screenshots: list[tuple[str, str]],
+        axtree_txt: str | None,
+        evals: list[dict],
+        finish_state: dict | None = None,
+    ) -> list:
+        """Build multimodal prompt for Gemini with screenshots and a-tree text."""
+        from vertexai.generative_models import Part, Image
+
+        criteria_text = "\n".join(
+            f"{i+1}. {e.get('description', 'No description')}"
+            for i, e in enumerate(evals)
+        )
+
+        # Build text context
+        text_parts = [
+            f"""You are evaluating whether an AI agent successfully completed a multi-app browser task.
+
+TASK GOAL:
+{task_goal}
+
+SUCCESS CRITERIA:
+{criteria_text}
+"""
+        ]
+
+        # Add concrete evidence from finish_state if available
+        if finish_state:
+            evidence_text = []
+            for app_name in finish_state.keys():
+                if isinstance(finish_state[app_name], dict):
+                    evidence = extract_concrete_evidence(finish_state, app_name)
+                    if evidence:
+                        evidence_text.append(f"\n**{app_name.upper()} State Changes:**")
+                        evidence_text.append(json.dumps(evidence, indent=2))
+            if evidence_text:
+                text_parts.append("\nCONCRETE EVIDENCE FROM APPLICATION STATE:")
+                text_parts.extend(evidence_text)
+
+        # Add a-tree if available (truncate if very long)
+        if axtree_txt:
+            # Keep a reasonable amount of a-tree context (20k chars)
+            if len(axtree_txt) > 20000:
+                axtree_txt = axtree_txt[:20000] + "\n...(truncated)"
+            text_parts.append(f"""
+ACCESSIBILITY TREE (UI Structure):
+```
+{axtree_txt}
+```
+""")
+
+        text_parts.append("""
+SCREENSHOTS:
+Below are screenshots showing the final state of each application involved in this task.
+Examine them carefully to verify whether the required actions were completed.
+
+For each criterion, determine if it was satisfied based on:
+1. Visual evidence in the screenshots (forms filled, emails sent, etc.)
+2. The accessibility tree structure (confirms UI state)
+3. The concrete evidence extracted from application state
+
+Respond in this exact JSON format:
+{
+  "overall_pass": true/false,
+  "criteria_results": [
+    {"criterion": 1, "pass": true/false, "reason": "brief explanation referencing visual evidence"},
+    ...
+  ],
+  "reasoning": "Overall assessment of task completion based on screenshots and UI state",
+  "confidence": 0.85
+}
+
+IMPORTANT:
+- Only output the JSON, no other text.
+- confidence should be 0.0-1.0 (0.9+ = very confident, 0.7-0.9 = confident, 0.5-0.7 = uncertain)
+- Reference specific visual elements you see in the screenshots
+- If screenshots show completed actions (sent emails, calendar events, bookings), that's strong evidence
+""")
+
+        # Build multimodal content for Gemini
+        content = [Part.from_text("\n".join(text_parts))]
+
+        # Add screenshots as image parts
+        for app_name, base64_url in screenshots:
+            # Add label for the screenshot
+            content.append(Part.from_text(f"\n--- Screenshot: {app_name} ---"))
+
+            # Extract base64 data and convert to Gemini Image format
+            if base64_url.startswith("data:"):
+                # Extract media type and base64 data from data URL
+                parts = base64_url.split(",", 1)
+                media_type = parts[0].split(":")[1].split(";")[0]
+                base64_data = parts[1] if len(parts) > 1 else ""
+            else:
+                # Assume raw base64, default to jpeg
+                media_type = "image/jpeg"
+                base64_data = base64_url
+
+            # Create image part from base64 data
+            image_bytes = base64.b64decode(base64_data)
+            content.append(Part.from_image(Image.from_bytes(image_bytes)))
 
         return content
 
@@ -750,122 +878,94 @@ The agent successfully booked a restaurant at OpenDining for the correct date an
 
 def call_llm_judge_with_confidence(
     prompt: str,
-    model: str = "claude-opus-4"
+    model: str = "gemini-2.5-pro-preview-05-06",
+    project_id: str | None = None,
+    location: str = "us-central1",
 ) -> Tuple[str, float, str]:
     """
     Call LLM judge and extract verdict, confidence, and explanation.
+
+    Uses Gemini 2.5 Pro via Vertex AI with Application Default Credentials.
+
+    Args:
+        prompt: The evaluation prompt
+        model: Gemini model ID (default: gemini-2.5-pro-preview-05-06)
+        project_id: GCP project ID (uses env var or gcloud config if not specified)
+        location: GCP region for Vertex AI
 
     Returns:
         (verdict, confidence, explanation)
     """
     try:
-        import anthropic
+        import vertexai
+        from vertexai.generative_models import GenerativeModel, GenerationConfig
 
-        if "claude" in model.lower():
-            client = anthropic.Anthropic()
+        # Initialize Vertex AI
+        vertexai.init(
+            project=project_id or os.environ.get("GOOGLE_CLOUD_PROJECT"),
+            location=location
+        )
 
-            message = client.messages.create(
-                model=model if "claude" in model else "claude-opus-4-20250514",
-                max_tokens=1500,
-                messages=[{"role": "user", "content": prompt}]
-            )
+        gemini_model = GenerativeModel(model)
+        response = gemini_model.generate_content(
+            prompt,
+            generation_config=GenerationConfig(
+                max_output_tokens=1500,
+                temperature=0.0,
+            ),
+        )
 
-            response_text = message.content[0].text
-            lines = response_text.strip().split("\n")
+        response_text = response.text
+        lines = response_text.strip().split("\n")
 
-            # Parse verdict
-            verdict = lines[0].strip().upper()
-            if "SUCCESS" in verdict:
-                verdict = "SUCCESS"
-            elif "FAILURE" in verdict or "FAIL" in verdict:
-                verdict = "FAILURE"
-            else:
-                verdict = "UNCERTAIN"
+        # Parse verdict
+        verdict = lines[0].strip().upper()
+        if "SUCCESS" in verdict:
+            verdict = "SUCCESS"
+        elif "FAILURE" in verdict or "FAIL" in verdict:
+            verdict = "FAILURE"
+        else:
+            verdict = "UNCERTAIN"
 
-            # Parse confidence
-            confidence = 0.5  # default
-            for line in lines[1:4]:  # Check first few lines
-                if "CONFIDENCE:" in line.upper():
-                    try:
-                        conf_str = line.split(":")[-1].strip()
-                        confidence = float(conf_str)
-                        break
-                    except ValueError:
-                        pass
+        # Parse confidence
+        confidence = 0.5  # default
+        for line in lines[1:4]:  # Check first few lines
+            if "CONFIDENCE:" in line.upper():
+                try:
+                    conf_str = line.split(":")[-1].strip()
+                    confidence = float(conf_str)
+                    break
+                except ValueError:
+                    pass
 
-            # Parse explanation
-            explanation_lines = []
-            found_explanation = False
-            for line in lines[1:]:
-                if "CONFIDENCE:" in line.upper():
-                    found_explanation = True
-                    continue
-                if found_explanation or (not any(x in line.upper() for x in ["CONFIDENCE", "VERDICT", verdict])):
-                    if line.strip():
-                        explanation_lines.append(line)
+        # Parse explanation
+        explanation_lines = []
+        found_explanation = False
+        for line in lines[1:]:
+            if "CONFIDENCE:" in line.upper():
+                found_explanation = True
+                continue
+            if found_explanation or (not any(x in line.upper() for x in ["CONFIDENCE", "VERDICT", verdict])):
+                if line.strip():
+                    explanation_lines.append(line)
 
-            explanation = "\n".join(explanation_lines).strip()
-            if not explanation:
-                explanation = "\n".join(lines[2:]).strip()
-
-            return verdict, confidence, explanation
-
-    except ImportError:
-        pass
-
-    # Try OpenAI
-    try:
-        import openai
-
-        if "gpt" in model.lower():
-            client = openai.OpenAI()
-
-            response = client.chat.completions.create(
-                model=model,
-                messages=[{"role": "user", "content": prompt}],
-                max_tokens=1500
-            )
-
-            response_text = response.choices[0].message.content
-            lines = response_text.strip().split("\n")
-
-            # Parse verdict
-            verdict = lines[0].strip().upper()
-            if "SUCCESS" in verdict:
-                verdict = "SUCCESS"
-            elif "FAILURE" in verdict or "FAIL" in verdict:
-                verdict = "FAILURE"
-            else:
-                verdict = "UNCERTAIN"
-
-            # Parse confidence
-            confidence = 0.5
-            for line in lines[1:4]:
-                if "CONFIDENCE:" in line.upper():
-                    try:
-                        conf_str = line.split(":")[-1].strip()
-                        confidence = float(conf_str)
-                        break
-                    except ValueError:
-                        pass
-
-            # Parse explanation
+        explanation = "\n".join(explanation_lines).strip()
+        if not explanation:
             explanation = "\n".join(lines[2:]).strip()
 
-            return verdict, confidence, explanation
+        return verdict, confidence, explanation
 
     except ImportError:
-        pass
-
-    # Fallback
-    return "UNCERTAIN", 0.0, "No LLM API available"
+        return "UNCERTAIN", 0.0, "google-cloud-aiplatform not installed"
+    except Exception as e:
+        return "UNCERTAIN", 0.0, f"Gemini API error: {str(e)}"
 
 
 def hybrid_validate(
     task_config: Dict[str, Any],
     finish_json: Dict[str, Any],
     use_llm_fallback: bool = True,
-    llm_model: str = "claude-opus-4"
+    llm_model: str = "gemini-2.5-pro-preview-05-06"
 ) -> Dict[str, Any]:
     """
     Perform hybrid validation: JMESPath primary, LLM fallback.
@@ -978,8 +1078,8 @@ def main():
     )
     parser.add_argument(
         "--model",
-        default="claude-opus-4",
-        help="LLM model to use (default: claude-opus-4)"
+        default="gemini-2.5-pro-preview-05-06",
+        help="Gemini model to use (default: gemini-2.5-pro-preview-05-06)"
     )
     parser.add_argument(
         "--output",

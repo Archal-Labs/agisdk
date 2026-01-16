@@ -1,6 +1,6 @@
 {
   "id": "flyunified-gomail-staynb-3",
-  "goal": "I need to book my solo trip to Iceland. First, book the cheapest non-stop, one-way flight from New York (JFK) to Reykjavik (KEF) for October 25th. Based on the flight's arrival date, book a StaynB for 3 nights for one person in the 'Mi\u00f0borg' area with a kitchenette. Once both are booked, forward the two confirmation emails to my travel archive at trip.archive@gomail.com with the subject 'Iceland Logistics Confirmed'.",
+  "goal": "I need to book my solo trip to U.K.. First, book the cheapest non-stop, one-way flight from New York (JFK) to London (LGW) for October 25th. Based on the flight's arrival date, book a StaynB for 3 nights for one person with a kitchenette. Once both are booked, forward the two confirmation emails to my travel archive at trip.archive@gomail.com with the subject 'U.K. Logistics Confirmed'.",
   "websites": [
     {
       "id": "flyunified",
@@ -41,9 +41,9 @@
       "expected_value": true
     },
     {
-      "description": "Verify that two emails were sent to 'trip.archive@gomail.com' with the subject 'Iceland Logistics Confirmed', and that at least one email contains flight details and at least one contains hotel details.",
+      "description": "Verify that two emails were sent to 'trip.archive@gomail.com' with the subject 'U.K. Logistics Confirmed', and that at least one email contains flight details and at least one contains hotel details.",
       "type": "jmespath",
-      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `2` && all(gomail.differences.emails.added[?sent == `true`][*].to[0], &contains(@, 'trip.archive@gomail.com')) && all(gomail.differences.emails.added[?sent == `true`][*].subject, &contains(@, 'Iceland Logistics Confirmed')) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'flight') || contains(content, 'JFK') || contains(content, 'KEF')]) >= `1`) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'StaynB') || contains(content, 'hotel') || contains(content, 'Mi\u00f0borg')]) >= `1`)",
+      "query": "length(gomail.differences.emails.added[?sent == `true`]) >= `2` && all(gomail.differences.emails.added[?sent == `true`][*].to[0], &contains(@, 'trip.archive@gomail.com')) && all(gomail.differences.emails.added[?sent == `true`][*].subject, &contains(@, 'U.K. Logistics Confirmed')) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'flight') || contains(content, 'JFK') || contains(content, 'KEF')]) >= `1`) && (length(gomail.differences.emails.added[?sent == `true` && contains(content, 'StaynB') || contains(content, 'hotel') || contains(content, 'Mi\u00f0borg')]) >= `1`)",
       "expected_value": true
     }
   ],
